@@ -1,15 +1,16 @@
 import { useState, useCallback } from "react"
 import {
-  MessageCircle, Phone, MapPin, Mail, Menu, X, ChevronRight,
+  MessageCircle, Phone, MapPin, Menu, X, ChevronRight,
   ArrowLeft, CheckCircle2, Star, Package,
   Clock, Calculator, ShieldCheck, Truck, Award, ChevronDown,
-  Plus, Minus, ArrowRight, HelpCircle
+  Plus, Minus, ArrowRight, HelpCircle, Layers, Sparkles,
+  Check, ArrowUpRight, Warehouse, Hammer, Building2
 } from "lucide-react"
 import imgGypse from "@/imports/photo2.jpeg"
 import imgChaux from "@/imports/photo1.jpeg"
 import imgFilasse from "@/imports/filace.jpeg"
 
-// ─── Constants & Deep Links ──────────────────────────────────────────────────
+// ─── Constantes Commerciales & Liens Directs ─────────────────────────────────
 const WA_NUMBER = "2290197463209"
 const PHONE_DISPLAY = "+229 01 97 46 32 09"
 const COMPANY_NAME = "Marco Staff BTP"
@@ -18,8 +19,8 @@ const COMPANY_SUBTITLE = "L'Incomparable Service & Fils"
 const waUrl = (msg: string) =>
   `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`
 
-const waDevis = (produit: string, conditionnement: string) =>
-  waUrl(`Bonjour ${COMPANY_NAME}, je souhaite commander ou obtenir un devis pour : *${produit}* (${conditionnement}). Pouvez-vous m'indiquer la disponibilité et le tarif dégressif ? Merci !`)
+const waProduitMsg = (produit: string, conditionnement: string) =>
+  waUrl(`Bonjour ${COMPANY_NAME}, je souhaite connaître le prix et la disponibilité pour : *${produit}* (${conditionnement}). Merci !`)
 
 interface Product {
   id: string
@@ -30,15 +31,13 @@ interface Product {
   drapeau: string
   badge: string
   conditionnement: string
-  prixUnit: number
   image: string | { src: string }
   description: string
   arguments: string[]
   specs: { label: string; valeur: string }[]
-  m2ParSac: number
 }
 
-// ─── Products Data (100% Matériaux Réels du Projet) ──────────────────────────
+// ─── Catalogue Produits Réels du Projet ──────────────────────────────────────
 const PRODUCTS: Product[] = [
   {
     id: "gypse-40kg",
@@ -49,7 +48,6 @@ const PRODUCTS: Product[] = [
     drapeau: "🇪🇬",
     badge: "Extra White · Import Égypte",
     conditionnement: "Sac scellé de 40 KG",
-    prixUnit: 4500,
     image: imgGypse,
     description: "Poudre de gypse de moulage extra blanche importée directement d'Égypte. Granulométrie micronique ultra-fine pour un gâchage fluide sans grumeaux, une prise régulière et une finition miroir sans aucune craquelure.",
     arguments: [
@@ -67,7 +65,6 @@ const PRODUCTS: Product[] = [
       { label: "Indice de blancheur", valeur: "Extra White 100%" },
       { label: "Usage recommandé", valeur: "Plafonds suspendus staff, corniches, plaques lisses" }
     ],
-    m2ParSac: 10,
   },
   {
     id: "chaux-vive",
@@ -78,7 +75,6 @@ const PRODUCTS: Product[] = [
     drapeau: "🇦🇪",
     badge: "Import Dubaï (UAE)",
     conditionnement: "Sac étanche de 40 KG",
-    prixUnit: 5200,
     image: imgChaux,
     description: "White Lime pure de première qualité importée de Dubaï (Oki General Trading). Pureté calcique exceptionnelle et haute réactivité pour des enduits respirants, étanches et naturellement anti-salpêtre.",
     arguments: [
@@ -95,7 +91,6 @@ const PRODUCTS: Product[] = [
       { label: "Propriétés", valeur: "Fongicide, assainissant et respirant" },
       { label: "Usage recommandé", valeur: "Enduits de finition, chaulage, assainissement de murs" }
     ],
-    m2ParSac: 8,
   },
   {
     id: "filasse-sisal",
@@ -106,7 +101,6 @@ const PRODUCTS: Product[] = [
     drapeau: "🇰🇪",
     badge: "Produce of Kenya · 100% Pur",
     conditionnement: "Balle pressée 25 / 50 KG",
-    prixUnit: 8000,
     image: imgFilasse,
     description: "Fibres végétales de sisal pur sélectionnées et peignées au Kenya. Fibres longues d'une résistance mécanique extrême à la traction, garantissant l'armature indestructible de tous vos éléments en staff.",
     arguments: [
@@ -123,7 +117,6 @@ const PRODUCTS: Product[] = [
       { label: "Résistance traction", valeur: "> 300 MPa" },
       { label: "Usage recommandé", valeur: "Armature de corniches lourdes, rosaces et plaques staff" }
     ],
-    m2ParSac: 15,
   },
 ]
 
@@ -154,7 +147,7 @@ const FAQS = [
   }
 ]
 
-// ─── Button Component ────────────────────────────────────────────────────────
+// ─── Composant Bouton Moderne ────────────────────────────────────────────────
 function Button({ children, variant = "primary", size = "medium", iconEnd, onClick, full = false, style = {} }: {
   children?: React.ReactNode; variant?: "primary" | "neutral" | "secondary"; size?: "small" | "medium" | "large";
   iconEnd?: React.ReactNode; onClick?: () => void; full?: boolean; style?: React.CSSProperties;
@@ -193,7 +186,7 @@ function Button({ children, variant = "primary", size = "medium", iconEnd, onCli
   )
 }
 
-// ─── WhatsApp Button Component ───────────────────────────────────────────────
+// ─── Composant Bouton WhatsApp ───────────────────────────────────────────────
 function WaBtn({ label = "WhatsApp", url, small = false, full = false }: {
   label?: string; url: string; small?: boolean; full?: boolean
 }) {
@@ -234,7 +227,7 @@ function AnnouncementBar() {
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--ds-conversion)", display: "block", animation: "pulse 2s infinite" }} />
           <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "var(--ds-dark-text-muted)", fontWeight: 500 }}>
-            Dépôt Ouvert · Lun–Sam 7h30–18h00 · Dépôts Cotonou &amp; Calavi
+            Dépôt Ouvert · Lun–Sam 7h30–18h00 · Cotonou &amp; Abomey-Calavi
           </span>
         </div>
         <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", alignItems: "center", gap: 6, textDecoration: "none" }}>
@@ -253,10 +246,11 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   const links = [
     { label: "Accueil", id: "accueil" },
     { label: "Nos Matériaux", id: "produits" },
-    { label: "Simulateur Chantier", id: "simulateur" },
-    { label: "Garanties & Avis", id: "garanties" },
+    { label: "Pourquoi Marco ?", id: "pourquoi" },
+    { label: "Simulateur", id: "simulateur" },
+    { label: "Comment Commander", id: "commande" },
+    { label: "Applications", id: "applications" },
     { label: "FAQ", id: "faq" },
-    { label: "Contact & Dépôt", id: "contact" },
   ]
 
   return (
@@ -289,12 +283,12 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
         </div>
 
         {/* Nav Desktop */}
-        <nav style={{ display: "flex", gap: 24, alignItems: "center" }} className="nav-desktop">
+        <nav style={{ display: "flex", gap: 20, alignItems: "center" }} className="nav-desktop">
           {links.map(({ label, id }) => (
             <a key={id} href={`#${id}`}
               onClick={e => { e.preventDefault(); onNavigate(id) }}
               style={{
-                fontFamily: "var(--ds-font-body)", fontSize: "0.85rem",
+                fontFamily: "var(--ds-font-body)", fontSize: "0.82rem",
                 fontWeight: 600, color: "var(--ds-text-secondary)",
                 textDecoration: "none", transition: "color var(--ds-transition)"
               }}
@@ -346,7 +340,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   )
 }
 
-// ─── Hero Section ────────────────────────────────────────────────────────────
+// ─── 1. Hero Section ─────────────────────────────────────────────────────────
 function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => void; onSimulateur: () => void }) {
   return (
     <section id="accueil" style={{ background: "var(--ds-bg)", position: "relative", overflow: "hidden" }}>
@@ -385,8 +379,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
               fontWeight: 800, color: "var(--ds-text-primary)", lineHeight: 1.15,
               letterSpacing: "-0.035em", marginBottom: 18,
             }}>
-              L&apos;Excellence des{" "}
-              <span style={{ color: "var(--ds-brand)" }}>Matériaux de Staff</span> &amp; Finition au Bénin.
+              Matériaux de Staff &amp; Finition de Premier Choix au Bénin.
             </h1>
 
             <p style={{
@@ -394,14 +387,14 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
               color: "var(--ds-text-secondary)", lineHeight: 1.7, maxWidth: 520,
               marginBottom: 30,
             }}>
-              Approvisionnez vos chantiers directement à la source. <strong>Poudre de Gypse Marco 40 KG</strong> (Égypte), <strong>Chaux Vive pure</strong> (Dubaï) et <strong>Filasse Sisal haute ténacité</strong> (Kenya). Qualité certifiée, zéro fissure, livraison rapide sur chantier.
+              Grossiste et importateur direct pour les <strong>staffeurs, artisans, professionnels du BTP, entrepreneurs</strong> et particuliers. <strong>Poudre de Gypse Marco 40 KG</strong> (Égypte), <strong>Chaux Vive pure</strong> (Dubaï) et <strong>Filasse Sisal</strong> (Kenya). Stock permanent et livraison rapide sur chantier.
             </p>
 
             {/* Action CTAs */}
             <div className="hero-cta-group" style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", marginBottom: 36 }}>
-              <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} />
+              <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mon chantier.`)} />
               <Button variant="neutral" iconEnd={<Calculator size={15} />} onClick={onSimulateur}>
-                Simulateur Chantier
+                Simuler mes besoins
               </Button>
             </div>
 
@@ -414,7 +407,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
                 { val: "100%", label: "Pureté & Zéro Fissure" },
                 { val: "3", label: "Origines Directes Usine" },
                 { val: "24/48h", label: "Livraison sur Chantier" },
-                { val: "1000+", label: "Chantiers au Bénin" },
+                { val: "Stock", label: "Permanent en Dépôt" },
               ].map(({ val, label }) => (
                 <div key={label}>
                   <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.2rem, 2.2vw, 1.5rem)", fontWeight: 800, color: "var(--ds-brand)", lineHeight: 1 }}>{val}</div>
@@ -467,7 +460,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
   )
 }
 
-// ─── Products Showcase Section ───────────────────────────────────────────────
+// ─── 2. Produits Showcase Section ───────────────────────────────────────────
 function ProductsSection({ onDetail }: { onDetail: (p: Product) => void }) {
   return (
     <section id="produits" style={{ background: "var(--ds-bg-subtle)", padding: "clamp(48px, 6vw, 80px) 0" }}>
@@ -565,7 +558,7 @@ function ProductsSection({ onDetail }: { onDetail: (p: Product) => void }) {
 
                 {/* CTAs */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: "auto", paddingTop: 8 }}>
-                  <WaBtn label="Commander / Devis WhatsApp" url={waDevis(p.nom, p.conditionnement)} full />
+                  <WaBtn label="Commander / Demander le prix sur WhatsApp" url={waProduitMsg(p.nom, p.conditionnement)} full />
                   <button onClick={() => onDetail(p)} style={{
                     display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                     fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", fontWeight: 700,
@@ -587,7 +580,162 @@ function ProductsSection({ onDetail }: { onDetail: (p: Product) => void }) {
   )
 }
 
-// ─── Simulateur de Chantier Section ──────────────────────────────────────────
+// ─── 3. Pourquoi Marco Staff BTP ? (Section Réassurance Éditoriale) ───────────
+function WhyUsSection() {
+  const points = [
+    {
+      icon: Award,
+      titre: "Import Direct & Traçabilité",
+      desc: "Nous importons directement depuis les usines partenaires en Égypte, aux Émirats et au Kenya, sans aucun intermédiaire spéculatif."
+    },
+    {
+      icon: ShieldCheck,
+      titre: "Qualité Contrôlée pour le Staff",
+      desc: "Nos poudres sont rigoureusement testées : blancheur pure, prise régulière (20-30 min) et formule garantie zéro fissuration."
+    },
+    {
+      icon: Warehouse,
+      titre: "Stock Permanent en Dépôt",
+      desc: "Nos entrepôts de Cotonou et Abomey-Calavi sont approvisionnés en continu pour sécuriser les cadences de vos chantiers."
+    },
+    {
+      icon: Truck,
+      titre: "Livraison Directe Chantier",
+      desc: "Acheminement rapide sous 24h à 48h dans tout le Grand Cotonou, avec possibilité de déchargement direct sur vos zones de travail."
+    }
+  ]
+
+  return (
+    <section id="pourquoi" style={{ background: "var(--ds-bg)", padding: "clamp(48px, 6vw, 80px) 0" }}>
+      <div className="site-container">
+        
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(32px, 5vw, 48px)" }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
+            fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase",
+            letterSpacing: "0.12em", marginBottom: 12,
+            background: "var(--ds-brand-light)", padding: "6px 14px", borderRadius: "var(--ds-radius-full)"
+          }}>
+            <ShieldCheck size={14} /> Engagement &amp; Fiabilité
+          </span>
+          <h2 style={{
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)",
+            fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.03em",
+            lineHeight: 1.2, marginBottom: 12
+          }}>
+            Pourquoi les Professionnels Choisissent Marco Staff ?
+          </h2>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)", color: "var(--ds-text-secondary)", lineHeight: 1.6, margin: 0 }}>
+            Une organisation logistique et une exigence de qualité conçues pour répondre aux standards des plus grands chantiers du Bénin.
+          </p>
+        </div>
+
+        <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(16px, 2.5vw, 24px)" }}>
+          {points.map(({ icon: Icon, titre, desc }, i) => (
+            <div key={titre} style={{
+              background: "var(--ds-bg-subtle)", borderRadius: "var(--ds-radius-2xl)",
+              border: "1px solid var(--ds-border)", padding: "clamp(20px, 3vw, 28px)",
+              display: "flex", flexDirection: "column", gap: 14,
+              transition: "all var(--ds-transition)"
+            }}
+              onMouseEnter={e => {
+                e.currentTarget.style.boxShadow = "var(--ds-shadow-md)"
+                e.currentTarget.style.transform = "translateY(-2px)"
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.boxShadow = "none"
+                e.currentTarget.style.transform = "translateY(0)"
+              }}
+            >
+              <div style={{
+                width: 44, height: 44, borderRadius: "var(--ds-radius-lg)",
+                background: "var(--ds-brand-light)", color: "var(--ds-brand)",
+                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+              }}>
+                <Icon size={22} />
+              </div>
+              <div>
+                <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1rem", fontWeight: 800, color: "var(--ds-text-primary)", margin: "0 0 6px" }}>
+                  {titre}
+                </h3>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", color: "var(--ds-text-secondary)", lineHeight: 1.6, margin: 0 }}>
+                  {desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+// ─── 4. De l'Approvisionnement au Chantier (Logistique BTP Narrative) ────────
+function SupplyChainSection() {
+  const steps = [
+    { num: "01", titre: "Import Direct Usine", desc: "Contrôles stricts de pureté et d'emballage scellé à l'embarquement." },
+    { num: "02", titre: "Stockage Protégé", desc: "Entrepôts ventilés garantissant zéro humidité préalable pour le gypse et la chaux." },
+    { num: "03", titre: "Préparation Express", desc: "Conditionnement par lots et vérification des sacs avant chaque départ." },
+    { num: "04", titre: "Livraison Chantier", desc: "Acheminement rapide à Cotonou et Calavi pour respecter vos délais de pose." }
+  ]
+
+  return (
+    <section style={{ background: "var(--ds-bg-subtle)", padding: "clamp(48px, 6vw, 80px) 0" }}>
+      <div className="site-container">
+        
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(32px, 5vw, 48px)" }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
+            fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase",
+            letterSpacing: "0.12em", marginBottom: 12,
+            background: "var(--ds-brand-light)", padding: "6px 14px", borderRadius: "var(--ds-radius-full)"
+          }}>
+            <Truck size={14} /> Maîtrise Logistique
+          </span>
+          <h2 style={{
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)",
+            fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.03em",
+            lineHeight: 1.2, marginBottom: 12
+          }}>
+            De l&apos;Approvisionnement Direct à Votre Chantier
+          </h2>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)", color: "var(--ds-text-secondary)", lineHeight: 1.6, margin: 0 }}>
+            Une chaîne logistique éprouvée garantissant la fraîcheur et la qualité optimale de vos matériaux de finition.
+          </p>
+        </div>
+
+        <div className="supply-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(16px, 2.5vw, 24px)" }}>
+          {steps.map(({ num, titre, desc }) => (
+            <div key={num} style={{
+              background: "white", borderRadius: "var(--ds-radius-2xl)",
+              border: "1px solid var(--ds-border)", padding: "clamp(20px, 3vw, 26px)",
+              position: "relative", display: "flex", flexDirection: "column", gap: 12
+            }}>
+              <span style={{
+                fontFamily: "var(--ds-font-heading)", fontSize: "1.4rem",
+                fontWeight: 800, color: "var(--ds-brand)", lineHeight: 1
+              }}>
+                {num}
+              </span>
+              <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "var(--ds-text-primary)", margin: 0 }}>
+                {titre}
+              </h3>
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "var(--ds-text-secondary)", lineHeight: 1.55, margin: 0 }}>
+                {desc}
+              </p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+// ─── 5. Simulateur Signature de Chantier ─────────────────────────────────────
 function SimulateurSection() {
   const [surface, setSurface] = useState(60)
   const [typeOuvrage, setTypeOuvrage] = useState<"plafond" | "corniche">("plafond")
@@ -640,10 +788,10 @@ function SimulateurSection() {
               <Calculator size={22} />
             </div>
             <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-              Outil d&apos;Estimation Rapide
+              Fonctionnalité Signature
             </span>
             <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.3rem)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.03em", marginTop: 8, marginBottom: 16 }}>
-              Calculez vos Besoins en Matériaux en 1 Clic
+              Calculez vos besoins en matériaux en quelques secondes
             </h2>
             <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)", color: "var(--ds-text-secondary)", lineHeight: 1.7, marginBottom: 24 }}>
               Faites glisser le curseur selon la superficie de votre chantier pour estimer instantanément le nombre de sacs de Gypse Marco, de Chaux Vive et de Filasse de Sisal nécessaires.
@@ -671,10 +819,10 @@ function SimulateurSection() {
           }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               
-              {/* Ouvrage Selector */}
+              {/* Étape 1 : Type d'ouvrage */}
               <div>
                 <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: "var(--ds-text-primary)", textTransform: "uppercase", marginBottom: 10 }}>
-                  1. Type d&apos;ouvrage :
+                  Étape 1 · Type d&apos;ouvrage :
                 </label>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                   <button type="button" onClick={() => setTypeOuvrage("plafond")} style={{
@@ -700,11 +848,11 @@ function SimulateurSection() {
                 </div>
               </div>
 
-              {/* Surface Slider */}
+              {/* Étape 2 : Surface */}
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
                   <label style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: "var(--ds-text-primary)", textTransform: "uppercase" }}>
-                    2. Superficie du chantier :
+                    Étape 2 · Surface du chantier :
                   </label>
                   <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.4rem", fontWeight: 800, color: "var(--ds-brand)" }}>
                     {surface} m²
@@ -726,7 +874,7 @@ function SimulateurSection() {
                 </div>
               </div>
 
-              {/* Results Grid */}
+              {/* Étape 3 : Résultat */}
               <div className="simu-results-grid" style={{
                 background: "white", borderRadius: "var(--ds-radius-xl)",
                 border: "1px solid var(--ds-border)", padding: "16px",
@@ -749,7 +897,7 @@ function SimulateurSection() {
                 </div>
               </div>
 
-              <WaBtn label="Envoyer cette Estimation pour Devis WhatsApp" url={msgSimu} full />
+              <WaBtn label="Recevoir mon estimation sur WhatsApp" url={msgSimu} full />
 
             </div>
           </div>
@@ -760,126 +908,62 @@ function SimulateurSection() {
   )
 }
 
-// ─── Section "PIECE JOIN" — CTA BTP & Approvisionnement Haute Définition ─────
-function PieceJoinSection() {
+// ─── 6. Comment Commander ? (Processus en 4 Étapes) ──────────────────────────
+function HowToOrderSection() {
+  const steps = [
+    { num: "01", titre: "Choisissez vos matériaux", desc: "Consultez notre catalogue de 3 matériaux phares ou estimez votre besoin sur le simulateur." },
+    { num: "02", titre: "Demandez votre prix", desc: "Cliquez sur WhatsApp pour recevoir instantanément notre tarif dégressif selon vos quantités." },
+    { num: "03", titre: "Confirmez votre commande", desc: "Validation de la proforma, du mode de paiement et du créneau de livraison souhaité." },
+    { num: "04", titre: "Retrait ou Livraison", desc: "Chargement rapide à nos dépôts de Cotonou/Calavi ou acheminement direct sur votre chantier." }
+  ]
+
   return (
-    <section style={{
-      background: "var(--ds-bg)",
-      padding: "clamp(48px, 6vw, 80px) 0",
-      position: "relative",
-      overflow: "hidden"
-    }}>
-      
-      {/* Background Glowing Organic Spheres (ADN Visuel Figma) */}
-      <div style={{
-        position: "absolute", top: "50%", left: "10%", width: 360, height: 360,
-        borderRadius: "50%", background: "rgba(103, 79, 245, 0.28)",
-        filter: "blur(90px)", transform: "translate(-50%, -50%)", pointerEvents: "none", zIndex: 0
-      }} />
-      <div style={{
-        position: "absolute", top: "50%", right: "8%", width: 300, height: 300,
-        borderRadius: "50%", background: "rgba(124, 58, 237, 0.22)",
-        filter: "blur(80px)", transform: "translate(0, -50%)", pointerEvents: "none", zIndex: 0
-      }} />
-
-      <div className="site-container" style={{ position: "relative", zIndex: 1 }}>
+    <section id="commande" style={{ background: "var(--ds-bg-subtle)", padding: "clamp(48px, 6vw, 80px) 0" }}>
+      <div className="site-container">
         
-        {/* Main Card */}
-        <div className="piece-join-card" style={{
-          borderRadius: "clamp(20px, 3vw, 32px)",
-          overflow: "hidden",
-          display: "grid",
-          gridTemplateColumns: "1.15fr 0.85fr",
-          boxShadow: "0 20px 60px rgba(103,79,245,0.18), 0 4px 20px rgba(0,0,0,0.06)",
-          border: "1px solid rgba(255,255,255,0.8)",
-          backdropFilter: "blur(20px)",
-        }}>
-          
-          {/* Left Block: Deep Violet Gradient with Strong Headline */}
-          <div className="piece-join-left" style={{
-            background: "linear-gradient(135deg, #7C3AED 0%, #674FF5 50%, #5B21B6 100%)",
-            padding: "clamp(36px, 5vw, 54px) clamp(24px, 4vw, 44px)",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            position: "relative",
-            color: "white"
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(32px, 5vw, 48px)" }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
+            fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase",
+            letterSpacing: "0.12em", marginBottom: 12,
+            background: "var(--ds-brand-light)", padding: "6px 14px", borderRadius: "var(--ds-radius-full)"
           }}>
-            <span style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              fontFamily: "var(--ds-font-body)",
-              fontSize: "0.75rem",
-              fontWeight: 700,
-              color: "rgba(255,255,255,0.85)",
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-              marginBottom: 14,
-              background: "rgba(255,255,255,0.15)",
-              padding: "4px 12px",
-              borderRadius: "var(--ds-radius-full)",
-              width: "fit-content"
-            }}>
-              Approvisionnement Direct Usine
-            </span>
-            <h2 style={{
-              fontFamily: "var(--ds-font-heading)",
-              fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)",
-              fontWeight: 800,
-              lineHeight: 1.18,
-              letterSpacing: "-0.035em",
-              margin: 0,
-              color: "white"
-            }}>
-              Bâtissons l&apos;Excellence de vos Chantiers de Finition.
-            </h2>
-          </div>
+            <Clock size={14} /> Parcours Simple &amp; Rapide
+          </span>
+          <h2 style={{
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)",
+            fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.03em",
+            lineHeight: 1.2, marginBottom: 12
+          }}>
+            Comment Commander vos Matériaux ?
+          </h2>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)", color: "var(--ds-text-secondary)", lineHeight: 1.6, margin: 0 }}>
+            Un processus d&apos;achat fluide et sans friction pensé pour les rythmes des chantiers.
+          </p>
+        </div>
 
-          {/* Right Block: Clean White / Glass with Practical BTP Conversion Content */}
-          <div className="piece-join-right" style={{
-            background: "rgba(255, 255, 255, 0.95)",
-            padding: "clamp(32px, 4.5vw, 48px) clamp(24px, 3.5vw, 40px)",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: 16
-          }}>
-            <div>
-              <h3 style={{
-                fontFamily: "var(--ds-font-heading)",
-                fontSize: "clamp(1.1rem, 1.8vw, 1.3rem)",
-                fontWeight: 800,
-                color: "#0F172A",
-                lineHeight: 1.25,
-                margin: "0 0 8px"
+        <div className="order-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(16px, 2.5vw, 24px)" }}>
+          {steps.map(({ num, titre, desc }) => (
+            <div key={num} style={{
+              background: "white", borderRadius: "var(--ds-radius-2xl)",
+              border: "1px solid var(--ds-border)", padding: "clamp(20px, 3vw, 26px)",
+              display: "flex", flexDirection: "column", gap: 12
+            }}>
+              <span style={{
+                fontFamily: "var(--ds-font-heading)", fontSize: "1.4rem",
+                fontWeight: 800, color: "var(--ds-conversion)", lineHeight: 1
               }}>
-                Vous avez un projet en cours ou à venir ?
+                {num}
+              </span>
+              <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "var(--ds-text-primary)", margin: 0 }}>
+                {titre}
               </h3>
-              <p style={{
-                fontFamily: "var(--ds-font-body)",
-                fontSize: "0.85rem",
-                color: "#475569",
-                lineHeight: 1.55,
-                margin: 0
-              }}>
-                Disponibilité en stock permanent, tarifs dégressifs pour grossistes &amp; maîtres staffeurs, et livraison express sur chantier.
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "var(--ds-text-secondary)", lineHeight: 1.55, margin: 0 }}>
+                {desc}
               </p>
             </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingTop: 4 }}>
-              <WaBtn label="Échanger sur WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, j'ai un chantier en cours et je souhaite obtenir vos disponibilités et tarifs.`)} full />
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 4px" }}>
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8" }}>
-                  ⚡ Réponse sous 15 à 30 min
-                </span>
-                <a href={`tel:${WA_NUMBER}`} style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "var(--ds-brand)", fontWeight: 600, textDecoration: "none" }}>
-                  Appeler le Dépôt
-                </a>
-              </div>
-            </div>
-          </div>
-
+          ))}
         </div>
 
       </div>
@@ -887,7 +971,145 @@ function PieceJoinSection() {
   )
 }
 
-// ─── FAQ Accordion Section ───────────────────────────────────────────────────
+// ─── 7. Applications & Réalisations ──────────────────────────────────────────
+function ApplicationsSection() {
+  const apps = [
+    {
+      titre: "Plafonds Suspendus & Staff Lissé",
+      produit: "Poudre de Gypse Marco 40 KG",
+      desc: "Blancheur immaculée et planéité sans défaut pour les salons, halls et villas haut de gamme. Prêt à peindre sans reprise.",
+      icon: Building2
+    },
+    {
+      titre: "Corniches, Moulures & Gorges Lumineuses",
+      produit: "Gypse Marco + Filasse Sisal Kenya",
+      desc: "Armature végétale longue assurant une haute résistance mécanique et la finesse des arêtes architecturales.",
+      icon: Layers
+    },
+    {
+      titre: "Enduits Protecteurs & Chaulage Assainissant",
+      produit: "Chaux Vive Dubaï (White Lime)",
+      desc: "Assainissement naturel anti-salpêtre et perméabilité à la vapeur, idéal contre le climat humide côtier.",
+      icon: Sparkles
+    }
+  ]
+
+  return (
+    <section id="applications" style={{ background: "var(--ds-bg)", padding: "clamp(48px, 6vw, 80px) 0" }}>
+      <div className="site-container">
+        
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(32px, 5vw, 48px)" }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
+            fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase",
+            letterSpacing: "0.12em", marginBottom: 12,
+            background: "var(--ds-brand-light)", padding: "6px 14px", borderRadius: "var(--ds-radius-full)"
+          }}>
+            <Hammer size={14} /> Usages Chantiers
+          </span>
+          <h2 style={{
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)",
+            fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.03em",
+            lineHeight: 1.2, marginBottom: 12
+          }}>
+            Des Matériaux Pensés pour Vos Réalisations
+          </h2>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)", color: "var(--ds-text-secondary)", lineHeight: 1.6, margin: 0 }}>
+            Du faux-plafond suspendu aux corniches complexes, des solutions adaptées à chaque étape de votre finition.
+          </p>
+        </div>
+
+        <div className="apps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(20px, 3vw, 28px)" }}>
+          {apps.map(({ titre, produit, desc, icon: Icon }) => (
+            <div key={titre} style={{
+              background: "var(--ds-bg-subtle)", borderRadius: "var(--ds-radius-2xl)",
+              border: "1px solid var(--ds-border)", padding: "clamp(24px, 3.5vw, 32px)",
+              display: "flex", flexDirection: "column", gap: 14
+            }}>
+              <div style={{
+                width: 44, height: 44, borderRadius: "var(--ds-radius-lg)",
+                background: "white", color: "var(--ds-brand)", border: "1px solid var(--ds-border)",
+                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+              }}>
+                <Icon size={22} />
+              </div>
+              <div>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "var(--ds-brand)", fontWeight: 700, textTransform: "uppercase" }}>
+                  {produit}
+                </span>
+                <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.05rem", fontWeight: 800, color: "var(--ds-text-primary)", margin: "4px 0 8px" }}>
+                  {titre}
+                </h3>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", color: "var(--ds-text-secondary)", lineHeight: 1.6, margin: 0 }}>
+                  {desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+// ─── 8. Témoignages & Garanties ──────────────────────────────────────────────
+const TEMOIGNAGES = [
+  { initials: "KB", color: "#674FF5", nom: "Kouassi Bernard", role: "Maître Staffeur", ville: "Cotonou", note: 5, texte: "Le gypse Marco est sans équivalent au Bénin. La pâte est fluide, prend sans chauffer excessivement et ne fait aucune fissure. Mes chantiers sont validés du premier coup." },
+  { initials: "AM", color: "#10B981", nom: "Adéola Moussa", role: "Conducteur de Travaux BTP", ville: "Abomey-Calavi", note: 5, texte: "La réactivité sur WhatsApp est top. En envoyant la surface, on a le devis et la livraison sur chantier à Calavi arrive dans les temps. La filasse du Kenya est très propre." },
+  { initials: "FD", color: "#F59E0B", nom: "Fatou Diallo", role: "Architecte d'Intérieur", ville: "Cotonou", note: 5, texte: "Pour les faux-plafonds à gorges lumineuses de mes clients, j'exige le Gypse Marco et la Chaux Vive de Dubaï. La blancheur est parfaite, prête pour la peinture." },
+]
+
+function ReassuranceSection() {
+  return (
+    <section id="garanties" style={{ background: "var(--ds-bg-subtle)", padding: "clamp(48px, 6vw, 80px) 0" }}>
+      <div className="site-container">
+        
+        <div style={{ textAlign: "center", marginBottom: "clamp(32px, 5vw, 48px)" }}>
+          <span style={{ display: "inline-block", fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>
+            Retours d&apos;Expérience
+          </span>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.025em", marginBottom: 8 }}>
+            Approuvé par les Maîtres Staffeurs &amp; Artisans
+          </h2>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)", color: "var(--ds-text-secondary)" }}>
+            Découvrez pourquoi les professionnels du bâtiment choisissent Marco Staff
+          </p>
+        </div>
+
+        <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(20px, 3vw, 28px)" }}>
+          {TEMOIGNAGES.map(({ initials, color, nom, role, ville, note, texte }) => (
+            <div key={nom} style={{
+              background: "white", border: "1px solid var(--ds-border)", borderRadius: "var(--ds-radius-2xl)",
+              padding: "clamp(20px, 3vw, 28px)", display: "flex", flexDirection: "column", gap: 16,
+              boxShadow: "var(--ds-shadow-sm)"
+            }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                <div style={{ width: 44, height: 44, borderRadius: "50%", background: color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "white", fontWeight: 800 }}>
+                  {initials}
+                </div>
+                <div>
+                  <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.9rem", fontWeight: 700, color: "var(--ds-text-primary)", margin: 0 }}>{nom}</p>
+                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "var(--ds-text-tertiary)", margin: "2px 0 4px" }}>{role} · {ville}</p>
+                  <div style={{ display: "flex", gap: 2 }}>
+                    {[...Array(note)].map((_, i) => <Star key={i} size={12} fill="#F59E0B" stroke="#F59E0B" />)}
+                  </div>
+                </div>
+              </div>
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", color: "var(--ds-text-secondary)", lineHeight: 1.65, margin: 0, fontStyle: "italic", borderLeft: `3px solid ${color}`, paddingLeft: 12 }}>
+                &ldquo;{texte}&rdquo;
+              </p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+// ─── 9. FAQ Accordion Section ────────────────────────────────────────────────
 function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
@@ -896,7 +1118,7 @@ function FAQSection() {
   }
 
   return (
-    <section id="faq" style={{ background: "var(--ds-bg-subtle)", padding: "clamp(48px, 6vw, 80px) 0" }}>
+    <section id="faq" style={{ background: "var(--ds-bg)", padding: "clamp(48px, 6vw, 80px) 0" }}>
       <div className="site-container" style={{ maxWidth: 880 }}>
         
         <div style={{ textAlign: "center", marginBottom: "clamp(28px, 4vw, 40px)" }}>
@@ -922,7 +1144,7 @@ function FAQSection() {
             const isOpen = openIndex === i
             return (
               <div key={i} style={{
-                background: "white", borderRadius: "var(--ds-radius-xl)",
+                background: "var(--ds-bg-subtle)", borderRadius: "var(--ds-radius-xl)",
                 border: `1.5px solid ${isOpen ? "var(--ds-brand)" : "var(--ds-border)"}`,
                 overflow: "hidden", transition: "all var(--ds-transition)"
               }}>
@@ -936,7 +1158,7 @@ function FAQSection() {
                   </span>
                   <div style={{
                     width: 28, height: 28, borderRadius: "50%",
-                    background: isOpen ? "var(--ds-brand-light)" : "var(--ds-bg-subtle)",
+                    background: isOpen ? "var(--ds-brand-light)" : "white",
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
                     color: isOpen ? "var(--ds-brand)" : "var(--ds-text-tertiary)",
                     transition: "transform var(--ds-transition)"
@@ -962,79 +1184,130 @@ function FAQSection() {
   )
 }
 
-// ─── Testimonials & Guarantees ───────────────────────────────────────────────
-const TEMOIGNAGES = [
-  { initials: "KB", color: "#674FF5", nom: "Kouassi Bernard", role: "Maître Staffeur depuis 14 ans", ville: "Cotonou", note: 5, texte: "Le gypse Marco est sans équivalent au Bénin. La pâte est fluide, prend sans chauffer excessivement et ne fait aucune fissure. Mes chantiers sont validés du premier coup." },
-  { initials: "AM", color: "#10B981", nom: "Adéola Moussa", role: "Conducteur de Travaux BTP", ville: "Abomey-Calavi", note: 5, texte: "La réactivité sur WhatsApp est top. En envoyant la surface, on a le devis et la livraison sur chantier à Calavi arrive dans les temps. La filasse du Kenya est très propre." },
-  { initials: "FD", color: "#F59E0B", nom: "Fatou Diallo", role: "Architecte d'Intérieur", ville: "Cotonou", note: 5, texte: "Pour les faux-plafonds à gorges lumineuses de mes clients, j'exige le Gypse Marco et la Chaux Vive de Dubaï. La blancheur est parfaite, prête pour la peinture." },
-]
-
-const GARANTIES = [
-  { icon: ShieldCheck, color: "var(--ds-conversion)", titre: "Zéro Fissure Garantie", desc: "Granulométrie micronique sans retrait ni craquelure" },
-  { icon: Award, color: "var(--ds-brand)", titre: "Import Direct Certifié", desc: "Origines traçables : Égypte, Dubaï et Kenya" },
-  { icon: Package, color: "#F59E0B", titre: "Stock Permanent", desc: "Disponibilité continue en sacs de 40 KG à Cotonou" },
-  { icon: Truck, color: "#0ea5e9", titre: "Livraison sur Chantier", desc: "Acheminement rapide dans tout le Grand Cotonou" },
-]
-
-function ReassuranceSection() {
+// ─── 10. CTA Final "Piece Join" (Conclusion Commerciale Sublimée) ─────────────
+function PieceJoinSection({ onSimulateur }: { onSimulateur: () => void }) {
   return (
-    <section id="garanties" style={{ background: "var(--ds-bg)", padding: "clamp(48px, 6vw, 80px) 0" }}>
-      <div className="site-container">
-        
-        <div style={{ textAlign: "center", marginBottom: "clamp(32px, 5vw, 48px)" }}>
-          <span style={{ display: "inline-block", fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>
-            Retours d&apos;Expérience
-          </span>
-          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.025em", marginBottom: 8 }}>
-            Approuvé par les Maîtres Staffeurs &amp; Artisans
-          </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)", color: "var(--ds-text-secondary)" }}>
-            Découvrez pourquoi les professionnels du bâtiment choisissent Marco Staff
-          </p>
-        </div>
+    <section style={{
+      background: "var(--ds-bg-subtle)",
+      padding: "clamp(48px, 6vw, 80px) 0",
+      position: "relative",
+      overflow: "hidden"
+    }}>
+      
+      {/* Background Glowing Organic Spheres */}
+      <div style={{
+        position: "absolute", top: "50%", left: "10%", width: 360, height: 360,
+        borderRadius: "50%", background: "rgba(103, 79, 245, 0.28)",
+        filter: "blur(90px)", transform: "translate(-50%, -50%)", pointerEvents: "none", zIndex: 0
+      }} />
+      <div style={{
+        position: "absolute", top: "50%", right: "8%", width: 300, height: 300,
+        borderRadius: "50%", background: "rgba(124, 58, 237, 0.22)",
+        filter: "blur(80px)", transform: "translate(0, -50%)", pointerEvents: "none", zIndex: 0
+      }} />
 
-        <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(20px, 3vw, 28px)", marginBottom: "clamp(32px, 5vw, 56px)" }}>
-          {TEMOIGNAGES.map(({ initials, color, nom, role, ville, note, texte }) => (
-            <div key={nom} style={{
-              background: "var(--ds-bg-subtle)", border: "1px solid var(--ds-border)", borderRadius: "var(--ds-radius-2xl)",
-              padding: "clamp(20px, 3vw, 28px)", display: "flex", flexDirection: "column", gap: 16,
-              boxShadow: "var(--ds-shadow-sm)"
+      <div className="site-container" style={{ position: "relative", zIndex: 1 }}>
+        
+        {/* Main Card */}
+        <div className="piece-join-card" style={{
+          borderRadius: "clamp(20px, 3vw, 32px)",
+          overflow: "hidden",
+          display: "grid",
+          gridTemplateColumns: "1.15fr 0.85fr",
+          boxShadow: "0 20px 60px rgba(103,79,245,0.18), 0 4px 20px rgba(0,0,0,0.06)",
+          border: "1px solid rgba(255,255,255,0.8)",
+          backdropFilter: "blur(20px)",
+        }}>
+          
+          {/* Left Block: Deep Violet Gradient */}
+          <div className="piece-join-left" style={{
+            background: "linear-gradient(135deg, #7C3AED 0%, #674FF5 50%, #5B21B6 100%)",
+            padding: "clamp(36px, 5vw, 54px) clamp(24px, 4vw, 44px)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            position: "relative",
+            color: "white"
+          }}>
+            <span style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              fontFamily: "var(--ds-font-body)",
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              color: "rgba(255,255,255,0.85)",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              marginBottom: 14,
+              background: "rgba(255,255,255,0.15)",
+              padding: "4px 12px",
+              borderRadius: "var(--ds-radius-full)",
+              width: "fit-content"
             }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                <div style={{ width: 44, height: 44, borderRadius: "50%", background: color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "white", fontWeight: 800 }}>
-                  {initials}
-                </div>
-                <div>
-                  <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.9rem", fontWeight: 700, color: "var(--ds-text-primary)", margin: 0 }}>{nom}</p>
-                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "var(--ds-text-tertiary)", margin: "2px 0 4px" }}>{role} · {ville}</p>
-                  <div style={{ display: "flex", gap: 2 }}>
-                    {[...Array(note)].map((_, i) => <Star key={i} size={12} fill="#F59E0B" stroke="#F59E0B" />)}
-                  </div>
-                </div>
-              </div>
-              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", color: "var(--ds-text-secondary)", lineHeight: 1.65, margin: 0, fontStyle: "italic", borderLeft: `3px solid ${color}`, paddingLeft: 12 }}>
-                &ldquo;{texte}&rdquo;
+              Partenaire BTP &amp; Finition
+            </span>
+            <h2 style={{
+              fontFamily: "var(--ds-font-heading)",
+              fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)",
+              fontWeight: 800,
+              lineHeight: 1.18,
+              letterSpacing: "-0.035em",
+              margin: 0,
+              color: "white"
+            }}>
+              Votre Prochain Chantier Commence Ici.
+            </h2>
+          </div>
+
+          {/* Right Block: Clean White / Glass */}
+          <div className="piece-join-right" style={{
+            background: "rgba(255, 255, 255, 0.95)",
+            padding: "clamp(32px, 4.5vw, 48px) clamp(24px, 3.5vw, 40px)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: 16
+          }}>
+            <div>
+              <h3 style={{
+                fontFamily: "var(--ds-font-heading)",
+                fontSize: "clamp(1.1rem, 1.8vw, 1.3rem)",
+                fontWeight: 800,
+                color: "#0F172A",
+                lineHeight: 1.25,
+                margin: "0 0 8px"
+              }}>
+                Besoin d&apos;un matériau, d&apos;un prix ou d&apos;une estimation ?
+              </h3>
+              <p style={{
+                fontFamily: "var(--ds-font-body)",
+                fontSize: "0.85rem",
+                color: "#475569",
+                lineHeight: 1.55,
+                margin: 0
+              }}>
+                Notre équipe commerciale vous répond directement sur WhatsApp avec stock disponible et conditions de livraison.
               </p>
             </div>
-          ))}
-        </div>
 
-        {/* 4 Guarantees */}
-        <div className="garanties-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
-          {GARANTIES.map(({ icon: Icon, color, titre, desc }) => (
-            <div key={titre} style={{
-              background: "white", borderRadius: "var(--ds-radius-xl)", border: "1px solid var(--ds-border)",
-              padding: "20px", display: "flex", gap: 14, alignItems: "flex-start"
-            }}>
-              <div style={{ width: 40, height: 40, borderRadius: "var(--ds-radius-md)", background: `${color}18`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color }}>
-                <Icon size={18} />
-              </div>
-              <div>
-                <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.9rem", fontWeight: 700, color: "var(--ds-text-primary)", margin: "0 0 3px" }}>{titre}</p>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "var(--ds-text-secondary)", margin: 0, lineHeight: 1.45 }}>{desc}</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, paddingTop: 4 }}>
+              <WaBtn label="Demander un devis sur WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes matériaux de staff.`)} full />
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 4px" }}>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8" }}>
+                  ⚡ Réponse sous 15 à 30 min
+                </span>
+                <button onClick={onSimulateur} style={{
+                  background: "none", border: "none", cursor: "pointer",
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
+                  color: "var(--ds-brand)", fontWeight: 700, padding: 0
+                }}>
+                  Calculer mes besoins ➔
+                </button>
               </div>
             </div>
-          ))}
+          </div>
+
         </div>
 
       </div>
@@ -1042,7 +1315,7 @@ function ReassuranceSection() {
   )
 }
 
-// ─── Fiche Produit Détaillée ──────────────────────────────────────────────────
+// ─── 11. Fiche Produit Détaillée ─────────────────────────────────────────────
 function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack: () => void; onDetail: (p: Product) => void }) {
   const [qty, setQty] = useState(5)
   const autres = PRODUCTS.filter(p => p.id !== product.id)
@@ -1194,7 +1467,7 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
   )
 }
 
-// ─── Footer Officiel 2026 ────────────────────────────────────────────────────
+// ─── 12. Footer Officiel 2026 ────────────────────────────────────────────────
 function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
   return (
     <footer id="contact" style={{ background: "var(--ds-dark-bg)", color: "white", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
@@ -1266,7 +1539,10 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
               {[
                 { label: "Accueil", id: "accueil" },
                 { label: "Nos Matériaux", id: "produits" },
+                { label: "Pourquoi Marco ?", id: "pourquoi" },
                 { label: "Simulateur Chantier", id: "simulateur" },
+                { label: "Comment Commander", id: "commande" },
+                { label: "Applications", id: "applications" },
                 { label: "Garanties & Avis", id: "garanties" },
                 { label: "FAQ", id: "faq" },
               ].map(({ label, id }) => (
@@ -1349,7 +1625,10 @@ const CSS = `
   .hero-grid { grid-template-columns: 1.1fr 0.9fr; }
   .hero-stats-grid { grid-template-columns: repeat(4, 1fr); }
   .product-grid { grid-template-columns: repeat(3, 1fr); }
-  .garanties-grid { grid-template-columns: repeat(4, 1fr); }
+  .why-grid { grid-template-columns: repeat(4, 1fr); }
+  .supply-grid { grid-template-columns: repeat(4, 1fr); }
+  .order-grid { grid-template-columns: repeat(4, 1fr); }
+  .apps-grid { grid-template-columns: repeat(3, 1fr); }
   .simu-grid { grid-template-columns: 1fr 1.25fr; }
   .fiche-grid { grid-template-columns: 1.1fr 1fr; }
   .connexes-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1360,7 +1639,10 @@ const CSS = `
   /* Tablette (1024px et inférieur) */
   @media (max-width: 1024px) {
     .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
-    .garanties-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .why-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .supply-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .order-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .apps-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .footer-grid { grid-template-columns: 1fr 1fr !important; }
     .simu-grid { grid-template-columns: 1fr !important; }
     .piece-join-card { grid-template-columns: 1fr !important; }
@@ -1405,7 +1687,10 @@ const CSS = `
     }
 
     .product-grid { grid-template-columns: 1fr !important; }
-    .garanties-grid { grid-template-columns: 1fr !important; }
+    .why-grid { grid-template-columns: 1fr !important; }
+    .supply-grid { grid-template-columns: 1fr !important; }
+    .order-grid { grid-template-columns: 1fr !important; }
+    .apps-grid { grid-template-columns: 1fr !important; }
     .fiche-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
     .connexes-grid { grid-template-columns: 1fr !important; }
     .footer-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
@@ -1481,8 +1766,12 @@ export default function App() {
           <main>
             <HeroSection onVoirProduits={() => handleNavigate("produits")} onSimulateur={() => handleNavigate("simulateur")} />
             <ProductsSection onDetail={handleDetail} />
+            <WhyUsSection />
+            <SupplyChainSection />
             <SimulateurSection />
-            <PieceJoinSection />
+            <HowToOrderSection />
+            <ApplicationsSection />
+            <PieceJoinSection onSimulateur={() => handleNavigate("simulateur")} />
             <ReassuranceSection />
             <FAQSection />
           </main>
