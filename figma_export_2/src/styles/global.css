@@ -1,43 +1,43 @@
 /* =========================================================
-   L'Incomparable Service & Fils — Design System Tokens
-   Mettre à jour ces variables pour re-styler l'ensemble du site.
+   MARCO STAFF BTP — Design System Tokens Haute Couture
    ========================================================= */
 
 :root {
-  /* --- Couleurs de marque --- */
+  /* --- Palette de Marque Électrique & Raffinée --- */
   --ds-brand:           #674FF5;
-  --ds-brand-hover:     #5540e0;
-  --ds-brand-light:     #eeeeff;
-  --ds-brand-muted:     rgba(103, 79, 245, 0.10);
+  --ds-brand-hover:     #5438E8;
+  --ds-brand-glow:      rgba(103, 79, 245, 0.35);
+  --ds-brand-light:     #F3F0FF;
+  --ds-brand-subtle:    rgba(103, 79, 245, 0.08);
 
-  /* --- Couleur de conversion (WhatsApp / CTA principal) --- */
+  /* --- Couleur de Conversion Émeraude WhatsApp --- */
   --ds-conversion:       #10B981;
   --ds-conversion-hover: #059669;
-  --ds-conversion-light: rgba(16, 185, 129, 0.10);
-  --ds-conversion-text:  #ffffff;
+  --ds-conversion-glow:  rgba(16, 185, 129, 0.30);
+  --ds-conversion-light: #ECFDF5;
 
-  /* --- Surfaces neutres --- */
-  --ds-bg:              #ffffff;
-  --ds-bg-secondary:    #FAFAFC;
-  --ds-bg-tertiary:     #f2f2fa;
+  /* --- Surfaces & Arrière-plans --- */
+  --ds-bg:              #FFFFFF;
+  --ds-bg-subtle:       #F8FAFC;
+  --ds-bg-card:         #FFFFFF;
+  --ds-bg-glass:        rgba(255, 255, 255, 0.85);
 
-  /* --- Texte --- */
-  --ds-text-primary:    #14142b;
-  --ds-text-secondary:  #4e4b66;
-  --ds-text-tertiary:   #a0a3bd;
+  /* --- Typographie & Textes --- */
+  --ds-text-primary:    #0F172A;
+  --ds-text-secondary:  #475569;
+  --ds-text-tertiary:   #94A3B8;
 
-  /* --- Sections sombres (footer, bandes) --- */
-  --ds-dark-bg:         #0f0f1c;
-  --ds-dark-surface:    #1a1a2e;
-  --ds-dark-text:       #ffffff;
-  --ds-dark-text-muted: rgba(255, 255, 255, 0.55);
+  /* --- Dark & Nocturne (Footer, Cartes techniques) --- */
+  --ds-dark-bg:         #0A0F1D;
+  --ds-dark-surface:    #131B2E;
+  --ds-dark-border:     rgba(255, 255, 255, 0.10);
+  --ds-dark-text-muted: #94A3B8;
 
-  /* --- Bordures --- */
-  --ds-border:          rgba(20, 20, 43, 0.09);
-  --ds-border-strong:   rgba(20, 20, 43, 0.18);
+  /* --- Bordures & Lignes Techniques --- */
+  --ds-border:          #E2E8F0;
+  --ds-border-focus:    #674FF5;
 
-  /* --- Rayon --- */
-  --ds-radius-xs:       4px;
+  /* --- Rayons --- */
   --ds-radius-sm:       8px;
   --ds-radius-md:       12px;
   --ds-radius-lg:       16px;
@@ -45,50 +45,18 @@
   --ds-radius-2xl:      32px;
   --ds-radius-full:     9999px;
 
-  /* --- Espacement --- */
-  --ds-space-xs:        4px;
-  --ds-space-sm:        8px;
-  --ds-space-md:        12px;
-  --ds-space-lg:        16px;
-  --ds-space-xl:        24px;
-  --ds-space-2xl:       40px;
-  --ds-space-3xl:       64px;
+  /* --- Polices --- */
+  --ds-font-heading:    'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ds-font-body:       'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* --- Typographie --- */
-  --ds-font-heading:    'Poppins', system-ui, -apple-system, sans-serif;
-  --ds-font-body:       'Inter', system-ui, -apple-system, sans-serif;
-  --ds-font-sans:       'Inter', system-ui, -apple-system, sans-serif;
+  /* --- Ombres de Studio --- */
+  --ds-shadow-sm:       0 2px 4px rgba(15, 23, 42, 0.04);
+  --ds-shadow-md:       0 8px 24px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  --ds-shadow-lg:       0 20px 40px -12px rgba(15, 23, 42, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+  --ds-shadow-brand:    0 12px 32px -4px rgba(103, 79, 245, 0.38);
+  --ds-shadow-conversion: 0 10px 28px -4px rgba(16, 185, 129, 0.35);
 
-  --ds-text-xs:         0.75rem;
-  --ds-text-sm:         0.875rem;
-  --ds-text-base:       1rem;
-  --ds-text-lg:         1.125rem;
-  --ds-text-xl:         1.25rem;
-  --ds-text-2xl:        1.5rem;
-  --ds-text-3xl:        2rem;
-  --ds-text-4xl:        2.5rem;
-  --ds-text-5xl:        3.25rem;
-
-  --ds-weight-regular:  400;
-  --ds-weight-medium:   500;
-  --ds-weight-semibold: 600;
-  --ds-weight-bold:     700;
-  --ds-weight-extrabold:800;
-
-  /* --- Ombres --- */
-  --ds-shadow-sm:       0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
-  --ds-shadow-md:       0 4px 14px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
-  --ds-shadow-lg:       0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.05);
-  --ds-shadow-brand:    0 8px 28px rgba(103, 79, 245, 0.22);
-  --ds-shadow-conversion: 0 6px 24px rgba(16, 185, 129, 0.28);
-
-  /* --- Transitions --- */
-  --ds-transition:      150ms ease;
-  --ds-transition-md:   240ms ease;
+  /* --- Transitions fluides --- */
+  --ds-ease:            cubic-bezier(0.16, 1, 0.3, 1);
+  --ds-transition:      240ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-/* Scrollbar discrète */
-* { scrollbar-width: thin; scrollbar-color: var(--ds-border) transparent; }
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-thumb { background: var(--ds-border-strong); border-radius: var(--ds-radius-full); }
-::-webkit-scrollbar-track { background: transparent; }

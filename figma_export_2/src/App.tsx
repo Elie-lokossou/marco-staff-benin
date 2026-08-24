@@ -1,9 +1,9 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import {
   MessageCircle, Phone, MapPin, Mail, Menu, X, ChevronRight,
   ArrowLeft, CheckCircle2, Star, Package, Sparkles,
   Clock, Calculator, ShieldCheck, Truck, Award, ChevronDown,
-  Plus, Minus, ArrowRight, Zap, HelpCircle
+  Plus, Minus, ArrowRight, Zap, HelpCircle, Layers, Check
 } from "lucide-react"
 import imgGypse from "@/imports/photo2.jpeg"
 import imgChaux from "@/imports/photo1.jpeg"
@@ -38,7 +38,7 @@ interface Product {
   m2ParSac: number
 }
 
-// ─── Products Data (100% Vrais Matériaux) ────────────────────────────────────
+// ─── Products Data ───────────────────────────────────────────────────────────
 const PRODUCTS: Product[] = [
   {
     id: "gypse-40kg",
@@ -47,7 +47,7 @@ const PRODUCTS: Product[] = [
     categorie: "Gypse & Plâtre de Moulage",
     origine: "Égypte",
     drapeau: "🇪🇬",
-    badge: "Extra White · Made in Egypt",
+    badge: "Extra White · Import Égypte",
     conditionnement: "Sac scellé de 40 KG",
     prixUnit: 4500,
     image: imgGypse,
@@ -76,7 +76,7 @@ const PRODUCTS: Product[] = [
     categorie: "Chaux & Liants Protecteurs",
     origine: "Dubaï, UAE",
     drapeau: "🇦🇪",
-    badge: "Import Dubaï (UAE)",
+    badge: "Pureté CaO > 95% · Dubaï",
     conditionnement: "Sac étanche de 40 KG",
     prixUnit: 5200,
     image: imgChaux,
@@ -104,7 +104,7 @@ const PRODUCTS: Product[] = [
     categorie: "Fibres & Armatures Staff",
     origine: "Kenya",
     drapeau: "🇰🇪",
-    badge: "Produce of Kenya · 100% Pur",
+    badge: "100% Végétal · Produce of Kenya",
     conditionnement: "Balle pressée 25 / 50 KG",
     prixUnit: 8000,
     image: imgFilasse,
@@ -154,32 +154,33 @@ const FAQS = [
   }
 ]
 
-// ─── Button Component ────────────────────────────────────────────────────────
+// ─── Component: Button ───────────────────────────────────────────────────────
 function Button({ children, variant = "primary", size = "medium", iconEnd, onClick, full = false, style = {} }: {
-  children?: React.ReactNode; variant?: "primary" | "neutral" | "secondary"; size?: "small" | "medium" | "large";
+  children?: React.ReactNode; variant?: "primary" | "neutral" | "secondary" | "glow"; size?: "small" | "medium" | "large";
   iconEnd?: React.ReactNode; onClick?: () => void; full?: boolean; style?: React.CSSProperties;
 }) {
   const isPrimary = variant === "primary"
   const isSecondary = variant === "secondary"
+  const isGlow = variant === "glow"
   const isSmall = size === "small"
   const isLarge = size === "large"
 
   return (
     <button onClick={onClick} style={{
       display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
-      background: isPrimary ? "var(--ds-brand)" : isSecondary ? "var(--ds-dark-bg)" : "var(--ds-bg-secondary)",
-      color: isPrimary || isSecondary ? "white" : "var(--ds-text-primary)",
-      border: isPrimary || isSecondary ? "none" : "1.5px solid var(--ds-border)",
+      background: isGlow ? "linear-gradient(135deg, #674FF5 0%, #8B5CF6 100%)" : isPrimary ? "var(--ds-brand)" : isSecondary ? "var(--ds-dark-bg)" : "white",
+      color: isPrimary || isSecondary || isGlow ? "white" : "var(--ds-text-primary)",
+      border: isPrimary || isSecondary || isGlow ? "none" : "1.5px solid var(--ds-border)",
       borderRadius: "var(--ds-radius-full)",
-      padding: isSmall ? "8px 16px" : isLarge ? "14px 28px" : "12px 22px",
+      padding: isSmall ? "8px 18px" : isLarge ? "14px 30px" : "12px 24px",
       fontFamily: "var(--ds-font-body)", fontSize: isSmall ? "var(--ds-text-xs)" : "var(--ds-text-sm)",
-      fontWeight: 600, cursor: "pointer", width: full ? "100%" : undefined,
-      boxShadow: isPrimary ? "var(--ds-shadow-brand)" : "none",
+      fontWeight: 700, cursor: "pointer", width: full ? "100%" : undefined,
+      boxShadow: isGlow ? "0 8px 24px -4px rgba(103, 79, 245, 0.45)" : isPrimary ? "var(--ds-shadow-brand)" : "var(--ds-shadow-sm)",
       transition: "all var(--ds-transition)",
       ...style
     }}
       onMouseEnter={e => {
-        e.currentTarget.style.transform = "translateY(-1px)"
+        e.currentTarget.style.transform = "translateY(-2px)"
         if (isPrimary) e.currentTarget.style.background = "var(--ds-brand-hover)"
       }}
       onMouseLeave={e => {
@@ -193,54 +194,56 @@ function Button({ children, variant = "primary", size = "medium", iconEnd, onCli
   )
 }
 
-// ─── WhatsApp Button Component ───────────────────────────────────────────────
+// ─── Component: WhatsApp Button ──────────────────────────────────────────────
 function WaBtn({ label = "WhatsApp", url, small = false, full = false }: {
   label?: string; url: string; small?: boolean; full?: boolean
 }) {
   return (
     <a href={url} target="_blank" rel="noopener noreferrer" style={{
       display: "inline-flex", alignItems: "center", justifyContent: "center",
-      gap: small ? 6 : 8, background: "var(--ds-conversion)", color: "white",
+      gap: small ? 6 : 8,
+      background: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
+      color: "white",
       fontFamily: "var(--ds-font-body)", fontSize: small ? "var(--ds-text-xs)" : "var(--ds-text-sm)",
-      fontWeight: 600, padding: small ? "9px 16px" : "13px 22px",
+      fontWeight: 700, padding: small ? "9px 18px" : "13px 24px",
       borderRadius: "var(--ds-radius-full)", textDecoration: "none",
       transition: "all var(--ds-transition)",
-      boxShadow: "var(--ds-shadow-conversion)", width: full ? "100%" : undefined,
+      boxShadow: "0 8px 20px -2px rgba(16, 185, 129, 0.45)", width: full ? "100%" : undefined,
       whiteSpace: "nowrap",
     }}
       onMouseEnter={e => {
-        e.currentTarget.style.background = "var(--ds-conversion-hover)"
-        e.currentTarget.style.transform = "translateY(-1px)"
+        e.currentTarget.style.transform = "translateY(-2px) scale(1.02)"
+        e.currentTarget.style.boxShadow = "0 12px 28px -2px rgba(16, 185, 129, 0.55)"
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.background = "var(--ds-conversion)"
-        e.currentTarget.style.transform = "translateY(0)"
+        e.currentTarget.style.transform = "translateY(0) scale(1)"
+        e.currentTarget.style.boxShadow = "0 8px 20px -2px rgba(16, 185, 129, 0.45)"
       }}
     >
-      <MessageCircle size={small ? 14 : 16} />
+      <MessageCircle size={small ? 15 : 18} />
       <span>{label}</span>
     </a>
   )
 }
 
-// ─── Header & Top Announcement ───────────────────────────────────────────────
+// ─── Top Bar & Navigation ────────────────────────────────────────────────────
 function AnnouncementBar() {
   return (
-    <div style={{ background: "var(--ds-dark-bg)", padding: "8px 16px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+    <div style={{ background: "linear-gradient(90deg, #0A0F1D 0%, #131B2E 100%)", padding: "8px 16px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
       <div style={{
         maxWidth: 1200, margin: "0 auto",
         display: "flex", alignItems: "center", justifyContent: "space-between",
         gap: 12, flexWrap: "wrap",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--ds-conversion)", display: "block", animation: "pulse 2s infinite" }} />
-          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "var(--ds-dark-text-muted)", fontWeight: 500 }}>
-            Dépôt Ouvert · Lun–Sam 7h30–18h00 · Cotonou &amp; Abomey-Calavi
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#10B981", display: "block", boxShadow: "0 0 10px #10B981" }} />
+          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8", fontWeight: 500 }}>
+            Dépôts Ouverts · Cotonou &amp; Abomey-Calavi · Stock Permanent
           </span>
         </div>
         <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", alignItems: "center", gap: 6, textDecoration: "none" }}>
-          <Phone size={12} style={{ color: "var(--ds-conversion)" }} />
-          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "white", fontWeight: 600 }}>
+          <Phone size={12} style={{ color: "#10B981" }} />
+          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "white", fontWeight: 700 }}>
             {PHONE_DISPLAY}
           </span>
         </a>
@@ -263,60 +266,61 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   return (
     <header style={{
       position: "sticky", top: 0, zIndex: 100,
-      background: "rgba(255,255,255,0.96)", backdropFilter: "blur(12px)",
-      borderBottom: "1px solid var(--ds-border)"
+      background: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)",
+      borderBottom: "1px solid rgba(226, 232, 240, 0.8)",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.03)"
     }}>
       <div style={{
         maxWidth: 1200, margin: "0 auto", padding: "0 16px",
-        height: 68, display: "flex", alignItems: "center", justifyContent: "space-between"
+        height: 70, display: "flex", alignItems: "center", justifyContent: "space-between"
       }}>
         {/* Logo */}
-        <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
+        <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}>
           <div style={{
-            width: 38, height: 38, borderRadius: "var(--ds-radius-md)",
-            background: "var(--ds-brand)", display: "flex", alignItems: "center",
-            justifyContent: "center", flexShrink: 0,
-            boxShadow: "0 2px 10px rgba(103,79,245,0.35)",
+            width: 40, height: 40, borderRadius: "12px",
+            background: "linear-gradient(135deg, #674FF5 0%, #8B5CF6 100%)",
+            display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+            boxShadow: "0 4px 14px rgba(103,79,245,0.35)",
           }}>
-            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "white" }}>M</span>
+            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.2rem", fontWeight: 900, color: "white" }}>M</span>
           </div>
           <div>
-            <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-base)", fontWeight: 800, color: "var(--ds-text-primary)", lineHeight: 1.1 }}>
+            <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1rem", fontWeight: 800, color: "#0F172A", lineHeight: 1.1 }}>
               {COMPANY_NAME}
             </div>
-            <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.6rem", fontWeight: 500, color: "var(--ds-text-tertiary)", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+            <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.6rem", fontWeight: 600, color: "#674FF5", letterSpacing: "0.06em", textTransform: "uppercase" }}>
               {COMPANY_SUBTITLE}
             </div>
           </div>
         </div>
 
         {/* Nav Desktop */}
-        <nav style={{ display: "flex", gap: 24, alignItems: "center" }} className="nav-desktop">
+        <nav style={{ display: "flex", gap: 28, alignItems: "center" }} className="nav-desktop">
           {links.map(({ label, id }) => (
             <a key={id} href={`#${id}`}
               onClick={e => { e.preventDefault(); onNavigate(id) }}
               style={{
-                fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)",
-                fontWeight: 600, color: "var(--ds-text-secondary)",
-                textDecoration: "none", transition: "color var(--ds-transition)"
+                fontFamily: "var(--ds-font-body)", fontSize: "0.85rem",
+                fontWeight: 600, color: "#475569",
+                textDecoration: "none", transition: "all var(--ds-transition)"
               }}
-              onMouseEnter={e => { (e.target as HTMLElement).style.color = "var(--ds-brand)" }}
-              onMouseLeave={e => { (e.target as HTMLElement).style.color = "var(--ds-text-secondary)" }}
+              onMouseEnter={e => { (e.target as HTMLElement).style.color = "#674FF5" }}
+              onMouseLeave={e => { (e.target as HTMLElement).style.color = "#475569" }}
             >{label}</a>
           ))}
         </nav>
 
         {/* CTA Desktop */}
         <div className="nav-desktop">
-          <WaBtn label="WhatsApp Express" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis.`)} small />
+          <WaBtn label="Devis Express" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis.`)} small />
         </div>
 
         {/* Mobile menu toggle */}
         <button onClick={() => setOpen(!open)} aria-label="Menu" style={{
-          background: "none", border: "none", cursor: "pointer",
-          padding: 8, color: "var(--ds-text-primary)", flexShrink: 0
+          background: "rgba(103, 79, 245, 0.08)", border: "none", borderRadius: "8px", cursor: "pointer",
+          padding: 8, color: "#0F172A", flexShrink: 0
         }} className="nav-mobile-toggle">
-          {open ? <X size={24} /> : <Menu size={24} />}
+          {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
@@ -326,15 +330,15 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
           borderTop: "1px solid var(--ds-border)",
           padding: "16px",
           display: "flex", flexDirection: "column", gap: 12,
-          background: "var(--ds-bg)"
+          background: "rgba(255,255,255,0.98)", backdropFilter: "blur(16px)"
         }}>
           {links.map(({ label, id }) => (
             <a key={id} href={`#${id}`}
               onClick={e => { e.preventDefault(); onNavigate(id); setOpen(false) }}
               style={{
-                fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-base)",
-                fontWeight: 600, color: "var(--ds-text-primary)",
-                textDecoration: "none", padding: "6px 0"
+                fontFamily: "var(--ds-font-body)", fontSize: "0.95rem",
+                fontWeight: 700, color: "#0F172A",
+                textDecoration: "none", padding: "8px 0"
               }}
             >{label}</a>
           ))}
@@ -345,114 +349,130 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   )
 }
 
-// ─── Hero Section ────────────────────────────────────────────────────────────
+// ─── Hero Section (Velora Haute Couture) ─────────────────────────────────────
 function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => void; onSimulateur: () => void }) {
   return (
-    <section id="accueil" style={{ background: "var(--ds-bg)", position: "relative", overflow: "hidden" }}>
+    <section id="accueil" className="velora-mesh-bg" style={{ position: "relative", overflow: "hidden", borderBottom: "1px solid rgba(226, 232, 240, 0.6)" }}>
+      
+      {/* Dynamic Background Glowing Circles */}
       <div style={{
-        maxWidth: 1200, margin: "0 auto", padding: "48px 16px 64px",
-        display: "grid", gridTemplateColumns: "1.1fr 0.9fr",
-        gap: "var(--ds-space-3xl)", alignItems: "center", position: "relative",
+        position: "absolute", top: -80, right: -40, width: 450, height: 450,
+        borderRadius: "50%", background: "radial-gradient(circle, rgba(103, 79, 245, 0.22) 0%, transparent 70%)",
+        filter: "blur(50px)", pointerEvents: "none"
+      }} className="animate-pulse-glow" />
+      <div style={{
+        position: "absolute", bottom: -60, left: -40, width: 380, height: 380,
+        borderRadius: "50%", background: "radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%)",
+        filter: "blur(40px)", pointerEvents: "none"
+      }} />
+
+      <div style={{
+        maxWidth: 1200, margin: "0 auto", padding: "56px 16px 72px",
+        display: "grid", gridTemplateColumns: "1.15fr 0.85fr",
+        gap: "var(--ds-space-3xl)", alignItems: "center", position: "relative", zIndex: 2,
       }} className="hero-grid">
 
-        {/* Left Col */}
-        <div style={{ position: "relative", zIndex: 1 }}>
+        {/* Left Content */}
+        <div>
           
-          {/* Origin pills */}
-          <div style={{ display: "flex", gap: "var(--ds-space-sm)", marginBottom: 20, flexWrap: "wrap" }}>
-            {[
-              { flag: "🇪🇬", label: "Gypse d'Égypte" },
-              { flag: "🇦🇪", label: "Chaux de Dubaï" },
-              { flag: "🇰🇪", label: "Filasse du Kenya" }
-            ].map(({ flag, label }) => (
-              <span key={label} style={{
-                display: "inline-flex", alignItems: "center", gap: 5,
-                background: "var(--ds-bg-secondary)", border: "1px solid var(--ds-border)",
-                borderRadius: "var(--ds-radius-full)", padding: "5px 12px",
-                fontFamily: "var(--ds-font-body)", fontSize: "0.72rem",
-                fontWeight: 600, color: "var(--ds-text-primary)",
-              }}>{flag} {label}</span>
-            ))}
+          {/* Top Pill Badge */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(103, 79, 245, 0.08)", border: "1px solid rgba(103, 79, 245, 0.2)", borderRadius: "var(--ds-radius-full)", padding: "6px 14px", marginBottom: 20 }}>
+            <Sparkles size={14} style={{ color: "#674FF5" }} />
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#674FF5", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+              Qualité Direct Usine · Cotonou &amp; Calavi
+            </span>
           </div>
 
           <h1 style={{
             fontFamily: "var(--ds-font-heading)",
-            fontSize: "clamp(2.1rem, 4.8vw, 3.4rem)",
-            fontWeight: 800, color: "var(--ds-text-primary)", lineHeight: 1.12,
+            fontSize: "clamp(2.2rem, 4.6vw, 3.5rem)",
+            fontWeight: 900, lineHeight: 1.1,
             letterSpacing: "-0.035em", marginBottom: 20,
           }}>
             L&apos;Excellence des{" "}
-            <span style={{ color: "var(--ds-brand)" }}>Matériaux de Staff</span> &amp; Finition au Bénin.
+            <span style={{
+              background: "linear-gradient(135deg, #674FF5 0%, #8B5CF6 60%, #10B981 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent"
+            }}>
+              Matériaux de Staff
+            </span> &amp; Finition au Bénin.
           </h1>
 
           <p style={{
             fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-base)",
-            color: "var(--ds-text-secondary)", lineHeight: 1.7, maxWidth: 520,
+            color: "#475569", lineHeight: 1.7, maxWidth: 540,
             marginBottom: 32,
           }}>
-            Approvisionnez vos chantiers directement à la source. <strong>Poudre de Gypse Marco 40 KG</strong> (Égypte), <strong>Chaux Vive pure</strong> (Dubaï) et <strong>Filasse Sisal haute ténacité</strong> (Kenya). Qualité certifiée, zéro fissure, livraison rapide sur chantier.
+            Approvisionnez vos chantiers sans intermédiaire : <strong>Poudre de Gypse Marco 40 KG</strong> (Égypte), <strong>Chaux Vive pure</strong> (Dubaï) et <strong>Filasse Sisal</strong> (Kenya). Zéro craquelure, blancheur pure, livraison rapide sur vos chantiers.
           </p>
 
           {/* Action CTAs */}
-          <div style={{ display: "flex", gap: "var(--ds-space-md)", flexWrap: "wrap", alignItems: "center", marginBottom: 36 }} className="hero-cta-group">
+          <div style={{ display: "flex", gap: "var(--ds-space-md)", flexWrap: "wrap", alignItems: "center", marginBottom: 40 }} className="hero-cta-group">
             <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} />
-            <Button variant="neutral" iconEnd={<Calculator size={15} />} onClick={onSimulateur}>
-              Simulateur Chantier
+            <Button variant="neutral" iconEnd={<Calculator size={16} />} onClick={onSimulateur}>
+              Simulateur Chantier m²
             </Button>
           </div>
 
           {/* Trust stats row */}
           <div style={{
             display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "var(--ds-space-md)",
-            paddingTop: 24, borderTop: "1px solid var(--ds-border)",
+            paddingTop: 24, borderTop: "1px solid rgba(226, 232, 240, 0.8)",
           }} className="hero-stats-grid">
             {[
-              { val: "100%", label: "Pureté & Zéro Fissure" },
-              { val: "3", label: "Pays d'Importation Directe" },
-              { val: "24/48h", label: "Livraison sur Chantier" },
-              { val: "1000+", label: "Chantiers Réalisés au Bénin" },
+              { val: "100%", label: "Zéro Fissure Garantie" },
+              { val: "3", label: "Origines Certifiées" },
+              { val: "24/48h", label: "Livraison Rapide" },
+              { val: "1000+", label: "Chantiers Réalisés" },
             ].map(({ val, label }) => (
               <div key={label}>
-                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-xl)", fontWeight: 800, color: "var(--ds-brand)", lineHeight: 1 }}>{val}</div>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "var(--ds-text-tertiary)", marginTop: 4 }}>{label}</div>
+                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.35rem", fontWeight: 800, color: "#674FF5", lineHeight: 1 }}>{val}</div>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#64748B", marginTop: 4, fontWeight: 500 }}>{label}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Right Col – Visual Hero */}
+        {/* Right 3D Studio Showcase */}
         <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }} className="hero-visual">
-          <div style={{
-            position: "relative", zIndex: 2, width: "100%", maxWidth: 320,
-            background: "white", borderRadius: "var(--ds-radius-2xl)",
-            boxShadow: "0 24px 64px rgba(103,79,245,0.18), 0 8px 24px rgba(0,0,0,0.08)",
-            overflow: "hidden", border: "1px solid rgba(103,79,245,0.12)",
+          <div className="animate-float" style={{
+            position: "relative", zIndex: 2, width: "100%", maxWidth: 330,
+            background: "white", borderRadius: "28px",
+            boxShadow: "0 24px 60px -12px rgba(103,79,245,0.25), 0 8px 24px rgba(0,0,0,0.06)",
+            overflow: "hidden", border: "1.5px solid rgba(103,79,245,0.15)",
           }}>
-            <div style={{ height: 260, background: "#1a2744", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {/* Product Image Frame */}
+            <div style={{ height: 270, background: "radial-gradient(circle, #253352 0%, #111A2E 100%)", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
               <img src={imgSrc(imgGypse)} alt="Poudre de Gypse Marco 40 KG" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
             </div>
-            <div style={{ padding: "var(--ds-space-lg)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-sm)", fontWeight: 800, color: "var(--ds-text-primary)" }}>Gypse Marco 40 KG</span>
-                <span style={{ background: "var(--ds-brand)", color: "white", fontSize: "0.65rem", fontWeight: 700, padding: "2px 8px", borderRadius: "var(--ds-radius-full)" }}>N°1 Staff</span>
+            
+            {/* Meta Card Bottom */}
+            <div style={{ padding: "16px 20px", background: "white" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#0F172A" }}>Gypse Marco 40 KG</span>
+                <span style={{ background: "linear-gradient(135deg, #674FF5 0%, #8B5CF6 100%)", color: "white", fontSize: "0.65rem", fontWeight: 800, padding: "3px 9px", borderRadius: "var(--ds-radius-full)" }}>N°1 Staff</span>
               </div>
-              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "var(--ds-text-tertiary)", margin: 0 }}>
-                🇪🇬 Import Égypte · Extra White · Prise 20 min
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B", margin: 0 }}>
+                🇪🇬 Import Direct Égypte · Extra White · Prise 20 min
               </p>
             </div>
           </div>
 
-          {/* Floating Badges */}
+          {/* Floating Trust Badge */}
           <div style={{
-            position: "absolute", bottom: 20, left: -10, zIndex: 3,
-            background: "white", borderRadius: "var(--ds-radius-lg)",
-            padding: "8px 12px", boxShadow: "var(--ds-shadow-md)",
-            border: "1px solid var(--ds-border)", display: "flex", alignItems: "center", gap: 8
+            position: "absolute", bottom: 16, left: -14, zIndex: 3,
+            background: "rgba(255, 255, 255, 0.95)", backdropFilter: "blur(12px)",
+            borderRadius: "16px", padding: "10px 14px",
+            boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
+            border: "1px solid rgba(16, 185, 129, 0.3)", display: "flex", alignItems: "center", gap: 10
           }} className="hero-float-1">
-            <ShieldCheck size={16} style={{ color: "var(--ds-conversion)" }} />
+            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#ECFDF5", display: "flex", alignItems: "center", justifyContent: "center", color: "#10B981" }}>
+              <ShieldCheck size={18} />
+            </div>
             <div>
-              <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.72rem", fontWeight: 700, color: "var(--ds-text-primary)" }}>Zéro Craquelure</div>
-              <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.6rem", color: "var(--ds-text-tertiary)" }}>Garantie de séchage</div>
+              <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.75rem", fontWeight: 800, color: "#0F172A" }}>Zéro Fissure</div>
+              <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.62rem", color: "#64748B" }}>Garantie de séchage</div>
             </div>
           </div>
         </div>
@@ -462,79 +482,146 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
   )
 }
 
-// ─── Products Showcase Section ───────────────────────────────────────────────
+// ─── Section Usages & Piliers Chantiers ───────────────────────────────────────
+function CategoriesPillars() {
+  const pillars = [
+    {
+      title: "Plafonds & Faux-Plafonds",
+      subtitle: "Gypse Égypte 40 KG",
+      desc: "Idéal pour faux-plafonds suspendus, corniches moulées et rosaces. Prise sans retrait et blancheur miroir.",
+      flag: "🇪🇬 Égypte",
+      color: "#674FF5"
+    },
+    {
+      title: "Enduits & Assainissement",
+      subtitle: "Chaux Vive Dubaï",
+      desc: "Protection active contre l'humidité et le salpêtre tropical. Pureté calcique > 95% pour des murs sains.",
+      flag: "🇦🇪 Dubaï",
+      color: "#10B981"
+    },
+    {
+      title: "Armature & Renforcement",
+      subtitle: "Filasse Sisal Kenya",
+      desc: "Fibres végétales longues peignées. Ténacité extrême à la traction pour lier et consolider les éléments staff.",
+      flag: "🇰🇪 Kenya",
+      color: "#F59E0B"
+    }
+  ]
+
+  return (
+    <section style={{ background: "#FFFFFF", padding: "64px 16px 40px" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        
+        <div style={{ textAlign: "center", maxWidth: 680, margin: "0 auto 40px" }}>
+          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#674FF5", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+            Solutions Complètes BTP
+          </span>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.3rem)", fontWeight: 800, color: "#0F172A", margin: "6px 0 10px", letterSpacing: "-0.025em" }}>
+            3 Piliers pour des Finitions Indestructibles
+          </h2>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", color: "#64748B" }}>
+            Chaque matériau est sélectionné à la source pour garantir la perfection technique de vos réalisations.
+          </p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--ds-space-lg)" }} className="product-grid">
+          {pillars.map((item, idx) => (
+            <div key={idx} className="glow-card" style={{
+              background: "#F8FAFC", borderRadius: "24px", border: "1px solid #E2E8F0",
+              padding: "28px 24px", display: "flex", flexDirection: "column", gap: 14,
+              position: "relative", overflow: "hidden"
+            }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ background: "white", border: "1px solid #CBD5E1", borderRadius: "var(--ds-radius-full)", padding: "4px 10px", fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 700, color: "#334155" }}>
+                  {item.flag}
+                </span>
+                <span style={{ width: 10, height: 10, borderRadius: "50%", background: item.color }} />
+              </div>
+              <div>
+                <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
+                  {item.title}
+                </h3>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: item.color, marginTop: 3 }}>
+                  {item.subtitle}
+                </div>
+              </div>
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "#64748B", lineHeight: 1.6, margin: 0 }}>
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+// ─── Products Showcase Section (Cartes Studio Bento) ─────────────────────────
 function ProductsSection({ onDetail }: { onDetail: (p: Product) => void }) {
   return (
-    <section id="produits" style={{ background: "var(--ds-bg-secondary)", padding: "72px 16px" }}>
+    <section id="produits" style={{ background: "#F8FAFC", padding: "72px 16px", borderTop: "1px solid #E2E8F0", borderBottom: "1px solid #E2E8F0" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 48px" }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)",
-            fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase",
+            fontWeight: 800, color: "#674FF5", textTransform: "uppercase",
             letterSpacing: "0.12em", marginBottom: 12,
-            background: "var(--ds-brand-light)", padding: "6px 14px", borderRadius: "var(--ds-radius-full)"
+            background: "#F3F0FF", padding: "6px 14px", borderRadius: "var(--ds-radius-full)"
           }}>
-            <Package size={13} /> Catalogue Officiel Direct Usine
+            <Package size={14} /> Catalogue Officiel Direct Usine
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)",
-            fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.03em",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.85rem, 3.5vw, 2.5rem)",
+            fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
             lineHeight: 1.2, marginBottom: 12
           }}>
             Nos 3 Matériaux Phares en Stock Permanent
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-secondary)", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "#64748B", lineHeight: 1.6, margin: 0 }}>
             Chaque sac et balle provient directement des usines partenaires. Zéro intermédiaire, qualité certifiée pour les staffeurs et promoteurs du Bénin.
           </p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--ds-space-xl)" }} className="product-grid">
           {PRODUCTS.map((p) => (
-            <div key={p.id} style={{
-              background: "var(--ds-bg)", border: "1px solid var(--ds-border)",
-              borderRadius: "var(--ds-radius-2xl)", overflow: "hidden", display: "flex", flexDirection: "column",
-              boxShadow: "var(--ds-shadow-sm)", transition: "all var(--ds-transition-md)"
-            }}
-              onMouseEnter={e => {
-                e.currentTarget.style.boxShadow = "var(--ds-shadow-lg)"
-                e.currentTarget.style.transform = "translateY(-4px)"
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.boxShadow = "var(--ds-shadow-sm)"
-                e.currentTarget.style.transform = "translateY(0)"
-              }}
-            >
+            <div key={p.id} className="glow-card" style={{
+              background: "white", border: "1.5px solid #E2E8F0",
+              borderRadius: "28px", overflow: "hidden", display: "flex", flexDirection: "column",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.04)"
+            }}>
               {/* Product Image Frame */}
-              <div style={{ position: "relative", height: 230, background: "#f5f6fa", padding: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ position: "relative", height: 230, background: "radial-gradient(circle, #F1F5F9 0%, #E2E8F0 100%)", padding: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <img src={imgSrc(p.image)} alt={p.nom} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                 <span style={{
-                  position: "absolute", top: 12, left: 12,
-                  background: "var(--ds-brand)", color: "white",
-                  fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 700,
-                  padding: "4px 10px", borderRadius: "var(--ds-radius-full)"
+                  position: "absolute", top: 14, left: 14,
+                  background: "#674FF5", color: "white",
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 800,
+                  padding: "4px 12px", borderRadius: "var(--ds-radius-full)",
+                  boxShadow: "0 4px 10px rgba(103,79,245,0.3)"
                 }}>
                   {p.badge}
                 </span>
                 <span style={{
-                  position: "absolute", bottom: 10, right: 12,
-                  background: "rgba(255,255,255,0.92)", backdropFilter: "blur(4px)",
-                  fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 600,
-                  color: "var(--ds-text-primary)", padding: "3px 9px", borderRadius: "var(--ds-radius-full)",
-                  boxShadow: "var(--ds-shadow-sm)"
+                  position: "absolute", bottom: 12, right: 14,
+                  background: "rgba(255,255,255,0.95)", backdropFilter: "blur(6px)",
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 700,
+                  color: "#0F172A", padding: "4px 10px", borderRadius: "var(--ds-radius-full)",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)"
                 }}>
                   {p.drapeau} {p.origine}
                 </span>
               </div>
 
               {/* Product Info */}
-              <div style={{ padding: "var(--ds-space-xl)", flex: 1, display: "flex", flexDirection: "column", gap: "var(--ds-space-md)" }}>
+              <div style={{ padding: "24px", flex: 1, display: "flex", flexDirection: "column", gap: "var(--ds-space-md)" }}>
                 <div>
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "var(--ds-brand)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#674FF5", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
                     {p.categorie}
                   </span>
-                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-base)", fontWeight: 800, color: "var(--ds-text-primary)", margin: "4px 0 0", lineHeight: 1.3 }}>
+                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.05rem", fontWeight: 800, color: "#0F172A", margin: "4px 0 0", lineHeight: 1.3 }}>
                     {p.nom}
                   </h3>
                 </div>
@@ -542,8 +629,8 @@ function ProductsSection({ onDetail }: { onDetail: (p: Product) => void }) {
                 <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
                   {p.arguments.map(arg => (
                     <li key={arg} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                      <CheckCircle2 size={14} style={{ color: "var(--ds-conversion)", flexShrink: 0, marginTop: 2 }} />
-                      <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-text-secondary)", lineHeight: 1.45 }}>
+                      <CheckCircle2 size={15} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
+                      <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#475569", lineHeight: 1.45 }}>
                         {arg}
                       </span>
                     </li>
@@ -551,24 +638,24 @@ function ProductsSection({ onDetail }: { onDetail: (p: Product) => void }) {
                 </ul>
 
                 {/* Conditionnement badge */}
-                <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", background: "var(--ds-bg-secondary)", borderRadius: "var(--ds-radius-sm)", width: "fit-content" }}>
-                  <Package size={13} style={{ color: "var(--ds-text-tertiary)" }} />
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-text-secondary)", fontWeight: 600 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", background: "#F1F5F9", borderRadius: "8px", width: "fit-content" }}>
+                  <Package size={13} style={{ color: "#64748B" }} />
+                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#334155", fontWeight: 700 }}>
                     {p.conditionnement}
                   </span>
                 </div>
 
                 {/* CTAs */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "var(--ds-space-sm)", marginTop: "auto", paddingTop: 8 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: "auto", paddingTop: 8 }}>
                   <WaBtn label="Commander / Devis WhatsApp" url={waDevis(p.nom, p.conditionnement)} full />
                   <button onClick={() => onDetail(p)} style={{
                     display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                    fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", fontWeight: 700,
-                    color: "var(--ds-brand)", background: "var(--ds-brand-light)", border: "none",
+                    fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700,
+                    color: "#674FF5", background: "#F3F0FF", border: "none",
                     borderRadius: "var(--ds-radius-full)", padding: "10px 20px", cursor: "pointer",
                     transition: "all var(--ds-transition)",
                   }}>
-                    <span>Fiche Technique &amp; Dosage</span>
+                    <span>Fiche Technique &amp; Spécifications</span>
                     <ArrowRight size={13} />
                   </button>
                 </div>
@@ -582,7 +669,7 @@ function ProductsSection({ onDetail }: { onDetail: (p: Product) => void }) {
   )
 }
 
-// ─── Simulateur de Chantier Section ──────────────────────────────────────────
+// ─── Simulateur de Chantier Section (Cockpit Digital Moderne) ─────────────────
 function SimulateurSection() {
   const [surface, setSurface] = useState(60)
   const [typeOuvrage, setTypeOuvrage] = useState<"plafond" | "corniche">("plafond")
@@ -618,25 +705,25 @@ function SimulateurSection() {
   )
 
   return (
-    <section id="simulateur" style={{ background: "var(--ds-bg)", padding: "72px 16px" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.25fr", gap: "var(--ds-space-3xl)", alignItems: "center" }} className="simu-grid">
+    <section id="simulateur" style={{ background: "white", padding: "72px 16px" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "var(--ds-space-3xl)", alignItems: "center" }} className="simu-grid">
         
-        {/* Left explanation */}
+        {/* Left Explanation */}
         <div>
           <div style={{
-            width: 44, height: 44, borderRadius: "var(--ds-radius-lg)",
-            background: "var(--ds-brand-light)", display: "flex", alignItems: "center",
-            justifyContent: "center", marginBottom: 16, color: "var(--ds-brand)"
+            width: 48, height: 48, borderRadius: "14px",
+            background: "#F3F0FF", display: "flex", alignItems: "center",
+            justifyContent: "center", marginBottom: 16, color: "#674FF5"
           }}>
-            <Calculator size={22} />
+            <Calculator size={24} />
           </div>
-          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 800, color: "#674FF5", textTransform: "uppercase", letterSpacing: "0.1em" }}>
             Outil d&apos;Estimation Rapide
           </span>
-          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.8rem, 3.5vw, 2.3rem)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.03em", marginTop: 8, marginBottom: 16 }}>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.85rem, 3.5vw, 2.4rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em", marginTop: 8, marginBottom: 16 }}>
             Calculez vos Besoins en Matériaux en 1 Clic
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-secondary)", lineHeight: 1.7, marginBottom: 24 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "#64748B", lineHeight: 1.7, marginBottom: 24 }}>
             Faites glisser le curseur selon la superficie de votre chantier pour estimer instantanément le nombre de sacs de Gypse Marco, de Chaux Vive et de Filasse de Sisal nécessaires.
           </p>
 
@@ -647,44 +734,45 @@ function SimulateurSection() {
               { text: "Envoi direct sur WhatsApp pour validation et tarif dégressif" },
             ].map(({ text }) => (
               <div key={text} style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <CheckCircle2 size={15} style={{ color: "var(--ds-conversion)", flexShrink: 0 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-text-secondary)", fontWeight: 500 }}>{text}</span>
+                <CheckCircle2 size={16} style={{ color: "#10B981", flexShrink: 0 }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "#334155", fontWeight: 600 }}>{text}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Right Interactive Box */}
+        {/* Right Cockpit Card */}
         <div style={{
-          background: "var(--ds-bg-secondary)", borderRadius: "var(--ds-radius-2xl)",
-          border: "1.5px solid var(--ds-border)", padding: "var(--ds-space-2xl)",
-          boxShadow: "var(--ds-shadow-md)"
+          background: "linear-gradient(145deg, #0A0F1D 0%, #131B2E 100%)",
+          borderRadius: "32px",
+          border: "1.5px solid rgba(255,255,255,0.12)",
+          padding: "32px 24px",
+          boxShadow: "0 24px 60px -12px rgba(10, 15, 29, 0.45)",
+          color: "white"
         }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--ds-space-xl)" }}>
             
             {/* Ouvrage Selector */}
             <div>
-              <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", fontWeight: 700, color: "var(--ds-text-primary)", textTransform: "uppercase", marginBottom: 10 }}>
+              <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 800, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10 }}>
                 1. Type d&apos;ouvrage :
               </label>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                 <button type="button" onClick={() => setTypeOuvrage("plafond")} style={{
-                  padding: "10px 14px", borderRadius: "var(--ds-radius-lg)",
-                  fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", fontWeight: 700,
-                  border: `2px solid ${typeOuvrage === "plafond" ? "var(--ds-brand)" : "var(--ds-border)"}`,
-                  background: typeOuvrage === "plafond" ? "var(--ds-brand-light)" : "white",
-                  color: typeOuvrage === "plafond" ? "var(--ds-brand)" : "var(--ds-text-secondary)",
-                  cursor: "pointer", transition: "all var(--ds-transition)"
+                  padding: "12px 14px", borderRadius: "14px",
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", fontWeight: 800,
+                  border: `2px solid ${typeOuvrage === "plafond" ? "#674FF5" : "rgba(255,255,255,0.15)"}`,
+                  background: typeOuvrage === "plafond" ? "rgba(103, 79, 245, 0.25)" : "rgba(255,255,255,0.05)",
+                  color: "white", cursor: "pointer", transition: "all var(--ds-transition)"
                 }}>
                   🏢 Plafonds Staff
                 </button>
                 <button type="button" onClick={() => setTypeOuvrage("corniche")} style={{
-                  padding: "10px 14px", borderRadius: "var(--ds-radius-lg)",
-                  fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", fontWeight: 700,
-                  border: `2px solid ${typeOuvrage === "corniche" ? "var(--ds-brand)" : "var(--ds-border)"}`,
-                  background: typeOuvrage === "corniche" ? "var(--ds-brand-light)" : "white",
-                  color: typeOuvrage === "corniche" ? "var(--ds-brand)" : "var(--ds-text-secondary)",
-                  cursor: "pointer", transition: "all var(--ds-transition)"
+                  padding: "12px 14px", borderRadius: "14px",
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", fontWeight: 800,
+                  border: `2px solid ${typeOuvrage === "corniche" ? "#674FF5" : "rgba(255,255,255,0.15)"}`,
+                  background: typeOuvrage === "corniche" ? "rgba(103, 79, 245, 0.25)" : "rgba(255,255,255,0.05)",
+                  color: "white", cursor: "pointer", transition: "all var(--ds-transition)"
                 }}>
                   ✨ Corniches &amp; Moulures
                 </button>
@@ -694,49 +782,49 @@ function SimulateurSection() {
             {/* Surface Slider */}
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
-                <label style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", fontWeight: 700, color: "var(--ds-text-primary)", textTransform: "uppercase" }}>
+                <label style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 800, color: "#94A3B8", textTransform: "uppercase" }}>
                   2. Superficie du chantier :
                 </label>
-                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-2xl)", fontWeight: 800, color: "var(--ds-brand)" }}>
+                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.75rem", fontWeight: 900, color: "#A78BFA" }}>
                   {surface} m²
                 </span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-space-sm)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <button onClick={() => setSurface(s => Math.max(10, s - 10))} aria-label="Moins 10m²"
-                  style={{ width: 44, height: 44, borderRadius: "50%", border: "1.5px solid var(--ds-border)", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "var(--ds-text-secondary)" }}>
-                  <Minus size={15} />
+                  style={{ width: 44, height: 44, borderRadius: "50%", border: "1.5px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "white" }}>
+                  <Minus size={16} />
                 </button>
                 <input type="range" min={10} max={500} step={5} value={surface}
                   onChange={e => setSurface(Number(e.target.value))}
-                  style={{ flex: 1, accentColor: "var(--ds-brand)", height: 6, cursor: "pointer" }}
+                  style={{ flex: 1, accentColor: "#8B5CF6", height: 6, cursor: "pointer" }}
                 />
                 <button onClick={() => setSurface(s => Math.min(500, s + 10))} aria-label="Plus 10m²"
-                  style={{ width: 44, height: 44, borderRadius: "50%", border: "1.5px solid var(--ds-border)", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "var(--ds-text-secondary)" }}>
-                  <Plus size={15} />
+                  style={{ width: 44, height: 44, borderRadius: "50%", border: "1.5px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "white" }}>
+                  <Plus size={16} />
                 </button>
               </div>
             </div>
 
-            {/* Results Grid */}
+            {/* Results Counters */}
             <div style={{
-              background: "white", borderRadius: "var(--ds-radius-xl)",
-              border: "1px solid var(--ds-border)", padding: "var(--ds-space-lg)",
+              background: "rgba(255,255,255,0.06)", borderRadius: "20px",
+              border: "1px solid rgba(255,255,255,0.12)", padding: "16px",
               display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, textAlign: "center"
             }} className="simu-results-grid">
               <div>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "var(--ds-text-tertiary)", fontWeight: 600 }}>Gypse Marco</div>
-                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-2xl)", fontWeight: 800, color: "var(--ds-brand)", margin: "4px 0" }}>{nbSacsGypse}</div>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.62rem", color: "var(--ds-text-secondary)" }}>sacs (40kg)</div>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#94A3B8", fontWeight: 700 }}>Gypse Marco</div>
+                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.75rem", fontWeight: 900, color: "#A78BFA", margin: "2px 0" }}>{nbSacsGypse}</div>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.62rem", color: "#CBD5E1" }}>sacs (40kg)</div>
               </div>
-              <div style={{ borderLeft: "1px solid var(--ds-border)", borderRight: "1px solid var(--ds-border)" }}>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "var(--ds-text-tertiary)", fontWeight: 600 }}>Filasse Sisal</div>
-                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-2xl)", fontWeight: 800, color: "var(--ds-conversion)", margin: "4px 0" }}>{kgFilasse}</div>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.62rem", color: "var(--ds-text-secondary)" }}>kg (Kenya)</div>
+              <div style={{ borderLeft: "1px solid rgba(255,255,255,0.12)", borderRight: "1px solid rgba(255,255,255,0.12)" }}>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#94A3B8", fontWeight: 700 }}>Filasse Sisal</div>
+                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.75rem", fontWeight: 900, color: "#34D399", margin: "2px 0" }}>{kgFilasse}</div>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.62rem", color: "#CBD5E1" }}>kg (Kenya)</div>
               </div>
               <div>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "var(--ds-text-tertiary)", fontWeight: 600 }}>Chaux Vive</div>
-                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-2xl)", fontWeight: 800, color: "var(--ds-text-primary)", margin: "4px 0" }}>{nbSacsChaux}</div>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.62rem", color: "var(--ds-text-secondary)" }}>sacs (Dubaï)</div>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#94A3B8", fontWeight: 700 }}>Chaux Vive</div>
+                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.75rem", fontWeight: 900, color: "#FBBF24", margin: "2px 0" }}>{nbSacsChaux}</div>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.62rem", color: "#CBD5E1" }}>sacs (Dubaï)</div>
               </div>
             </div>
 
@@ -753,17 +841,17 @@ function SimulateurSection() {
 // ─── Bannière CTA Glassmorphism (Reproduction Exacte de l'Image Figma) ───────
 function VeloraCTABanner() {
   return (
-    <section style={{ background: "var(--ds-bg)", padding: "48px 16px 72px", position: "relative", overflow: "hidden" }}>
+    <section style={{ background: "#F8FAFC", padding: "56px 16px 72px", position: "relative", overflow: "hidden" }}>
       
-      {/* Background Glowing Blurred Circles (Identique à l'Image Figma) */}
+      {/* Background Glowing Blurred Circles */}
       <div style={{
-        position: "absolute", top: "50%", left: "15%", width: 340, height: 340,
+        position: "absolute", top: "50%", left: "15%", width: 360, height: 360,
         borderRadius: "50%", background: "rgba(103, 79, 245, 0.35)",
         filter: "blur(90px)", transform: "translate(-50%, -50%)", pointerEvents: "none", zIndex: 0
       }} />
       <div style={{
-        position: "absolute", top: "50%", right: "10%", width: 280, height: 280,
-        borderRadius: "50%", background: "rgba(124, 58, 237, 0.25)",
+        position: "absolute", top: "50%", right: "10%", width: 300, height: 300,
+        borderRadius: "50%", background: "rgba(124, 58, 237, 0.28)",
         filter: "blur(80px)", transform: "translate(0, -50%)", pointerEvents: "none", zIndex: 0
       }} />
 
@@ -774,7 +862,7 @@ function VeloraCTABanner() {
           overflow: "hidden",
           display: "grid",
           gridTemplateColumns: "1.15fr 0.85fr",
-          boxShadow: "0 20px 60px rgba(103,79,245,0.22), 0 4px 20px rgba(0,0,0,0.06)",
+          boxShadow: "0 24px 64px rgba(103,79,245,0.25), 0 4px 20px rgba(0,0,0,0.06)",
           border: "1px solid rgba(255,255,255,0.8)",
           backdropFilter: "blur(20px)",
         }} className="velora-banner-grid">
@@ -841,12 +929,12 @@ function VeloraCTABanner() {
                 gap: 8,
                 background: "white",
                 color: "#101828",
-                border: "1px solid #D0D5DD",
-                borderRadius: "var(--ds-radius-md)",
-                padding: "11px 24px",
+                border: "1.5px solid #D0D5DD",
+                borderRadius: "12px",
+                padding: "12px 24px",
                 fontFamily: "var(--ds-font-body)",
-                fontSize: "var(--ds-text-xs)",
-                fontWeight: 700,
+                fontSize: "0.82rem",
+                fontWeight: 800,
                 textDecoration: "none",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
                 transition: "all var(--ds-transition)"
@@ -863,7 +951,7 @@ function VeloraCTABanner() {
                 }}
               >
                 <span>Contact Us</span>
-                <ArrowRight size={13} />
+                <ArrowRight size={14} />
               </a>
             </div>
           </div>
@@ -884,23 +972,23 @@ function FAQSection() {
   }
 
   return (
-    <section id="faq" style={{ background: "var(--ds-bg-secondary)", padding: "72px 16px" }}>
+    <section id="faq" style={{ background: "white", padding: "72px 16px", borderTop: "1px solid #E2E8F0" }}>
       <div style={{ maxWidth: 880, margin: "0 auto" }}>
         
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)",
-            fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase",
+            fontWeight: 800, color: "#674FF5", textTransform: "uppercase",
             letterSpacing: "0.1em", marginBottom: 10,
-            background: "var(--ds-brand-light)", padding: "5px 12px", borderRadius: "var(--ds-radius-full)"
+            background: "#F3F0FF", padding: "5px 12px", borderRadius: "var(--ds-radius-full)"
           }}>
-            <HelpCircle size={13} /> Questions Fréquentes
+            <HelpCircle size={14} /> Questions Fréquentes
           </span>
-          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.5vw, 2.3rem)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.025em", margin: "6px 0 10px" }}>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.5vw, 2.3rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", margin: "6px 0 10px" }}>
             Tout ce que vous devez savoir avant de commander
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-secondary)" }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "#64748B" }}>
             Réponses claires sur nos matériaux, nos délais de livraison et nos conditions tarifaires
           </p>
         </div>
@@ -910,32 +998,33 @@ function FAQSection() {
             const isOpen = openIndex === i
             return (
               <div key={i} style={{
-                background: "white", borderRadius: "var(--ds-radius-xl)",
-                border: `1.5px solid ${isOpen ? "var(--ds-brand)" : "var(--ds-border)"}`,
+                background: isOpen ? "#FAF5FF" : "#F8FAFC", borderRadius: "20px",
+                border: `1.5px solid ${isOpen ? "#674FF5" : "#E2E8F0"}`,
                 overflow: "hidden", transition: "all var(--ds-transition)"
               }}>
                 <button onClick={() => toggle(i)} style={{
-                  width: "100%", padding: "18px 20px", display: "flex",
+                  width: "100%", padding: "20px 24px", display: "flex",
                   alignItems: "center", justifyContent: "space-between", gap: 16,
                   background: "none", border: "none", cursor: "pointer", textAlign: "left"
                 }}>
-                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-sm)", fontWeight: 700, color: "var(--ds-text-primary)", lineHeight: 1.35 }}>
+                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.35 }}>
                     {faq.q}
                   </span>
                   <div style={{
-                    width: 28, height: 28, borderRadius: "50%",
-                    background: isOpen ? "var(--ds-brand-light)" : "var(--ds-bg-secondary)",
+                    width: 32, height: 32, borderRadius: "50%",
+                    background: isOpen ? "#674FF5" : "white",
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-                    color: isOpen ? "var(--ds-brand)" : "var(--ds-text-tertiary)",
-                    transition: "transform var(--ds-transition)"
+                    color: isOpen ? "white" : "#64748B",
+                    transition: "transform var(--ds-transition)",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.06)"
                   }}>
-                    <ChevronDown size={16} style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }} />
+                    <ChevronDown size={18} style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }} />
                   </div>
                 </button>
 
                 {isOpen && (
-                  <div style={{ padding: "0 20px 18px", borderTop: "1px solid var(--ds-border)", paddingTop: 14 }}>
-                    <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-text-secondary)", lineHeight: 1.7, margin: 0 }}>
+                  <div style={{ padding: "0 24px 20px", borderTop: "1px solid rgba(103,79,245,0.1)", paddingTop: 14 }}>
+                    <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", color: "#475569", lineHeight: 1.7, margin: 0 }}>
                       {faq.a}
                     </p>
                   </div>
@@ -958,49 +1047,49 @@ const TEMOIGNAGES = [
 ]
 
 const GARANTIES = [
-  { icon: ShieldCheck, color: "var(--ds-conversion)", titre: "Zéro Fissure Garantie", desc: "Granulométrie micronique sans retrait ni craquelure" },
-  { icon: Award, color: "var(--ds-brand)", titre: "Import Direct Certifié", desc: "Origines traçables : Égypte, Dubaï et Kenya" },
+  { icon: ShieldCheck, color: "#10B981", titre: "Zéro Fissure Garantie", desc: "Granulométrie micronique sans retrait ni craquelure" },
+  { icon: Award, color: "#674FF5", titre: "Import Direct Certifié", desc: "Origines traçables : Égypte, Dubaï et Kenya" },
   { icon: Package, color: "#F59E0B", titre: "Stock Permanent", desc: "Disponibilité continue en sacs de 40 KG à Cotonou" },
-  { icon: Truck, color: "#0ea5e9", titre: "Livraison sur Chantier", desc: "Acheminement rapide dans tout le Grand Cotonou" },
+  { icon: Truck, color: "#0284C7", titre: "Livraison sur Chantier", desc: "Acheminement rapide dans tout le Grand Cotonou" },
 ]
 
 function ReassuranceSection() {
   return (
-    <section id="garanties" style={{ background: "var(--ds-bg)", padding: "72px 16px" }}>
+    <section id="garanties" style={{ background: "#F8FAFC", padding: "72px 16px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         
         <div style={{ textAlign: "center", marginBottom: "var(--ds-space-2xl)" }}>
-          <span style={{ display: "inline-block", fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>
+          <span style={{ display: "inline-block", fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", fontWeight: 800, color: "#674FF5", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>
             Retours d&apos;Expérience
           </span>
-          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.8rem, 3.5vw, 2.4rem)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.025em", marginBottom: 8 }}>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.8rem, 3.5vw, 2.4rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: 8 }}>
             Approuvé par les Maîtres Staffeurs &amp; Artisans
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-secondary)" }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "#64748B" }}>
             Découvrez pourquoi les professionnels du bâtiment choisissent Marco Staff
           </p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--ds-space-xl)", marginBottom: "var(--ds-space-3xl)" }} className="product-grid">
           {TEMOIGNAGES.map(({ initials, color, nom, role, ville, note, texte }) => (
-            <div key={nom} style={{
-              background: "var(--ds-bg-secondary)", border: "1px solid var(--ds-border)", borderRadius: "var(--ds-radius-2xl)",
-              padding: "var(--ds-space-xl)", display: "flex", flexDirection: "column", gap: "var(--ds-space-lg)",
-              boxShadow: "var(--ds-shadow-sm)"
+            <div key={nom} className="glow-card" style={{
+              background: "white", border: "1px solid #E2E8F0", borderRadius: "24px",
+              padding: "28px 24px", display: "flex", flexDirection: "column", gap: 16,
+              boxShadow: "0 4px 16px rgba(0,0,0,0.04)"
             }}>
               <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
                 <div style={{ width: 44, height: 44, borderRadius: "50%", background: color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "white", fontWeight: 800 }}>
                   {initials}
                 </div>
                 <div>
-                  <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-sm)", fontWeight: 700, color: "var(--ds-text-primary)", margin: 0 }}>{nom}</p>
-                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-text-tertiary)", margin: "2px 0 4px" }}>{role} · {ville}</p>
+                  <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.9rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>{nom}</p>
+                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B", margin: "2px 0 4px" }}>{role} · {ville}</p>
                   <div style={{ display: "flex", gap: 2 }}>
-                    {[...Array(note)].map((_, i) => <Star key={i} size={12} fill="#F59E0B" stroke="#F59E0B" />)}
+                    {[...Array(note)].map((_, i) => <Star key={i} size={13} fill="#F59E0B" stroke="#F59E0B" />)}
                   </div>
                 </div>
               </div>
-              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-secondary)", lineHeight: 1.65, margin: 0, fontStyle: "italic", borderLeft: `3px solid ${color}`, paddingLeft: 12 }}>
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", color: "#475569", lineHeight: 1.65, margin: 0, fontStyle: "italic", borderLeft: `3px solid ${color}`, paddingLeft: 12 }}>
                 &ldquo;{texte}&rdquo;
               </p>
             </div>
@@ -1011,15 +1100,15 @@ function ReassuranceSection() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "var(--ds-space-lg)" }} className="garanties-grid">
           {GARANTIES.map(({ icon: Icon, color, titre, desc }) => (
             <div key={titre} style={{
-              background: "white", borderRadius: "var(--ds-radius-xl)", border: "1px solid var(--ds-border)",
-              padding: "var(--ds-space-lg)", display: "flex", gap: 14, alignItems: "flex-start"
+              background: "white", borderRadius: "20px", border: "1px solid #E2E8F0",
+              padding: "20px", display: "flex", gap: 14, alignItems: "flex-start"
             }}>
-              <div style={{ width: 40, height: 40, borderRadius: "var(--ds-radius-md)", background: `${color}18`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color }}>
-                <Icon size={18} />
+              <div style={{ width: 42, height: 42, borderRadius: "12px", background: `${color}18`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color }}>
+                <Icon size={20} />
               </div>
               <div>
-                <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-sm)", fontWeight: 700, color: "var(--ds-text-primary)", margin: "0 0 3px" }}>{titre}</p>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-text-secondary)", margin: 0, lineHeight: 1.4 }}>{desc}</p>
+                <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.88rem", fontWeight: 800, color: "#0F172A", margin: "0 0 3px" }}>{titre}</p>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#64748B", margin: 0, lineHeight: 1.4 }}>{desc}</p>
               </div>
             </div>
           ))}
@@ -1037,16 +1126,16 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
   const msgCmd = waUrl(`Bonjour ${COMPANY_NAME}, je souhaite commander ${qty} sac(s) de *${product.nom}* (${product.conditionnement}). Pouvez-vous me confirmer le tarif et les modalités de livraison ? Merci !`)
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--ds-bg)" }}>
+    <div style={{ minHeight: "100vh", background: "white" }}>
       
       {/* Breadcrumb */}
-      <div style={{ background: "var(--ds-bg-secondary)", borderBottom: "1px solid var(--ds-border)", padding: "12px 16px" }}>
+      <div style={{ background: "#F8FAFC", borderBottom: "1px solid #E2E8F0", padding: "12px 16px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", gap: 8 }}>
-          <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: 5, fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-brand)", background: "none", border: "none", cursor: "pointer", padding: 0, fontWeight: 700 }}>
+          <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: 5, fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "#674FF5", background: "none", border: "none", cursor: "pointer", padding: 0, fontWeight: 800 }}>
             <ArrowLeft size={14} /> Retour au catalogue
           </button>
-          <ChevronRight size={12} style={{ color: "var(--ds-text-tertiary)" }} />
-          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-text-secondary)", fontWeight: 600 }}>{product.nomCourt}</span>
+          <ChevronRight size={12} style={{ color: "#94A3B8" }} />
+          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "#64748B", fontWeight: 600 }}>{product.nomCourt}</span>
         </div>
       </div>
 
@@ -1054,60 +1143,60 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
       <section style={{ padding: "48px 16px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: "var(--ds-space-3xl)", alignItems: "flex-start" }} className="fiche-grid">
           
-          {/* Image studio frame */}
+          {/* Image Studio Frame */}
           <div style={{
-            borderRadius: "var(--ds-radius-2xl)", overflow: "hidden",
-            background: "#f5f6fa", padding: 32, display: "flex", alignItems: "center", justifyContent: "center",
-            boxShadow: "var(--ds-shadow-md)", border: "1px solid var(--ds-border)"
+            borderRadius: "28px", overflow: "hidden",
+            background: "radial-gradient(circle, #F1F5F9 0%, #E2E8F0 100%)", padding: 36, display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 20px 40px -12px rgba(0,0,0,0.08)", border: "1.5px solid #E2E8F0"
           }}>
             <img src={imgSrc(product.image)} alt={product.nom} style={{ maxHeight: 380, maxWidth: "100%", objectFit: "contain" }} />
           </div>
 
-          {/* Details column */}
+          {/* Details Column */}
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--ds-space-xl)" }}>
             
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <span style={{ background: "var(--ds-brand)", color: "white", fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, padding: "4px 12px", borderRadius: "var(--ds-radius-full)" }}>
+              <span style={{ background: "#674FF5", color: "white", fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 800, padding: "5px 14px", borderRadius: "var(--ds-radius-full)" }}>
                 {product.badge}
               </span>
-              <span style={{ background: "var(--ds-bg-secondary)", border: "1px solid var(--ds-border)", color: "var(--ds-text-primary)", fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 600, padding: "4px 12px", borderRadius: "var(--ds-radius-full)" }}>
+              <span style={{ background: "#F1F5F9", border: "1px solid #E2E8F0", color: "#0F172A", fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, padding: "5px 14px", borderRadius: "var(--ds-radius-full)" }}>
                 {product.drapeau} {product.origine}
               </span>
             </div>
 
             <div>
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "var(--ds-brand)", fontWeight: 700, textTransform: "uppercase" }}>{product.categorie}</span>
-              <h1 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.7rem, 3.5vw, 2.3rem)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.03em", lineHeight: 1.2, margin: "6px 0 0" }}>
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#674FF5", fontWeight: 800, textTransform: "uppercase" }}>{product.categorie}</span>
+              <h1 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.5vw, 2.3rem)", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.03em", lineHeight: 1.2, margin: "6px 0 0" }}>
                 {product.nom}
               </h1>
             </div>
 
-            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-secondary)", lineHeight: 1.75, margin: 0 }}>
+            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "#475569", lineHeight: 1.75, margin: 0 }}>
               {product.description}
             </p>
 
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
               {product.arguments.map(arg => (
                 <li key={arg} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                  <CheckCircle2 size={16} style={{ color: "var(--ds-conversion)", flexShrink: 0, marginTop: 2 }} />
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-secondary)", lineHeight: 1.45 }}>{arg}</span>
+                  <CheckCircle2 size={16} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
+                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "#334155", lineHeight: 1.45 }}>{arg}</span>
                 </li>
               ))}
             </ul>
 
             {/* Quantity Selector */}
-            <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-space-lg)", padding: "12px 16px", background: "var(--ds-bg-secondary)", borderRadius: "var(--ds-radius-xl)" }}>
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", fontWeight: 700, color: "var(--ds-text-primary)" }}>Quantité :</span>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, background: "white", borderRadius: "var(--ds-radius-full)", padding: "4px 8px", border: "1px solid var(--ds-border)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-space-lg)", padding: "12px 18px", background: "#F8FAFC", borderRadius: "16px", border: "1px solid #E2E8F0" }}>
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", fontWeight: 800, color: "#0F172A" }}>Quantité :</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, background: "white", borderRadius: "var(--ds-radius-full)", padding: "4px 8px", border: "1px solid #CBD5E1" }}>
                 <button onClick={() => setQty(q => Math.max(1, q - 1))} style={{ width: 36, height: 36, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <Minus size={14} />
                 </button>
-                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-base)", fontWeight: 800, color: "var(--ds-brand)", minWidth: 32, textAlign: "center" }}>{qty}</span>
+                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1rem", fontWeight: 800, color: "#674FF5", minWidth: 32, textAlign: "center" }}>{qty}</span>
                 <button onClick={() => setQty(q => q + 1)} style={{ width: 36, height: 36, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <Plus size={14} />
                 </button>
               </div>
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-text-tertiary)" }}>{product.conditionnement}</span>
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#64748B", fontWeight: 600 }}>{product.conditionnement}</span>
             </div>
 
             <WaBtn label={`Demander un Devis WhatsApp pour ${qty} sac(s)`} url={msgCmd} full />
@@ -1117,19 +1206,19 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
       </section>
 
       {/* Technical Specs Table */}
-      <section style={{ background: "var(--ds-bg-secondary)", padding: "56px 16px" }}>
+      <section style={{ background: "#F8FAFC", padding: "56px 16px", borderTop: "1px solid #E2E8F0" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-2xl)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.02em", marginBottom: "var(--ds-space-xl)" }}>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-2xl)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.02em", marginBottom: "var(--ds-space-xl)" }}>
             Fiche des Spécifications Techniques
           </h2>
-          <div style={{ background: "white", borderRadius: "var(--ds-radius-xl)", border: "1px solid var(--ds-border)", overflow: "hidden", boxShadow: "var(--ds-shadow-sm)" }}>
+          <div style={{ background: "white", borderRadius: "20px", border: "1px solid #E2E8F0", overflow: "hidden", boxShadow: "0 4px 16px rgba(0,0,0,0.03)" }}>
             {product.specs.map(({ label, valeur }, i) => (
-              <div key={label} className="spec-row" style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", borderBottom: i < product.specs.length - 1 ? "1px solid var(--ds-border)" : "none" }}>
-                <div style={{ padding: "14px 16px", background: "var(--ds-bg-secondary)", borderRight: "1px solid var(--ds-border)" }}>
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", fontWeight: 700, color: "var(--ds-text-secondary)" }}>{label}</span>
+              <div key={label} className="spec-row" style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", borderBottom: i < product.specs.length - 1 ? "1px solid #E2E8F0" : "none" }}>
+                <div style={{ padding: "14px 20px", background: "#F8FAFC", borderRight: "1px solid #E2E8F0" }}>
+                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", fontWeight: 800, color: "#475569" }}>{label}</span>
                 </div>
-                <div style={{ padding: "14px 16px" }}>
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-primary)", fontWeight: 500 }}>{valeur}</span>
+                <div style={{ padding: "14px 20px" }}>
+                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "#0F172A", fontWeight: 600 }}>{valeur}</span>
                 </div>
               </div>
             ))}
@@ -1138,35 +1227,25 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
       </section>
 
       {/* Produits connexes */}
-      <section style={{ background: "var(--ds-bg)", padding: "56px 16px" }}>
+      <section style={{ background: "white", padding: "56px 16px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-2xl)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.02em", marginBottom: "var(--ds-space-xl)" }}>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-2xl)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.02em", marginBottom: "var(--ds-space-xl)" }}>
             Matériaux Complémentaires Recommandés
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "var(--ds-space-lg)" }} className="connexes-grid">
             {autres.map(p => (
-              <div key={p.id} onClick={() => onDetail(p)} style={{
-                display: "flex", gap: "var(--ds-space-lg)", padding: "var(--ds-space-lg)",
-                border: "1px solid var(--ds-border)", borderRadius: "var(--ds-radius-xl)",
+              <div key={p.id} onClick={() => onDetail(p)} className="glow-card" style={{
+                display: "flex", gap: "var(--ds-space-lg)", padding: "20px",
+                border: "1px solid #E2E8F0", borderRadius: "20px",
                 cursor: "pointer", background: "white", alignItems: "center",
-                transition: "all var(--ds-transition)"
-              }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.boxShadow = "var(--ds-shadow-md)"
-                  e.currentTarget.style.transform = "translateY(-2px)"
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.boxShadow = "none"
-                  e.currentTarget.style.transform = "translateY(0)"
-                }}
-              >
-                <div style={{ width: 72, height: 72, borderRadius: "var(--ds-radius-lg)", overflow: "hidden", flexShrink: 0, background: "var(--ds-bg-secondary)", padding: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              }}>
+                <div style={{ width: 76, height: 76, borderRadius: "14px", overflow: "hidden", flexShrink: 0, background: "#F1F5F9", padding: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <img src={imgSrc(p.image)} alt={p.nom} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-sm)", fontWeight: 700, color: "var(--ds-text-primary)", margin: "0 0 2px" }}>{p.nom}</p>
-                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-text-tertiary)", margin: "0 0 6px" }}>{p.drapeau} {p.origine}</p>
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-brand)", fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
+                  <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#0F172A", margin: "0 0 2px" }}>{p.nom}</p>
+                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B", margin: "0 0 6px" }}>{p.drapeau} {p.origine}</p>
+                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#674FF5", fontWeight: 800, display: "flex", alignItems: "center", gap: 4 }}>
                     Consulter la fiche <ArrowRight size={12} />
                   </span>
                 </div>
@@ -1180,10 +1259,10 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
   )
 }
 
-// ─── Footer Officiel 2026 ────────────────────────────────────────────────────
+// ─── Footer Deluxe 2026 ──────────────────────────────────────────────────────
 function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
   return (
-    <footer id="contact" style={{ background: "var(--ds-dark-bg)", color: "white", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+    <footer id="contact" style={{ background: "#0A0F1D", color: "white", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
       <div style={{
         maxWidth: 1200, margin: "0 auto", padding: "64px 16px 24px",
         display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.2fr", gap: "var(--ds-space-3xl)"
@@ -1191,35 +1270,35 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
         
         {/* Col 1 Brand */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{
-              width: 36, height: 36, borderRadius: "var(--ds-radius-sm)",
-              background: "var(--ds-brand)", display: "flex", alignItems: "center",
+              width: 38, height: 38, borderRadius: "10px",
+              background: "linear-gradient(135deg, #674FF5 0%, #8B5CF6 100%)", display: "flex", alignItems: "center",
               justifyContent: "center", flexShrink: 0,
             }}>
-              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1rem", fontWeight: 800, color: "white" }}>M</span>
+              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 900, color: "white" }}>M</span>
             </div>
             <div>
-              <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-base)", fontWeight: 800, color: "white", lineHeight: 1.1 }}>
+              <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1rem", fontWeight: 800, color: "white", lineHeight: 1.1 }}>
                 {COMPANY_NAME}
               </div>
-              <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.58rem", fontWeight: 500, color: "var(--ds-dark-text-muted)", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+              <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.58rem", fontWeight: 600, color: "#94A3B8", letterSpacing: "0.06em", textTransform: "uppercase" }}>
                 {COMPANY_SUBTITLE}
               </div>
             </div>
           </div>
 
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-dark-text-muted)", lineHeight: 1.7, maxWidth: 300, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "#94A3B8", lineHeight: 1.7, maxWidth: 300, margin: 0 }}>
             Importateur direct et grossiste en matériaux de finition et staff au Bénin. Qualité d&apos;origine certifiée (Égypte, Dubaï, Kenya) sans intermédiaire.
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8 }}>
-            <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", gap: 8, alignItems: "center", textDecoration: "none", color: "var(--ds-dark-text-muted)" }}>
-              <Phone size={13} style={{ color: "var(--ds-conversion)" }} />
+            <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", gap: 8, alignItems: "center", textDecoration: "none", color: "#94A3B8" }}>
+              <Phone size={13} style={{ color: "#10B981" }} />
               <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)" }}>{PHONE_DISPLAY}</span>
             </a>
-            <a href={waUrl(`Bonjour ${COMPANY_NAME}`)} target="_blank" rel="noopener noreferrer" style={{ display: "flex", gap: 8, alignItems: "center", textDecoration: "none", color: "var(--ds-dark-text-muted)" }}>
-              <MessageCircle size={13} style={{ color: "var(--ds-conversion)" }} />
+            <a href={waUrl(`Bonjour ${COMPANY_NAME}`)} target="_blank" rel="noopener noreferrer" style={{ display: "flex", gap: 8, alignItems: "center", textDecoration: "none", color: "#94A3B8" }}>
+              <MessageCircle size={13} style={{ color: "#10B981" }} />
               <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)" }}>WhatsApp Direct : +229 01 97 46 32 09</span>
             </a>
           </div>
@@ -1227,13 +1306,13 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
 
         {/* Col 2 Produits */}
         <div>
-          <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-xs)", fontWeight: 700, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
+          <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.75rem", fontWeight: 800, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
             Matériaux
           </h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
             {PRODUCTS.map(p => (
               <li key={p.id}>
-                <a href="#produits" onClick={e => { e.preventDefault(); onNavigate("produits") }} style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-dark-text-muted)", textDecoration: "none" }}>
+                <a href="#produits" onClick={e => { e.preventDefault(); onNavigate("produits") }} style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "#94A3B8", textDecoration: "none" }}>
                   {p.nomCourt}
                 </a>
               </li>
@@ -1243,7 +1322,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
 
         {/* Col 3 Navigation */}
         <div>
-          <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-xs)", fontWeight: 700, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
+          <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.75rem", fontWeight: 800, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
             Navigation
           </h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
@@ -1255,7 +1334,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
               { label: "FAQ", id: "faq" },
             ].map(({ label, id }) => (
               <li key={id}>
-                <a href={`#${id}`} onClick={e => { e.preventDefault(); onNavigate(id) }} style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-dark-text-muted)", textDecoration: "none" }}>
+                <a href={`#${id}`} onClick={e => { e.preventDefault(); onNavigate(id) }} style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "#94A3B8", textDecoration: "none" }}>
                   {label}
                 </a>
               </li>
@@ -1265,25 +1344,25 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
 
         {/* Col 4 Dépôts */}
         <div>
-          <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-xs)", fontWeight: 700, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
+          <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.75rem", fontWeight: 800, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
             Dépôts &amp; Horaires
           </h4>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-              <MapPin size={14} style={{ color: "var(--ds-conversion)", flexShrink: 0, marginTop: 2 }} />
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-dark-text-muted)", lineHeight: 1.5 }}>
+              <MapPin size={14} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "#94A3B8", lineHeight: 1.5 }}>
                 Dépôts Cotonou &amp; Abomey-Calavi, Bénin
               </span>
             </div>
             <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-              <Clock size={14} style={{ color: "var(--ds-conversion)", flexShrink: 0, marginTop: 2 }} />
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-dark-text-muted)", lineHeight: 1.5 }}>
+              <Clock size={14} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "#94A3B8", lineHeight: 1.5 }}>
                 Lundi – Samedi<br />07h30 – 18h00
               </span>
             </div>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(16,185,129,0.15)", borderRadius: "var(--ds-radius-full)", padding: "5px 12px", width: "fit-content" }}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--ds-conversion)", display: "block" }} />
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 700, color: "var(--ds-conversion)" }}>En Stock Dépôt</span>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "block" }} />
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 800, color: "#10B981" }}>En Stock Dépôt</span>
             </div>
           </div>
         </div>
@@ -1296,14 +1375,14 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
         borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex",
         justifyContent: "space-between", flexWrap: "wrap", gap: 12, alignItems: "center"
       }}>
-        <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-dark-text-muted)", margin: 0 }}>
+        <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "#94A3B8", margin: 0 }}>
           © 2026 {COMPANY_NAME} · {COMPANY_SUBTITLE} · Tous droits réservés.
         </p>
         <div style={{ display: "flex", gap: "var(--ds-space-lg)" }}>
-          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-dark-text-muted)" }}>
+          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "#94A3B8" }}>
             Qualité Certifiée ISO 9001
           </span>
-          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-dark-text-muted)" }}>
+          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "#94A3B8" }}>
             Bénin BTP Solutions
           </span>
         </div>
@@ -1316,11 +1395,11 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
 const CSS = `
   .nav-desktop { display: flex; align-items: center; }
   .nav-mobile-toggle { display: none; }
-  .hero-grid { grid-template-columns: 1.1fr 0.9fr; }
+  .hero-grid { grid-template-columns: 1.15fr 0.85fr; }
   .hero-stats-grid { grid-template-columns: repeat(4, 1fr); }
   .product-grid { grid-template-columns: repeat(3, 1fr); }
   .garanties-grid { grid-template-columns: repeat(4, 1fr); }
-  .simu-grid { grid-template-columns: 1fr 1.25fr; }
+  .simu-grid { grid-template-columns: 1fr 1.2fr; }
   .fiche-grid { grid-template-columns: 1.1fr 1fr; }
   .connexes-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: 2fr 1fr 1fr 1.2fr; }
@@ -1354,23 +1433,18 @@ const CSS = `
     .connexes-grid { grid-template-columns: 1fr !important; }
     .footer-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
     .spec-row { grid-template-columns: 1fr !important; }
-    .spec-row > div:first-child { border-right: none !important; border-bottom: 1px solid var(--ds-border) !important; padding: 10px 14px !important; }
+    .spec-row > div:first-child { border-right: none !important; border-bottom: 1px solid #E2E8F0 !important; padding: 10px 14px !important; }
     .spec-row > div:last-child { padding: 10px 14px !important; }
     .velora-banner-grid { grid-template-columns: 1fr !important; }
-    .velora-banner-left { padding: 32px 20px !important; }
-    .velora-banner-right { padding: 28px 20px !important; }
+    .velora-banner-left { padding: 36px 20px !important; }
+    .velora-banner-right { padding: 32px 20px !important; }
   }
 
   @media (max-width: 480px) {
     .simu-results-grid { grid-template-columns: 1fr !important; }
-    .simu-results-grid > div { border: none !important; border-bottom: 1px solid var(--ds-border) !important; padding-bottom: 8px !important; }
+    .simu-results-grid > div { border: none !important; border-bottom: 1px solid rgba(255,255,255,0.12) !important; padding-bottom: 8px !important; }
     .simu-results-grid > div:last-child { border-bottom: none !important; }
     .hero-float-1 { display: none !important; }
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.85); }
   }
 `
 
@@ -1411,6 +1485,7 @@ export default function App() {
         {view === "home" ? (
           <main>
             <HeroSection onVoirProduits={() => handleNavigate("produits")} onSimulateur={() => handleNavigate("simulateur")} />
+            <CategoriesPillars />
             <ProductsSection onDetail={handleDetail} />
             <SimulateurSection />
             <VeloraCTABanner />
@@ -1426,14 +1501,14 @@ export default function App() {
         {/* Mobile Floating Action Dock */}
         <div className="mobile-dock" style={{
           position: "fixed", bottom: 16, left: 16, right: 16, zIndex: 999,
-          background: "rgba(15, 15, 28, 0.95)", backdropFilter: "blur(12px)",
+          background: "rgba(10, 15, 29, 0.95)", backdropFilter: "blur(16px)",
           borderRadius: "var(--ds-radius-2xl)", padding: "10px 16px",
           display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
-          boxShadow: "0 10px 30px rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.15)"
+          boxShadow: "0 14px 36px rgba(0,0,0,0.45)", border: "1px solid rgba(255,255,255,0.15)"
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--ds-conversion)", display: "block" }} />
-            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.75rem", fontWeight: 700, color: "white" }}>Dépôt Ouvert</span>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#10B981", display: "block", boxShadow: "0 0 8px #10B981" }} />
+            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.75rem", fontWeight: 800, color: "white" }}>Dépôt Ouvert</span>
           </div>
           <WaBtn label="WhatsApp Direct" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} small />
         </div>
