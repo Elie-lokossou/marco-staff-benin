@@ -1,0 +1,94 @@
+/* =========================================================
+   L'Incomparable Service & Fils — Design System Tokens
+   Mettre à jour ces variables pour re-styler l'ensemble du site.
+   ========================================================= */
+
+:root {
+  /* --- Couleurs de marque --- */
+  --ds-brand:           #674FF5;
+  --ds-brand-hover:     #5540e0;
+  --ds-brand-light:     #eeeeff;
+  --ds-brand-muted:     rgba(103, 79, 245, 0.10);
+
+  /* --- Couleur de conversion (WhatsApp / CTA principal) --- */
+  --ds-conversion:       #10B981;
+  --ds-conversion-hover: #059669;
+  --ds-conversion-light: rgba(16, 185, 129, 0.10);
+  --ds-conversion-text:  #ffffff;
+
+  /* --- Surfaces neutres --- */
+  --ds-bg:              #ffffff;
+  --ds-bg-secondary:    #FAFAFC;
+  --ds-bg-tertiary:     #f2f2fa;
+
+  /* --- Texte --- */
+  --ds-text-primary:    #14142b;
+  --ds-text-secondary:  #4e4b66;
+  --ds-text-tertiary:   #a0a3bd;
+
+  /* --- Sections sombres (footer, bandes) --- */
+  --ds-dark-bg:         #0f0f1c;
+  --ds-dark-surface:    #1a1a2e;
+  --ds-dark-text:       #ffffff;
+  --ds-dark-text-muted: rgba(255, 255, 255, 0.55);
+
+  /* --- Bordures --- */
+  --ds-border:          rgba(20, 20, 43, 0.09);
+  --ds-border-strong:   rgba(20, 20, 43, 0.18);
+
+  /* --- Rayon --- */
+  --ds-radius-xs:       4px;
+  --ds-radius-sm:       8px;
+  --ds-radius-md:       12px;
+  --ds-radius-lg:       16px;
+  --ds-radius-xl:       24px;
+  --ds-radius-2xl:      32px;
+  --ds-radius-full:     9999px;
+
+  /* --- Espacement --- */
+  --ds-space-xs:        4px;
+  --ds-space-sm:        8px;
+  --ds-space-md:        12px;
+  --ds-space-lg:        16px;
+  --ds-space-xl:        24px;
+  --ds-space-2xl:       40px;
+  --ds-space-3xl:       64px;
+
+  /* --- Typographie --- */
+  --ds-font-heading:    'Poppins', system-ui, -apple-system, sans-serif;
+  --ds-font-body:       'Inter', system-ui, -apple-system, sans-serif;
+  --ds-font-sans:       'Inter', system-ui, -apple-system, sans-serif;
+
+  --ds-text-xs:         0.75rem;
+  --ds-text-sm:         0.875rem;
+  --ds-text-base:       1rem;
+  --ds-text-lg:         1.125rem;
+  --ds-text-xl:         1.25rem;
+  --ds-text-2xl:        1.5rem;
+  --ds-text-3xl:        2rem;
+  --ds-text-4xl:        2.5rem;
+  --ds-text-5xl:        3.25rem;
+
+  --ds-weight-regular:  400;
+  --ds-weight-medium:   500;
+  --ds-weight-semibold: 600;
+  --ds-weight-bold:     700;
+  --ds-weight-extrabold:800;
+
+  /* --- Ombres --- */
+  --ds-shadow-sm:       0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  --ds-shadow-md:       0 4px 14px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --ds-shadow-lg:       0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.05);
+  --ds-shadow-brand:    0 8px 28px rgba(103, 79, 245, 0.22);
+  --ds-shadow-conversion: 0 6px 24px rgba(16, 185, 129, 0.28);
+
+  /* --- Transitions --- */
+  --ds-transition:      150ms ease;
+  --ds-transition-md:   240ms ease;
+}
+
+/* Scrollbar discrète */
+* { scrollbar-width: thin; scrollbar-color: var(--ds-border) transparent; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: var(--ds-border-strong); border-radius: var(--ds-radius-full); }
+::-webkit-scrollbar-track { background: transparent; }
