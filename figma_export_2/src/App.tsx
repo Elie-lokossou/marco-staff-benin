@@ -1,9 +1,9 @@
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback } from "react"
 import {
   MessageCircle, Phone, MapPin, Mail, Menu, X, ChevronRight,
   ArrowLeft, CheckCircle2, Star, Package, Sparkles,
   Clock, Calculator, ShieldCheck, Truck, Award, ChevronDown,
-  Plus, Minus, FileDown, ArrowRight, Zap, Check, CheckCheck
+  Plus, Minus, ArrowRight, Zap, HelpCircle
 } from "lucide-react"
 import imgGypse from "@/imports/photo2.jpeg"
 import imgChaux from "@/imports/photo1.jpeg"
@@ -130,6 +130,30 @@ const PRODUCTS: Product[] = [
 const imgSrc = (img: string | { src: string }) =>
   typeof img === "string" ? img : img.src
 
+// ─── FAQ Data ────────────────────────────────────────────────────────────────
+const FAQS = [
+  {
+    q: "Quels sont les délais de livraison sur les chantiers à Cotonou et Calavi ?",
+    a: "Nous assurons la livraison directe sur vos chantiers sous 24h à 48h maximum dans tout le Grand Cotonou (Cotonou, Abomey-Calavi, Sèmè-Kpodji, Ouidah et Porto-Novo). Vous pouvez également retirer vos commandes immédiatement à nos dépôts."
+  },
+  {
+    q: "La poudre de Gypse Marco 40 KG convient-elle aux corniches et faux-plafonds staff ?",
+    a: "Oui, absolument. Le Gypse Marco possède une granulométrie micronique extra-fine (< 80 microns) et un temps de prise parfaitement régulier (20 à 30 min). Il est spécialement formulé pour le coulage de corniches, les rosaces décoratives et les faux-plafonds suspendus sans risque de craquelure."
+  },
+  {
+    q: "Proposez-vous des tarifs dégressifs pour les grossistes et gros chantiers ?",
+    a: "Oui, nous appliquons une grille tarifaire préférentielle dégressive à partir de 20 sacs de gypse, 5 sacs de chaux ou 1 balle complète de filasse. Contactez-nous directement sur WhatsApp avec votre volume estimé pour recevoir notre meilleure offre."
+  },
+  {
+    q: "Quelle est la différence entre la Chaux Vive Marco et une chaux ordinaire ?",
+    a: "La Chaux Vive Marco (White Lime) est importée directement de Dubaï avec une pureté calcique certifiée CaO > 95%. Elle offre une réactivité thermique instantanée, une blancheur pure et un pouvoir anti-salpêtre et fongicide naturel idéal pour assainir les murs soumis au climat tropical."
+  },
+  {
+    q: "Comment commander ou réserver un stock pour mon chantier ?",
+    a: "Il vous suffit de cliquer sur le bouton WhatsApp du site ou d'utiliser le simulateur de chantier. Notre équipe vous confirme la disponibilité du stock, vous transmet la facture proforma et planifie la livraison selon votre planning."
+  }
+]
+
 // ─── Button Component ────────────────────────────────────────────────────────
 function Button({ children, variant = "primary", size = "medium", iconEnd, onClick, full = false, style = {} }: {
   children?: React.ReactNode; variant?: "primary" | "neutral" | "secondary"; size?: "small" | "medium" | "large";
@@ -147,7 +171,7 @@ function Button({ children, variant = "primary", size = "medium", iconEnd, onCli
       color: isPrimary || isSecondary ? "white" : "var(--ds-text-primary)",
       border: isPrimary || isSecondary ? "none" : "1.5px solid var(--ds-border)",
       borderRadius: "var(--ds-radius-full)",
-      padding: isSmall ? "8px 16px" : isLarge ? "15px 30px" : "12px 24px",
+      padding: isSmall ? "8px 16px" : isLarge ? "14px 28px" : "12px 22px",
       fontFamily: "var(--ds-font-body)", fontSize: isSmall ? "var(--ds-text-xs)" : "var(--ds-text-sm)",
       fontWeight: 600, cursor: "pointer", width: full ? "100%" : undefined,
       boxShadow: isPrimary ? "var(--ds-shadow-brand)" : "none",
@@ -178,7 +202,7 @@ function WaBtn({ label = "WhatsApp", url, small = false, full = false }: {
       display: "inline-flex", alignItems: "center", justifyContent: "center",
       gap: small ? 6 : 8, background: "var(--ds-conversion)", color: "white",
       fontFamily: "var(--ds-font-body)", fontSize: small ? "var(--ds-text-xs)" : "var(--ds-text-sm)",
-      fontWeight: 600, padding: small ? "9px 18px" : "13px 24px",
+      fontWeight: 600, padding: small ? "9px 16px" : "13px 22px",
       borderRadius: "var(--ds-radius-full)", textDecoration: "none",
       transition: "all var(--ds-transition)",
       boxShadow: "var(--ds-shadow-conversion)", width: full ? "100%" : undefined,
@@ -202,11 +226,11 @@ function WaBtn({ label = "WhatsApp", url, small = false, full = false }: {
 // ─── Header & Top Announcement ───────────────────────────────────────────────
 function AnnouncementBar() {
   return (
-    <div style={{ background: "var(--ds-dark-bg)", padding: "8px var(--ds-space-xl)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+    <div style={{ background: "var(--ds-dark-bg)", padding: "8px 16px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
       <div style={{
         maxWidth: 1200, margin: "0 auto",
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        gap: "var(--ds-space-lg)", flexWrap: "wrap",
+        gap: 12, flexWrap: "wrap",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--ds-conversion)", display: "block", animation: "pulse 2s infinite" }} />
@@ -230,9 +254,10 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   const links = [
     { label: "Accueil", id: "accueil" },
     { label: "Nos Matériaux", id: "produits" },
-    { label: "Simulateur Chantier", id: "simulateur" },
-    { label: "Garanties & Avis", id: "garanties" },
-    { label: "Contact & Dépôt", id: "contact" },
+    { label: "Simulateur", id: "simulateur" },
+    { label: "Garanties", id: "garanties" },
+    { label: "FAQ", id: "faq" },
+    { label: "Contact", id: "contact" },
   ]
 
   return (
@@ -242,7 +267,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
       borderBottom: "1px solid var(--ds-border)"
     }}>
       <div style={{
-        maxWidth: 1200, margin: "0 auto", padding: "0 var(--ds-space-xl)",
+        maxWidth: 1200, margin: "0 auto", padding: "0 16px",
         height: 68, display: "flex", alignItems: "center", justifyContent: "space-between"
       }}>
         {/* Logo */}
@@ -266,7 +291,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
         </div>
 
         {/* Nav Desktop */}
-        <nav style={{ display: "flex", gap: 28, alignItems: "center" }} className="nav-desktop">
+        <nav style={{ display: "flex", gap: 24, alignItems: "center" }} className="nav-desktop">
           {links.map(({ label, id }) => (
             <a key={id} href={`#${id}`}
               onClick={e => { e.preventDefault(); onNavigate(id) }}
@@ -283,11 +308,11 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
 
         {/* CTA Desktop */}
         <div className="nav-desktop">
-          <WaBtn label="Commander sur WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite obtenir un devis pour mon chantier.`)} small />
+          <WaBtn label="WhatsApp Express" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis.`)} small />
         </div>
 
         {/* Mobile menu toggle */}
-        <button onClick={() => setOpen(!open)} style={{
+        <button onClick={() => setOpen(!open)} aria-label="Menu" style={{
           background: "none", border: "none", cursor: "pointer",
           padding: 8, color: "var(--ds-text-primary)", flexShrink: 0
         }} className="nav-mobile-toggle">
@@ -299,8 +324,8 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
       {open && (
         <div style={{
           borderTop: "1px solid var(--ds-border)",
-          padding: "var(--ds-space-lg) var(--ds-space-xl)",
-          display: "flex", flexDirection: "column", gap: "var(--ds-space-md)",
+          padding: "16px",
+          display: "flex", flexDirection: "column", gap: 12,
           background: "var(--ds-bg)"
         }}>
           {links.map(({ label, id }) => (
@@ -325,7 +350,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
   return (
     <section id="accueil" style={{ background: "var(--ds-bg)", position: "relative", overflow: "hidden" }}>
       <div style={{
-        maxWidth: 1200, margin: "0 auto", padding: "56px var(--ds-space-xl) 72px",
+        maxWidth: 1200, margin: "0 auto", padding: "48px 16px 64px",
         display: "grid", gridTemplateColumns: "1.1fr 0.9fr",
         gap: "var(--ds-space-3xl)", alignItems: "center", position: "relative",
       }} className="hero-grid">
@@ -369,7 +394,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
           </p>
 
           {/* Action CTAs */}
-          <div style={{ display: "flex", gap: "var(--ds-space-md)", flexWrap: "wrap", alignItems: "center", marginBottom: 40 }}>
+          <div style={{ display: "flex", gap: "var(--ds-space-md)", flexWrap: "wrap", alignItems: "center", marginBottom: 36 }} className="hero-cta-group">
             <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} />
             <Button variant="neutral" iconEnd={<Calculator size={15} />} onClick={onSimulateur}>
               Simulateur Chantier
@@ -440,7 +465,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
 // ─── Products Showcase Section ───────────────────────────────────────────────
 function ProductsSection({ onDetail }: { onDetail: (p: Product) => void }) {
   return (
-    <section id="produits" style={{ background: "var(--ds-bg-secondary)", padding: "72px var(--ds-space-xl)" }}>
+    <section id="produits" style={{ background: "var(--ds-bg-secondary)", padding: "72px 16px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 48px" }}>
@@ -562,7 +587,6 @@ function SimulateurSection() {
   const [surface, setSurface] = useState(60)
   const [typeOuvrage, setTypeOuvrage] = useState<"plafond" | "corniche">("plafond")
 
-  // Formule calibrée BTP pour le staff
   const coefGypse = typeOuvrage === "plafond" ? 0.35 : 0.25
   const coefFilasse = typeOuvrage === "plafond" ? 0.15 : 0.10
   const coefChaux = 0.08
@@ -594,7 +618,7 @@ function SimulateurSection() {
   )
 
   return (
-    <section id="simulateur" style={{ background: "var(--ds-bg)", padding: "72px var(--ds-space-xl)" }}>
+    <section id="simulateur" style={{ background: "var(--ds-bg)", padding: "72px 16px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.25fr", gap: "var(--ds-space-3xl)", alignItems: "center" }} className="simu-grid">
         
         {/* Left explanation */}
@@ -678,7 +702,7 @@ function SimulateurSection() {
                 </span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-space-sm)" }}>
-                <button onClick={() => setSurface(s => Math.max(10, s - 10))}
+                <button onClick={() => setSurface(s => Math.max(10, s - 10))} aria-label="Moins 10m²"
                   style={{ width: 44, height: 44, borderRadius: "50%", border: "1.5px solid var(--ds-border)", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "var(--ds-text-secondary)" }}>
                   <Minus size={15} />
                 </button>
@@ -686,7 +710,7 @@ function SimulateurSection() {
                   onChange={e => setSurface(Number(e.target.value))}
                   style={{ flex: 1, accentColor: "var(--ds-brand)", height: 6, cursor: "pointer" }}
                 />
-                <button onClick={() => setSurface(s => Math.min(500, s + 10))}
+                <button onClick={() => setSurface(s => Math.min(500, s + 10))} aria-label="Plus 10m²"
                   style={{ width: 44, height: 44, borderRadius: "50%", border: "1.5px solid var(--ds-border)", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "var(--ds-text-secondary)" }}>
                   <Plus size={15} />
                 </button>
@@ -726,6 +750,206 @@ function SimulateurSection() {
   )
 }
 
+// ─── Bannière CTA Glassmorphism (Reproduction Exacte de l'Image Figma) ───────
+function VeloraCTABanner() {
+  return (
+    <section style={{ background: "var(--ds-bg)", padding: "48px 16px 72px", position: "relative", overflow: "hidden" }}>
+      
+      {/* Background Glowing Blurred Circles (Identique à l'Image Figma) */}
+      <div style={{
+        position: "absolute", top: "50%", left: "15%", width: 340, height: 340,
+        borderRadius: "50%", background: "rgba(103, 79, 245, 0.35)",
+        filter: "blur(90px)", transform: "translate(-50%, -50%)", pointerEvents: "none", zIndex: 0
+      }} />
+      <div style={{
+        position: "absolute", top: "50%", right: "10%", width: 280, height: 280,
+        borderRadius: "50%", background: "rgba(124, 58, 237, 0.25)",
+        filter: "blur(80px)", transform: "translate(0, -50%)", pointerEvents: "none", zIndex: 0
+      }} />
+
+      <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        
+        <div style={{
+          borderRadius: "28px",
+          overflow: "hidden",
+          display: "grid",
+          gridTemplateColumns: "1.15fr 0.85fr",
+          boxShadow: "0 20px 60px rgba(103,79,245,0.22), 0 4px 20px rgba(0,0,0,0.06)",
+          border: "1px solid rgba(255,255,255,0.8)",
+          backdropFilter: "blur(20px)",
+        }} className="velora-banner-grid">
+          
+          {/* Left: Purple Gradient with Solid Headline (Exact Figma) */}
+          <div style={{
+            background: "linear-gradient(135deg, #7C3AED 0%, #674FF5 50%, #5B21B6 100%)",
+            padding: "48px 40px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            position: "relative",
+            color: "white"
+          }} className="velora-banner-left">
+            <h2 style={{
+              fontFamily: "var(--ds-font-heading)",
+              fontSize: "clamp(1.85rem, 3.8vw, 2.7rem)",
+              fontWeight: 800,
+              lineHeight: 1.15,
+              letterSpacing: "-0.035em",
+              margin: 0,
+              color: "white"
+            }}>
+              Let&apos;s Build the Right Solution Together.
+            </h2>
+          </div>
+
+          {/* Right: Clean White / Glass with Call to Action (Exact Figma) */}
+          <div style={{
+            background: "rgba(255, 255, 255, 0.94)",
+            padding: "44px 36px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: 16
+          }} className="velora-banner-right">
+            <div>
+              <h3 style={{
+                fontFamily: "var(--ds-font-heading)",
+                fontSize: "var(--ds-text-lg)",
+                fontWeight: 800,
+                color: "#101828",
+                lineHeight: 1.25,
+                margin: "0 0 8px"
+              }}>
+                Looking for reliable industrial solutions?
+              </h3>
+              <p style={{
+                fontFamily: "var(--ds-font-body)",
+                fontSize: "0.8rem",
+                color: "#475467",
+                lineHeight: 1.5,
+                margin: 0
+              }}>
+                Precision Engineering. Global Support. Proven Expertise.
+              </p>
+            </div>
+
+            <div style={{ paddingTop: 4 }}>
+              <a href={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite échanger sur un projet d'approvisionnement.`)} target="_blank" rel="noopener noreferrer" style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                background: "white",
+                color: "#101828",
+                border: "1px solid #D0D5DD",
+                borderRadius: "var(--ds-radius-md)",
+                padding: "11px 24px",
+                fontFamily: "var(--ds-font-body)",
+                fontSize: "var(--ds-text-xs)",
+                fontWeight: 700,
+                textDecoration: "none",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+                transition: "all var(--ds-transition)"
+              }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = "#101828"
+                  e.currentTarget.style.color = "white"
+                  e.currentTarget.style.borderColor = "#101828"
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = "white"
+                  e.currentTarget.style.color = "#101828"
+                  e.currentTarget.style.borderColor = "#D0D5DD"
+                }}
+              >
+                <span>Contact Us</span>
+                <ArrowRight size={13} />
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+// ─── FAQ Accordion Section ───────────────────────────────────────────────────
+function FAQSection() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
+
+  const toggle = (i: number) => {
+    setOpenIndex(openIndex === i ? null : i)
+  }
+
+  return (
+    <section id="faq" style={{ background: "var(--ds-bg-secondary)", padding: "72px 16px" }}>
+      <div style={{ maxWidth: 880, margin: "0 auto" }}>
+        
+        <div style={{ textAlign: "center", marginBottom: 40 }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)",
+            fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase",
+            letterSpacing: "0.1em", marginBottom: 10,
+            background: "var(--ds-brand-light)", padding: "5px 12px", borderRadius: "var(--ds-radius-full)"
+          }}>
+            <HelpCircle size={13} /> Questions Fréquentes
+          </span>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.5vw, 2.3rem)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.025em", margin: "6px 0 10px" }}>
+            Tout ce que vous devez savoir avant de commander
+          </h2>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-secondary)" }}>
+            Réponses claires sur nos matériaux, nos délais de livraison et nos conditions tarifaires
+          </p>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {FAQS.map((faq, i) => {
+            const isOpen = openIndex === i
+            return (
+              <div key={i} style={{
+                background: "white", borderRadius: "var(--ds-radius-xl)",
+                border: `1.5px solid ${isOpen ? "var(--ds-brand)" : "var(--ds-border)"}`,
+                overflow: "hidden", transition: "all var(--ds-transition)"
+              }}>
+                <button onClick={() => toggle(i)} style={{
+                  width: "100%", padding: "18px 20px", display: "flex",
+                  alignItems: "center", justifyContent: "space-between", gap: 16,
+                  background: "none", border: "none", cursor: "pointer", textAlign: "left"
+                }}>
+                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-sm)", fontWeight: 700, color: "var(--ds-text-primary)", lineHeight: 1.35 }}>
+                    {faq.q}
+                  </span>
+                  <div style={{
+                    width: 28, height: 28, borderRadius: "50%",
+                    background: isOpen ? "var(--ds-brand-light)" : "var(--ds-bg-secondary)",
+                    display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                    color: isOpen ? "var(--ds-brand)" : "var(--ds-text-tertiary)",
+                    transition: "transform var(--ds-transition)"
+                  }}>
+                    <ChevronDown size={16} style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }} />
+                  </div>
+                </button>
+
+                {isOpen && (
+                  <div style={{ padding: "0 20px 18px", borderTop: "1px solid var(--ds-border)", paddingTop: 14 }}>
+                    <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-text-secondary)", lineHeight: 1.7, margin: 0 }}>
+                      {faq.a}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
 // ─── Testimonials & Guarantees ───────────────────────────────────────────────
 const TEMOIGNAGES = [
   { initials: "KB", color: "#674FF5", nom: "Kouassi Bernard", role: "Maître Staffeur depuis 14 ans", ville: "Cotonou", note: 5, texte: "Le gypse Marco est sans équivalent au Bénin. La pâte est fluide, prend sans chauffer excessivement et ne fait aucune fissure. Mes chantiers sont validés du premier coup." },
@@ -742,7 +966,7 @@ const GARANTIES = [
 
 function ReassuranceSection() {
   return (
-    <section id="garanties" style={{ background: "var(--ds-bg-secondary)", padding: "72px var(--ds-space-xl)" }}>
+    <section id="garanties" style={{ background: "var(--ds-bg)", padding: "72px 16px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         
         <div style={{ textAlign: "center", marginBottom: "var(--ds-space-2xl)" }}>
@@ -760,7 +984,7 @@ function ReassuranceSection() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--ds-space-xl)", marginBottom: "var(--ds-space-3xl)" }} className="product-grid">
           {TEMOIGNAGES.map(({ initials, color, nom, role, ville, note, texte }) => (
             <div key={nom} style={{
-              background: "var(--ds-bg)", border: "1px solid var(--ds-border)", borderRadius: "var(--ds-radius-2xl)",
+              background: "var(--ds-bg-secondary)", border: "1px solid var(--ds-border)", borderRadius: "var(--ds-radius-2xl)",
               padding: "var(--ds-space-xl)", display: "flex", flexDirection: "column", gap: "var(--ds-space-lg)",
               boxShadow: "var(--ds-shadow-sm)"
             }}>
@@ -816,7 +1040,7 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
     <div style={{ minHeight: "100vh", background: "var(--ds-bg)" }}>
       
       {/* Breadcrumb */}
-      <div style={{ background: "var(--ds-bg-secondary)", borderBottom: "1px solid var(--ds-border)", padding: "12px var(--ds-space-xl)" }}>
+      <div style={{ background: "var(--ds-bg-secondary)", borderBottom: "1px solid var(--ds-border)", padding: "12px 16px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", gap: 8 }}>
           <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: 5, fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-brand)", background: "none", border: "none", cursor: "pointer", padding: 0, fontWeight: 700 }}>
             <ArrowLeft size={14} /> Retour au catalogue
@@ -827,7 +1051,7 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
       </div>
 
       {/* Main product view */}
-      <section style={{ padding: "48px var(--ds-space-xl)" }}>
+      <section style={{ padding: "48px 16px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: "var(--ds-space-3xl)", alignItems: "flex-start" }} className="fiche-grid">
           
           {/* Image studio frame */}
@@ -893,7 +1117,7 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
       </section>
 
       {/* Technical Specs Table */}
-      <section style={{ background: "var(--ds-bg-secondary)", padding: "56px var(--ds-space-xl)" }}>
+      <section style={{ background: "var(--ds-bg-secondary)", padding: "56px 16px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-2xl)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.02em", marginBottom: "var(--ds-space-xl)" }}>
             Fiche des Spécifications Techniques
@@ -901,10 +1125,10 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
           <div style={{ background: "white", borderRadius: "var(--ds-radius-xl)", border: "1px solid var(--ds-border)", overflow: "hidden", boxShadow: "var(--ds-shadow-sm)" }}>
             {product.specs.map(({ label, valeur }, i) => (
               <div key={label} className="spec-row" style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", borderBottom: i < product.specs.length - 1 ? "1px solid var(--ds-border)" : "none" }}>
-                <div style={{ padding: "14px var(--ds-space-xl)", background: "var(--ds-bg-secondary)", borderRight: "1px solid var(--ds-border)" }}>
+                <div style={{ padding: "14px 16px", background: "var(--ds-bg-secondary)", borderRight: "1px solid var(--ds-border)" }}>
                   <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", fontWeight: 700, color: "var(--ds-text-secondary)" }}>{label}</span>
                 </div>
-                <div style={{ padding: "14px var(--ds-space-xl)" }}>
+                <div style={{ padding: "14px 16px" }}>
                   <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-primary)", fontWeight: 500 }}>{valeur}</span>
                 </div>
               </div>
@@ -914,7 +1138,7 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
       </section>
 
       {/* Produits connexes */}
-      <section style={{ background: "var(--ds-bg)", padding: "56px var(--ds-space-xl)" }}>
+      <section style={{ background: "var(--ds-bg)", padding: "56px 16px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-2xl)", fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.02em", marginBottom: "var(--ds-space-xl)" }}>
             Matériaux Complémentaires Recommandés
@@ -961,7 +1185,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
   return (
     <footer id="contact" style={{ background: "var(--ds-dark-bg)", color: "white", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
       <div style={{
-        maxWidth: 1200, margin: "0 auto", padding: "64px var(--ds-space-xl) var(--ds-space-xl)",
+        maxWidth: 1200, margin: "0 auto", padding: "64px 16px 24px",
         display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.2fr", gap: "var(--ds-space-3xl)"
       }} className="footer-grid">
         
@@ -1028,6 +1252,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
               { label: "Nos Matériaux", id: "produits" },
               { label: "Simulateur Chantier", id: "simulateur" },
               { label: "Garanties & Avis", id: "garanties" },
+              { label: "FAQ", id: "faq" },
             ].map(({ label, id }) => (
               <li key={id}>
                 <a href={`#${id}`} onClick={e => { e.preventDefault(); onNavigate(id) }} style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-dark-text-muted)", textDecoration: "none" }}>
@@ -1067,7 +1292,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
 
       {/* Copyright Bar */}
       <div style={{
-        maxWidth: 1200, margin: "0 auto", padding: "20px var(--ds-space-xl)",
+        maxWidth: 1200, margin: "0 auto", padding: "20px 16px",
         borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex",
         justifyContent: "space-between", flexWrap: "wrap", gap: 12, alignItems: "center"
       }}>
@@ -1101,24 +1326,28 @@ const CSS = `
   .footer-grid { grid-template-columns: 2fr 1fr 1fr 1.2fr; }
   .mobile-dock { display: none !important; }
   .spec-row { grid-template-columns: 1fr 1.5fr; }
+  .velora-banner-grid { grid-template-columns: 1.15fr 0.85fr; }
 
   @media (max-width: 1024px) {
     .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .garanties-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .footer-grid { grid-template-columns: 1fr 1fr !important; gap: var(--ds-space-xl) !important; }
     .simu-grid { grid-template-columns: 1fr !important; }
+    .velora-banner-grid { grid-template-columns: 1fr !important; }
   }
 
   @media (max-width: 768px) {
     .nav-desktop { display: none !important; }
     .nav-mobile-toggle { display: flex !important; }
     .mobile-dock { display: flex !important; }
-    main { padding-bottom: 76px !important; }
-    .hero-grid { grid-template-columns: 1fr !important; padding-top: 32px !important; padding-bottom: 48px !important; gap: 28px !important; }
+    main { padding-bottom: 84px !important; }
+    .hero-grid { grid-template-columns: 1fr !important; padding-top: 24px !important; padding-bottom: 40px !important; gap: 24px !important; }
     .hero-visual { display: flex !important; justify-content: center !important; margin-top: 8px !important; }
     .hero-visual > div { width: 100% !important; max-width: 290px !important; }
     .hero-float-1 { bottom: 8px !important; left: -4px !important; transform: scale(0.88); }
     .hero-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
+    .hero-cta-group { flex-direction: column !important; align-items: stretch !important; }
+    .hero-cta-group > * { width: 100% !important; justify-content: center !important; }
     .product-grid { grid-template-columns: 1fr !important; }
     .garanties-grid { grid-template-columns: 1fr !important; }
     .fiche-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
@@ -1127,6 +1356,9 @@ const CSS = `
     .spec-row { grid-template-columns: 1fr !important; }
     .spec-row > div:first-child { border-right: none !important; border-bottom: 1px solid var(--ds-border) !important; padding: 10px 14px !important; }
     .spec-row > div:last-child { padding: 10px 14px !important; }
+    .velora-banner-grid { grid-template-columns: 1fr !important; }
+    .velora-banner-left { padding: 32px 20px !important; }
+    .velora-banner-right { padding: 28px 20px !important; }
   }
 
   @media (max-width: 480px) {
@@ -1172,7 +1404,7 @@ export default function App() {
   return (
     <>
       <style>{CSS}</style>
-      <div style={{ fontFamily: "var(--ds-font-body)", minHeight: "100vh" }}>
+      <div style={{ fontFamily: "var(--ds-font-body)", minHeight: "100vh", overflowX: "hidden", width: "100%" }}>
         <AnnouncementBar />
         <Navbar onNavigate={handleNavigate} />
         
@@ -1181,7 +1413,9 @@ export default function App() {
             <HeroSection onVoirProduits={() => handleNavigate("produits")} onSimulateur={() => handleNavigate("simulateur")} />
             <ProductsSection onDetail={handleDetail} />
             <SimulateurSection />
+            <VeloraCTABanner />
             <ReassuranceSection />
+            <FAQSection />
           </main>
         ) : (
           selectedProduct && <FicheProduit product={selectedProduct} onBack={handleBack} onDetail={handleDetail} />
