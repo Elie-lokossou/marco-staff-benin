@@ -399,79 +399,184 @@ function HeroSection({ onVoirProduits }: { onVoirProduits: () => void }) {
   )
 }
 
-// ─── Categories ───────────────────────────────────────────────────────────────
-const CATS = [
-  { nom: "Gypse & Plâtre", icon: Package, actif: true, img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=200&fit=crop&auto=format", desc: "Poudres de gypse et plâtre d'importation" },
-  { nom: "Chaux & Liants", icon: Layers, actif: true, img: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=200&fit=crop&auto=format", desc: "Chaux vive et liants de construction" },
-  { nom: "Filasse & Armatures", icon: Leaf, actif: true, img: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=200&fit=crop&auto=format", desc: "Fibres naturelles pour renforcement staff" },
-  { nom: "Décorations Staff", icon: Sparkles, actif: true, img: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=400&h=200&fit=crop&auto=format", desc: "Moulures, corniches et ornements" },
-  { nom: "Location Matériel", icon: Clock, actif: false, img: "", desc: "Outils et machines professionnels" },
+// ─── Applications & Usages Chantiers (Redesign Haut Niveau) ───────────────────
+const USAGES = [
+  {
+    id: "gypse",
+    titre: "Plafonds Suspendus & Plaques Staff",
+    badgeOrigine: "🇪🇬 Import Égypte",
+    badgeType: "Gypse Extra White",
+    img: imgGypse,
+    points: [
+      "Blancheur éclatante 100% sans jaunissement",
+      "Gâchage fluide micronique sans grumeaux",
+      "Prise régulière (20–30 min) : zéro craquelure",
+    ],
+    cible: "Idéal pour salons de standing, faux-plafonds staff & gorges lumineuses.",
+  },
+  {
+    id: "chaux",
+    titre: "Enduits Protecteurs & Chaulage Mural",
+    badgeOrigine: "🇦🇪 Import Dubaï",
+    badgeType: "Chaux Vive Pure",
+    img: imgChaux,
+    points: [
+      "Pureté calcique CaO > 95% à haute réactivité",
+      "Action fongicide & assainissante naturelle",
+      "Barrière respirante contre l'humidité tropicale",
+    ],
+    cible: "Recommandé pour enduits durables, badigeons et assainissement maçonnerie.",
+  },
+  {
+    id: "filasse",
+    titre: "Armature & Renfort Anti-Fissuration",
+    badgeOrigine: "🇰🇪 Produce of Kenya",
+    badgeType: "100% Sisal Pur",
+    img: imgFilasse,
+    points: [
+      "Fibres longues peignées (60 à 120 cm)",
+      "Résistance mécanique extrême à la traction",
+      "Imprégnation plâtre instantanée et homogène",
+    ],
+    cible: "Indispensable pour l'armature des plaques, corniches et modénatures lourdes.",
+  },
 ]
 
 function CategoriesSection({ onScrollTo }: { onScrollTo: (id: string) => void }) {
   return (
-    <section id="categories" style={{ background: "var(--ds-bg-secondary)", padding: "80px var(--ds-space-xl)" }}>
+    <section id="categories" style={{ background: "var(--ds-bg-secondary)", padding: "72px var(--ds-space-xl)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: "var(--ds-space-2xl)" }}>
-          <span style={{ display: "inline-block", fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", fontWeight: 600, color: "var(--ds-brand)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>
-            Nos Gammes
+        
+        {/* En-tête de section */}
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 48px" }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)",
+            fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase",
+            letterSpacing: "0.12em", marginBottom: 12,
+            background: "var(--ds-brand-light)", padding: "6px 14px", borderRadius: "var(--ds-radius-full)"
+          }}>
+            <Sparkles size={12} /> Domaines d'Excellence & Usages
           </span>
-          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-3xl)", fontWeight: 700, color: "var(--ds-text-primary)", letterSpacing: "-0.025em", marginBottom: "var(--ds-space-sm)" }}>
-            Solutions Complètes BTP
+          <h2 style={{
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.5vw, 2.4rem)",
+            fontWeight: 800, color: "var(--ds-text-primary)", letterSpacing: "-0.03em",
+            lineHeight: 1.2, marginBottom: 12
+          }}>
+            Des Matériaux Importés pour Chaque Étape de Finition
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-secondary)" }}>
-            Tout ce dont vos chantiers de finition ont besoin, en stock permanent
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-sm)", color: "var(--ds-text-secondary)", lineHeight: 1.6, margin: 0 }}>
+            Chaque produit répond à une exigence technique stricte sur vos chantiers : zéro compromis sur la solidité, la blancheur et la durabilité.
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 14 }} className="cat-grid-5">
-          {CATS.map(({ nom, icon: Icon, actif, img, desc }) => (
-            <div key={nom}
-              onClick={() => actif && onScrollTo("produits")}
+        {/* Grille des 3 piliers réels */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--ds-space-xl)" }} className="product-grid">
+          {USAGES.map((u) => (
+            <div
+              key={u.id}
+              onClick={() => onScrollTo("produits")}
               style={{
-                background: actif ? "var(--ds-bg)" : "var(--ds-bg-tertiary)",
-                border: "1px solid var(--ds-border)", borderRadius: "var(--ds-radius-xl)",
-                overflow: "hidden", cursor: actif ? "pointer" : "default",
-                opacity: actif ? 1 : 0.55,
-                transition: "box-shadow var(--ds-transition-md), transform var(--ds-transition-md)",
+                background: "var(--ds-bg)",
+                border: "1px solid var(--ds-border)",
+                borderRadius: "var(--ds-radius-2xl)",
+                padding: "var(--ds-space-xl)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "var(--ds-space-lg)",
+                cursor: "pointer",
+                boxShadow: "var(--ds-shadow-sm)",
+                transition: "all var(--ds-transition-md)",
                 position: "relative",
               }}
-              onMouseEnter={e => { if (actif) { e.currentTarget.style.boxShadow = "var(--ds-shadow-md)"; e.currentTarget.style.transform = "translateY(-3px)" } }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = "var(--ds-shadow-lg)"
+                e.currentTarget.style.transform = "translateY(-4px)"
+                e.currentTarget.style.borderColor = "var(--ds-brand-muted)"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = "var(--ds-shadow-sm)"
+                e.currentTarget.style.transform = "translateY(0)"
+                e.currentTarget.style.borderColor = "var(--ds-border)"
+              }}
             >
-              {actif && img && (
-                <div style={{ height: 90, overflow: "hidden" }}>
-                  <img src={img} alt={nom} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                </div>
-              )}
-              {!actif && (
-                <div style={{ height: 90, background: "var(--ds-bg-tertiary)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Icon size={24} style={{ color: "var(--ds-text-tertiary)" }} />
-                </div>
-              )}
-              <div style={{ padding: "12px 14px" }}>
-                {!actif && (
-                  <span style={{ position: "absolute", top: 8, right: 8, background: "var(--ds-text-tertiary)", color: "white", borderRadius: "var(--ds-radius-full)", padding: "2px 7px", fontSize: "0.6rem", fontWeight: 600, fontFamily: "var(--ds-font-body)", textTransform: "uppercase", letterSpacing: "0.04em" }}>
-                    Bientôt
-                  </span>
-                )}
-                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-                  {actif && (
-                    <div style={{ width: 22, height: 22, borderRadius: "var(--ds-radius-xs)", background: "var(--ds-brand-muted)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "var(--ds-brand)" }}>
-                      <Icon size={12} />
-                    </div>
-                  )}
-                  <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-xs)", fontWeight: 700, color: actif ? "var(--ds-text-primary)" : "var(--ds-text-tertiary)", margin: 0, lineHeight: 1.3 }}>
-                    {nom}
-                  </p>
-                </div>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", color: "var(--ds-text-tertiary)", margin: 0, lineHeight: 1.4 }}>
-                  {desc}
+              {/* Visuel produit réel cadré studio */}
+              <div style={{
+                height: 180,
+                background: "linear-gradient(135deg, #f8f9fc 0%, #edf0f7 100%)",
+                borderRadius: "var(--ds-radius-xl)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 16,
+                position: "relative",
+                overflow: "hidden"
+              }}>
+                <img
+                  src={imgSrc(u.img)}
+                  alt={u.titre}
+                  style={{
+                    maxHeight: "100%",
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                    filter: "drop-shadow(0 10px 16px rgba(0,0,0,0.12))",
+                    transition: "transform 300ms ease"
+                  }}
+                />
+                <span style={{
+                  position: "absolute", top: 10, left: 10,
+                  background: "rgba(255,255,255,0.92)", backdropFilter: "blur(4px)",
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 700,
+                  color: "var(--ds-text-primary)", padding: "3px 9px", borderRadius: "var(--ds-radius-full)",
+                  boxShadow: "var(--ds-shadow-sm)"
+                }}>
+                  {u.badgeOrigine}
+                </span>
+              </div>
+
+              {/* Titre & Points clés */}
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
+                <h3 style={{
+                  fontFamily: "var(--ds-font-heading)", fontSize: "var(--ds-text-base)",
+                  fontWeight: 700, color: "var(--ds-text-primary)", margin: 0, lineHeight: 1.3
+                }}>
+                  {u.titre}
+                </h3>
+
+                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+                  {u.points.map((pt) => (
+                    <li key={pt} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                      <CheckCircle2 size={14} style={{ color: "var(--ds-conversion)", flexShrink: 0, marginTop: 2 }} />
+                      <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "var(--ds-text-xs)", color: "var(--ds-text-secondary)", lineHeight: 1.45 }}>
+                        {pt}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                <p style={{
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.72rem",
+                  color: "var(--ds-text-tertiary)", margin: "auto 0 0",
+                  paddingTop: 10, borderTop: "1px dashed var(--ds-border)",
+                  fontStyle: "italic"
+                }}>
+                  {u.cible}
                 </p>
+              </div>
+
+              {/* Bouton Voir la solution */}
+              <div style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                paddingTop: 6, color: "var(--ds-brand)", fontFamily: "var(--ds-font-body)",
+                fontSize: "var(--ds-text-xs)", fontWeight: 700
+              }}>
+                <span>Explorer la fiche technique</span>
+                <ArrowRight size={13} />
               </div>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   )
