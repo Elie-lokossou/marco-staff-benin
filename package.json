@@ -3,9 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "workspaces": [
+    "figma_export_2"
+  ],
   "scripts": {
+    "build": "npm install --prefix figma_export_2 && npm run build --prefix figma_export_2",
     "dev": "npm run dev --prefix figma_export_2",
-    "build": "npm run build --prefix figma_export_2",
     "preview": "npm run preview --prefix figma_export_2"
   }
 }
