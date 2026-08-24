@@ -1,0 +1,11 @@
+{
+  "name": "marco-staff-benin",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run dev --prefix figma_export_2",
+    "build": "npm run build --prefix figma_export_2",
+    "preview": "npm run preview --prefix figma_export_2"
+  }
+}
