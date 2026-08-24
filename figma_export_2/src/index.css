@@ -23,44 +23,26 @@ body {
   width: 100%;
 }
 
-/* Custom Animated Background Mesh */
-.velora-mesh-bg {
-  background-color: #FFFFFF;
-  background-image: 
-    radial-gradient(at 85% 20%, rgba(103, 79, 245, 0.14) 0px, transparent 55%),
-    radial-gradient(at 15% 40%, rgba(124, 58, 237, 0.08) 0px, transparent 50%),
-    radial-gradient(at 75% 75%, rgba(16, 185, 129, 0.08) 0px, transparent 45%);
+:focus-visible {
+  outline: 2px solid var(--ds-brand);
+  outline-offset: 2px;
 }
 
-.glow-card {
-  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-.glow-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 24px 48px -12px rgba(103, 79, 245, 0.22);
+button, a {
+  -webkit-tap-highlight-color: transparent;
 }
 
-.hero-gradient-text {
-  background: linear-gradient(135deg, #0F172A 0%, #334155 45%, #674FF5 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ds-font-heading);
+  margin: 0;
 }
 
-/* Floating animation */
-@keyframes floatSlow {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(1deg); }
+p, span, a, li, input, button, select, textarea {
+  font-family: var(--ds-font-body);
 }
 
-.animate-float {
-  animation: floatSlow 6s ease-in-out infinite;
-}
-
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.04); }
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 4s ease-in-out infinite;
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }

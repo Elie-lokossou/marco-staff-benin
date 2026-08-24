@@ -1,10 +1,10 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import {
   MessageCircle, Phone, MapPin, Menu, X, ChevronRight,
   ArrowLeft, CheckCircle2, Star, Package,
   Clock, Calculator, ShieldCheck, Truck, Award, ChevronDown,
   Plus, Minus, ArrowRight, HelpCircle, Layers, Sparkles,
-  Check, ArrowUpRight, Warehouse, Hammer, Building2
+  ArrowUp, Building2, Warehouse, Hammer
 } from "lucide-react"
 import imgGypse from "@/imports/photo2.jpeg"
 import imgChaux from "@/imports/photo1.jpeg"
@@ -148,9 +148,9 @@ const FAQS = [
 ]
 
 // ─── Composant Bouton Moderne ────────────────────────────────────────────────
-function Button({ children, variant = "primary", size = "medium", iconEnd, onClick, full = false, style = {} }: {
+function Button({ children, variant = "primary", size = "medium", iconEnd, onClick, full = false, style = {}, ariaLabel }: {
   children?: React.ReactNode; variant?: "primary" | "neutral" | "secondary"; size?: "small" | "medium" | "large";
-  iconEnd?: React.ReactNode; onClick?: () => void; full?: boolean; style?: React.CSSProperties;
+  iconEnd?: React.ReactNode; onClick?: () => void; full?: boolean; style?: React.CSSProperties; ariaLabel?: string;
 }) {
   const isPrimary = variant === "primary"
   const isSecondary = variant === "secondary"
@@ -158,7 +158,7 @@ function Button({ children, variant = "primary", size = "medium", iconEnd, onCli
   const isLarge = size === "large"
 
   return (
-    <button onClick={onClick} style={{
+    <button onClick={onClick} aria-label={ariaLabel} style={{
       display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
       background: isPrimary ? "var(--ds-brand)" : isSecondary ? "var(--ds-dark-bg)" : "var(--ds-bg-subtle)",
       color: isPrimary || isSecondary ? "white" : "var(--ds-text-primary)",
@@ -216,7 +216,7 @@ function WaBtn({ label = "WhatsApp", url, small = false, full = false }: {
   )
 }
 
-// ─── Header & Top Announcement ───────────────────────────────────────────────
+// ─── Header & Smart Navbar ───────────────────────────────────────────────────
 function AnnouncementBar() {
   return (
     <div style={{ background: "var(--ds-dark-bg)", padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
@@ -227,7 +227,7 @@ function AnnouncementBar() {
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--ds-conversion)", display: "block", animation: "pulse 2s infinite" }} />
           <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "var(--ds-dark-text-muted)", fontWeight: 500 }}>
-            Dépôt Ouvert · Lun–Sam 7h30–18h00 · Cotonou &amp; Abomey-Calavi
+            Dépôt Ouvert · Lun–Sam 7h30–18h00 · Dépôts Cotonou &amp; Calavi
           </span>
         </div>
         <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", alignItems: "center", gap: 6, textDecoration: "none" }}>
@@ -243,6 +243,19 @@ function AnnouncementBar() {
 
 function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   const [open, setOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    let lastScroll = 0
+    const handleScroll = () => {
+      const currentScroll = window.scrollY
+      setIsScrolled(currentScroll > 60)
+      lastScroll = currentScroll
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   const links = [
     { label: "Accueil", id: "accueil" },
     { label: "Nos Matériaux", id: "produits" },
@@ -256,21 +269,26 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   return (
     <header style={{
       position: "sticky", top: 0, zIndex: 100,
-      background: "rgba(255,255,255,0.96)", backdropFilter: "blur(14px)",
-      borderBottom: "1px solid var(--ds-border)"
+      background: isScrolled ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.92)",
+      backdropFilter: "blur(14px)",
+      borderBottom: "1px solid var(--ds-border)",
+      boxShadow: isScrolled ? "0 4px 20px rgba(0,0,0,0.06)" : "none",
+      transition: "all var(--ds-transition)"
     }}>
       <div className="site-container" style={{
-        height: 70, display: "flex", alignItems: "center", justifyContent: "space-between"
+        height: isScrolled ? 60 : 70, display: "flex", alignItems: "center", justifyContent: "space-between",
+        transition: "height var(--ds-transition)"
       }}>
         {/* Logo */}
         <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
           <div style={{
-            width: 38, height: 38, borderRadius: "var(--ds-radius-md)",
+            width: isScrolled ? 34 : 38, height: isScrolled ? 34 : 38, borderRadius: "var(--ds-radius-md)",
             background: "var(--ds-brand)", display: "flex", alignItems: "center",
             justifyContent: "center", flexShrink: 0,
             boxShadow: "0 2px 10px rgba(103,79,245,0.35)",
+            transition: "all var(--ds-transition)"
           }}>
-            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "white" }}>M</span>
+            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: isScrolled ? "0.95rem" : "1.1rem", fontWeight: 800, color: "white" }}>M</span>
           </div>
           <div>
             <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "var(--ds-text-primary)", lineHeight: 1.15 }}>
@@ -283,7 +301,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
         </div>
 
         {/* Nav Desktop */}
-        <nav style={{ display: "flex", gap: 20, alignItems: "center" }} className="nav-desktop">
+        <nav style={{ display: "flex", gap: 18, alignItems: "center" }} className="nav-desktop">
           {links.map(({ label, id }) => (
             <a key={id} href={`#${id}`}
               onClick={e => { e.preventDefault(); onNavigate(id) }}
@@ -304,7 +322,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
         </div>
 
         {/* Mobile menu toggle */}
-        <button onClick={() => setOpen(!open)} aria-label="Menu" style={{
+        <button onClick={() => setOpen(!open)} aria-label={open ? "Fermer le menu" : "Ouvrir le menu"} aria-expanded={open} style={{
           background: "none", border: "none", cursor: "pointer",
           padding: 8, color: "var(--ds-text-primary)", flexShrink: 0
         }} className="nav-mobile-toggle">
@@ -356,21 +374,15 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
           {/* Left Col */}
           <div style={{ position: "relative", zIndex: 1 }}>
             
-            {/* Origin pills */}
-            <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
-              {[
-                { flag: "🇪🇬", label: "Gypse d'Égypte" },
-                { flag: "🇦🇪", label: "Chaux de Dubaï" },
-                { flag: "🇰🇪", label: "Filasse du Kenya" }
-              ].map(({ flag, label }) => (
-                <span key={label} style={{
-                  display: "inline-flex", alignItems: "center", gap: 5,
-                  background: "var(--ds-bg-subtle)", border: "1px solid var(--ds-border)",
-                  borderRadius: "var(--ds-radius-full)", padding: "5px 12px",
-                  fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
-                  fontWeight: 600, color: "var(--ds-text-primary)",
-                }}>{flag} {label}</span>
-              ))}
+            {/* Ligne éditoriale prestige */}
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 18, background: "var(--ds-bg-subtle)", border: "1px solid var(--ds-border)", borderRadius: "var(--ds-radius-full)", padding: "5px 14px" }}>
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: "var(--ds-brand)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                Matériaux de Staff &amp; Finition
+              </span>
+              <span style={{ color: "var(--ds-text-tertiary)" }}>•</span>
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 600, color: "var(--ds-text-secondary)" }}>
+                Gypse • Chaux • Filasse
+              </span>
             </div>
 
             <h1 style={{
@@ -392,7 +404,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
 
             {/* Action CTAs */}
             <div className="hero-cta-group" style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", marginBottom: 36 }}>
-              <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mon chantier.`)} />
+              <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} />
               <Button variant="neutral" iconEnd={<Calculator size={15} />} onClick={onSimulateur}>
                 Simuler mes besoins
               </Button>
@@ -632,7 +644,7 @@ function WhyUsSection() {
         </div>
 
         <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(16px, 2.5vw, 24px)" }}>
-          {points.map(({ icon: Icon, titre, desc }, i) => (
+          {points.map(({ icon: Icon, titre, desc }) => (
             <div key={titre} style={{
               background: "var(--ds-bg-subtle)", borderRadius: "var(--ds-radius-2xl)",
               border: "1px solid var(--ds-border)", padding: "clamp(20px, 3vw, 28px)",
@@ -1109,7 +1121,7 @@ function ReassuranceSection() {
   )
 }
 
-// ─── 9. FAQ Accordion Section ────────────────────────────────────────────────
+// ─── 9. FAQ Accordion Section (Accessible ARIA) ──────────────────────────────
 function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
@@ -1148,11 +1160,18 @@ function FAQSection() {
                 border: `1.5px solid ${isOpen ? "var(--ds-brand)" : "var(--ds-border)"}`,
                 overflow: "hidden", transition: "all var(--ds-transition)"
               }}>
-                <button onClick={() => toggle(i)} style={{
-                  width: "100%", padding: "18px 20px", display: "flex",
-                  alignItems: "center", justifyContent: "space-between", gap: 16,
-                  background: "none", border: "none", cursor: "pointer", textAlign: "left"
-                }}>
+                <button
+                  onClick={() => toggle(i)}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(i) } }}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${i}`}
+                  id={`faq-question-${i}`}
+                  style={{
+                    width: "100%", padding: "18px 20px", display: "flex",
+                    alignItems: "center", justifyContent: "space-between", gap: 16,
+                    background: "none", border: "none", cursor: "pointer", textAlign: "left"
+                  }}
+                >
                   <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.9rem", fontWeight: 700, color: "var(--ds-text-primary)", lineHeight: 1.35 }}>
                     {faq.q}
                   </span>
@@ -1168,7 +1187,12 @@ function FAQSection() {
                 </button>
 
                 {isOpen && (
-                  <div style={{ padding: "0 20px 18px", borderTop: "1px solid var(--ds-border)", paddingTop: 14 }}>
+                  <div
+                    id={`faq-answer-${i}`}
+                    role="region"
+                    aria-labelledby={`faq-question-${i}`}
+                    style={{ padding: "0 20px 18px", borderTop: "1px solid var(--ds-border)", paddingTop: 14 }}
+                  >
                     <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", color: "var(--ds-text-secondary)", lineHeight: 1.7, margin: 0 }}>
                       {faq.a}
                     </p>
@@ -1385,11 +1409,11 @@ function FicheProduit({ product, onBack, onDetail }: { product: Product; onBack:
               <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "12px 16px", background: "var(--ds-bg-subtle)", borderRadius: "var(--ds-radius-xl)" }}>
                 <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", fontWeight: 700, color: "var(--ds-text-primary)" }}>Quantité :</span>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, background: "white", borderRadius: "var(--ds-radius-full)", padding: "4px 8px", border: "1px solid var(--ds-border)" }}>
-                  <button onClick={() => setQty(q => Math.max(1, q - 1))} style={{ width: 36, height: 36, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <button onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Diminuer quantité" style={{ width: 36, height: 36, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <Minus size={14} />
                   </button>
                   <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1rem", fontWeight: 800, color: "var(--ds-brand)", minWidth: 32, textAlign: "center" }}>{qty}</span>
-                  <button onClick={() => setQty(q => q + 1)} style={{ width: 36, height: 36, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <button onClick={() => setQty(q => q + 1)} aria-label="Augmenter quantité" style={{ width: 36, height: 36, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <Plus size={14} />
                   </button>
                 </div>
@@ -1732,6 +1756,19 @@ const CSS = `
 export default function App() {
   const [view, setView] = useState<"home" | "product">("home")
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+  const [showBackToTop, setShowBackToTop] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 400)
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
 
   const handleDetail = useCallback((p: Product) => {
     setSelectedProduct(p)
@@ -1780,6 +1817,46 @@ export default function App() {
         )}
 
         <Footer onNavigate={handleNavigate} />
+
+        {/* Bouton Retour en Haut (Scroll-To-Top) Accessible */}
+        {showBackToTop && (
+          <button
+            onClick={handleScrollTop}
+            aria-label="Retour en haut de la page"
+            style={{
+              position: "fixed",
+              bottom: 84,
+              right: 20,
+              zIndex: 990,
+              width: 42,
+              height: 42,
+              borderRadius: "50%",
+              background: "white",
+              color: "var(--ds-text-primary)",
+              border: "1px solid var(--ds-border)",
+              boxShadow: "var(--ds-shadow-md)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "all var(--ds-transition)"
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = "translateY(-2px)"
+              e.currentTarget.style.boxShadow = "var(--ds-shadow-lg)"
+              e.currentTarget.style.borderColor = "var(--ds-brand)"
+              e.currentTarget.style.color = "var(--ds-brand)"
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = "translateY(0)"
+              e.currentTarget.style.boxShadow = "var(--ds-shadow-md)"
+              e.currentTarget.style.borderColor = "var(--ds-border)"
+              e.currentTarget.style.color = "var(--ds-text-primary)"
+            }}
+          >
+            <ArrowUp size={18} />
+          </button>
+        )}
 
         {/* Mobile Floating Action Dock (Thumb Conversion Zone) */}
         <div className="mobile-dock" style={{
