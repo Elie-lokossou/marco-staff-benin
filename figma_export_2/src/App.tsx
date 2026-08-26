@@ -439,6 +439,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
 
 // ─── 1. Hero Section (Composition Studio 3 Matériaux Haute Définition) ───────
 // ─── 1. Hero Section (Composition Studio Desktop + Composition Mobile-First Ciblée) ──
+// ─── 1. Hero Section (Composition Studio Desktop + Composition Mobile-First Éditoriale & Aérée) ──
 function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => void; onSimulateur: () => void }) {
   return (
     <section id="accueil" style={{
@@ -450,9 +451,9 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
     }}>
       <div className="site-container" style={{
         paddingTop: "clamp(16px, 3.5vw, 56px)",
-        paddingBottom: "clamp(24px, 4vw, 72px)",
+        paddingBottom: "clamp(28px, 5vw, 72px)",
       }}>
-        {/* Desktop Layout (>= 769px) */}
+        {/* Desktop Layout (>= 769px) - Intact & Conforme */}
         <div className="hero-grid desktop-hero" style={{
           display: "grid", gridTemplateColumns: "1.15fr 0.85fr",
           gap: "clamp(20px, 3.5vw, 48px)", alignItems: "center", position: "relative",
@@ -593,91 +594,81 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
 
         </div>
 
-        {/* Mobile Composition (<= 768px) Véritable Hiérarchie Mobile-First */}
-        <div className="mobile-hero" style={{ display: "none", flexDirection: "column", gap: 12 }}>
+        {/* Mobile Composition (<= 768px) Structure Éditoriale Aérée & Mobile-First */}
+        <div className="mobile-hero" style={{ display: "none", flexDirection: "column", gap: "clamp(18px, 4.5vw, 26px)" }}>
           
-          {/* 1. Micro-label institutionnel */}
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{
-              fontFamily: "var(--ds-font-body)",
-              fontSize: "clamp(0.68rem, 2.5vw, 0.74rem)",
-              fontWeight: 700,
-              color: "#1E3A8A",
-              background: "#EFF6FF",
-              border: "1px solid #DBEAFE",
-              padding: "4px 10px",
-              borderRadius: "9999px",
-              textTransform: "uppercase",
-              letterSpacing: "0.06em"
+          {/* Bloc 1 & 2 & 3 : En-tête & Proposition de valeur */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {/* 1. Micro-label institutionnel éditorial */}
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{
+                fontFamily: "var(--ds-font-body)",
+                fontSize: "clamp(0.68rem, 2.5vw, 0.72rem)",
+                fontWeight: 700,
+                color: "#1E3A8A",
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6
+              }}>
+                <span style={{ width: 14, height: 2, background: "#1E3A8A", display: "inline-block", borderRadius: 1 }} />
+                Importateur Direct · Bénin
+              </span>
+            </div>
+
+            {/* 2. Headline avec retours à la ligne intentionnels */}
+            <h1 style={{
+              fontFamily: "var(--ds-font-heading)",
+              fontSize: "clamp(1.5rem, 6.8vw, 2.05rem)",
+              fontWeight: 800,
+              color: "#0F172A",
+              lineHeight: 1.2,
+              letterSpacing: "-0.03em",
+              margin: 0,
+              maxWidth: "94%",
+              wordBreak: "break-word"
             }}>
-              Importateur Direct BTP · Bénin
-            </span>
+              L&apos;Excellence des<br />
+              <span style={{ color: "#1E3A8A" }}>Matériaux de Staff &amp;</span><br />
+              Finition au Bénin.
+            </h1>
+
+            {/* 3. Value Proposition courte (max 3 lignes) */}
+            <p style={{
+              fontFamily: "var(--ds-font-body)",
+              fontSize: "clamp(0.8rem, 3.2vw, 0.88rem)",
+              color: "#475569",
+              lineHeight: 1.55,
+              margin: "4px 0 0",
+              maxWidth: "96%",
+              wordBreak: "break-word"
+            }}>
+              Approvisionnez vos chantiers directement à la source : <strong>Gypse Marco 40 KG</strong> (Égypte), <strong>Chaux Vive pure</strong> (Dubaï) et <strong>Filasse Sisal</strong> (Kenya). Qualité certifiée zéro fissure et stock permanent en dépôts à Cotonou et Calavi.
+            </p>
           </div>
 
-          {/* 2. Headline */}
-          <h1 style={{
-            fontFamily: "var(--ds-font-heading)",
-            fontSize: "clamp(1.4rem, 6.5vw, 1.85rem)",
-            fontWeight: 800,
-            color: "#0F172A",
-            lineHeight: 1.2,
-            letterSpacing: "-0.03em",
-            margin: 0,
-            wordBreak: "break-word"
-          }}>
-            L&apos;Excellence des <span style={{ color: "#1E3A8A" }}>Matériaux de Staff</span> &amp; Finition au Bénin.
-          </h1>
-
-          {/* 3. Proposition de valeur courte */}
-          <p style={{
-            fontFamily: "var(--ds-font-body)",
-            fontSize: "clamp(0.78rem, 3.2vw, 0.88rem)",
-            color: "#475569",
-            lineHeight: 1.55,
-            margin: 0,
-            wordBreak: "break-word"
-          }}>
-            Approvisionnez vos chantiers à la source : <strong>Gypse Marco 40 KG</strong> (Égypte), <strong>Chaux Vive pure</strong> (Dubaï) et <strong>Filasse Sisal</strong> (Kenya). Qualité certifiée zéro fissure et stock permanent en dépôts à Cotonou et Calavi.
-          </p>
-
-          {/* 4 & 5. CTAs WhatsApp Principal & Simulateur Secondaire */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 2 }}>
-            <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} full />
-            <Button variant="neutral" iconEnd={<Calculator size={15} color="#1E3A8A" />} onClick={onSimulateur} full>
-              Calculer mes besoins de chantier
-            </Button>
-          </div>
-
-          {/* 6. Preuve / Réassurance */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "2px 0" }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", flexShrink: 0 }} />
-            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2.5vw, 0.72rem)", color: "#64748B", fontWeight: 600, textAlign: "center" }}>
-              Devis proforma gratuit sous 15–30 min · Sans engagement
-            </span>
-          </div>
-
-          {/* 7. Visuel Produit Central */}
+          {/* 4. Product Showcase (Marco 40 KG mis en valeur au centre) */}
           <div style={{
             background: "#FFFFFF",
             borderRadius: "clamp(14px, 3.5vw, 20px)",
             border: "1.5px solid #E2E8F0",
-            padding: "clamp(12px, 3vw, 16px)",
-            boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.08)",
-            marginTop: 4,
+            padding: "clamp(12px, 3.5vw, 16px)",
+            boxShadow: "0 10px 30px -6px rgba(15, 23, 42, 0.07)",
             boxSizing: "border-box"
           }}>
             <div style={{
               background: "#F8FAFC",
               borderRadius: 12,
               border: "1px solid #E2E8F0",
-              height: "clamp(160px, 45vw, 200px)",
-              padding: 10,
+              height: "clamp(160px, 46vw, 200px)",
+              padding: 12,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               position: "relative"
             }}>
-              <img src={imgSrc(imgGypse)} alt="Gypse Marco 40 KG" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
+              <img src={imgSrc(imgGypse)} alt="Poudre de Gypse Marco 40 KG" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
               <span style={{
                 position: "absolute", top: 8, right: 8,
                 background: "#10B981", color: "white", fontSize: "0.62rem", fontWeight: 700, padding: "2px 7px", borderRadius: 9999
@@ -686,58 +677,117 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
               </span>
             </div>
 
-            <div style={{ marginTop: 8 }}>
+            <div style={{ marginTop: 10 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
-                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 3vw, 0.95rem)", fontWeight: 800, color: "#0F172A" }}>
+                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.88rem, 3.2vw, 0.98rem)", fontWeight: 800, color: "#0F172A" }}>
                   Poudre de Gypse Marco 40 KG
                 </span>
-                <span style={{ background: "#EFF6FF", color: "#1E3A8A", fontSize: "0.65rem", fontWeight: 700, padding: "2px 6px", borderRadius: 9999 }}>
+                <span style={{ background: "#EFF6FF", color: "#1E3A8A", fontSize: "0.65rem", fontWeight: 700, padding: "2px 7px", borderRadius: 9999 }}>
                   Sac 40 KG
                 </span>
               </div>
-              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B", margin: 0 }}>
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B", margin: 0, lineHeight: 1.4 }}>
                 Extra White · Prise 20-30 min · Formule anti-fissure
               </p>
             </div>
 
-            {/* Mini thumbnails 2 other products */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginTop: 8, paddingTop: 8, borderTop: "1px solid #E2E8F0" }}>
-              <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, cursor: "pointer", border: "1px solid #E2E8F0" }}>
-                <div style={{ width: 24, height: 24, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {/* Mini vignettes Chaux et Sisal */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 10, paddingTop: 10, borderTop: "1px solid #E2E8F0" }}>
+              <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, cursor: "pointer", border: "1px solid #E2E8F0" }}>
+                <div style={{ width: 26, height: 26, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <img src={imgSrc(imgChaux)} alt="Chaux Vive" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                 </div>
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Chaux Vive</div>
-                  <div style={{ fontSize: "0.58rem", color: "#64748B" }}>🇦🇪 40kg</div>
+                  <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Chaux Vive</div>
+                  <div style={{ fontSize: "0.6rem", color: "#64748B" }}>🇦🇪 40kg</div>
                 </div>
               </div>
 
-              <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, cursor: "pointer", border: "1px solid #E2E8F0" }}>
-                <div style={{ width: 24, height: 24, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, cursor: "pointer", border: "1px solid #E2E8F0" }}>
+                <div style={{ width: 26, height: 26, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <img src={imgSrc(imgFilasse)} alt="Filasse Sisal" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                 </div>
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Filasse Sisal</div>
-                  <div style={{ fontSize: "0.58rem", color: "#64748B" }}>🇰🇪 Kenya</div>
+                  <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Filasse Sisal</div>
+                  <div style={{ fontSize: "0.6rem", color: "#64748B" }}>🇰🇪 Kenya</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* 8. Statistiques */}
-          <div className="hero-stats-grid" style={{
-            display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8,
-            paddingTop: 10, borderTop: "1.5px solid #E2E8F0", marginTop: 2
+          {/* Bloc 5, 6 & 7 : CTAs & Micro-Réassurance */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {/* 5. Primary CTA WhatsApp */}
+            <a href={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} target="_blank" rel="noopener noreferrer" style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              background: "#10B981", color: "#FFFFFF",
+              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.84rem, 3.2vw, 0.94rem)",
+              fontWeight: 700, padding: "13px 20px", minHeight: 48,
+              borderRadius: "9999px", textDecoration: "none",
+              boxShadow: "0 4px 16px rgba(16, 185, 129, 0.28)",
+              width: "100%", boxSizing: "border-box", textAlign: "center",
+              transition: "all 0.2s ease"
+            }}>
+              <MessageCircle size={18} style={{ flexShrink: 0 }} />
+              <span>Demander un devis WhatsApp</span>
+            </a>
+
+            {/* 6. Secondary CTA Calculer mes besoins */}
+            <button onClick={onSimulateur} style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+              background: "#FFFFFF", color: "#0F172A",
+              border: "1.5px solid #CBD5E1",
+              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 3vw, 0.86rem)",
+              fontWeight: 700, padding: "12px 18px", minHeight: 44,
+              borderRadius: "9999px", cursor: "pointer",
+              width: "100%", boxSizing: "border-box",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+              transition: "all 0.2s ease"
+            }}>
+              <span>Calculer mes besoins</span>
+              <Calculator size={15} color="#1E3A8A" />
+            </button>
+
+            {/* 7. Micro-Réassurance discrète */}
+            <div style={{ textAlign: "center", paddingTop: 2 }}>
+              <p style={{
+                fontFamily: "var(--ds-font-body)",
+                fontSize: "clamp(0.68rem, 2.5vw, 0.72rem)",
+                color: "#64748B",
+                fontWeight: 500,
+                margin: 0,
+                lineHeight: 1.4
+              }}>
+                Devis proforma gratuit · Réponse sous 15–30 min · Sans engagement
+              </p>
+            </div>
+          </div>
+
+          {/* 8. Trust Stats dans un bloc distinct */}
+          <div style={{
+            background: "#F8FAFC",
+            borderRadius: "clamp(12px, 3vw, 16px)",
+            border: "1.5px solid #E2E8F0",
+            padding: "clamp(10px, 3vw, 14px)",
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: 8,
+            boxSizing: "border-box"
           }}>
             {[
-              { val: "100%", label: "Pureté & Zéro Fissure" },
-              { val: "3", label: "Origines Directes Usine" },
-              { val: "24/48h", label: "Livraison sur Chantier" },
-              { val: "Stock", label: "Permanent en Dépôt" },
+              { val: "100 %", label: "Pureté & zéro fissure" },
+              { val: "3", label: "Origines directes" },
+              { val: "24–48h", label: "Livraison chantier" },
+              { val: "STOCK", label: "Permanent en dépôt" },
             ].map(({ val, label }) => (
-              <div key={label} style={{ background: "#F8FAFC", padding: "8px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
-                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.05rem", fontWeight: 800, color: "#1E3A8A", lineHeight: 1 }}>{val}</div>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", color: "#64748B", marginTop: 3, fontWeight: 600 }}>{label}</div>
+              <div key={label} style={{
+                background: "#FFFFFF",
+                padding: "9px 10px",
+                borderRadius: 8,
+                border: "1px solid #E2E8F0"
+              }}>
+                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.95rem, 3.5vw, 1.15rem)", fontWeight: 800, color: "#1E3A8A", lineHeight: 1.1 }}>{val}</div>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.64rem, 2.2vw, 0.7rem)", color: "#475569", marginTop: 3, fontWeight: 600, lineHeight: 1.25 }}>{label}</div>
               </div>
             ))}
           </div>
