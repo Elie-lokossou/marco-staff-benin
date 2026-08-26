@@ -4,7 +4,7 @@ import {
   CheckCircle2, Star, Package, Clock, Calculator, ShieldCheck,
   Truck, Award, ChevronDown, Plus, Minus, HelpCircle,
   Layers, Sparkles, ArrowUp, Building2, Warehouse, Hammer, Check,
-  Info, FileText, Scale, Droplets, ArrowRight, ShieldAlert, BadgePercent
+  Info, FileText, Scale, Droplets, ArrowRight
 } from "lucide-react"
 import imgGypse from "@/imports/photo2.jpeg"
 import imgChaux from "@/imports/photo1.jpeg"
@@ -177,7 +177,7 @@ function WaBtn({ label = "WhatsApp", url, small = false, full = false, variant =
       background: isWhite ? "#FFFFFF" : isOutline ? "transparent" : "#10B981",
       color: isWhite ? "#0F172A" : isOutline ? "#FFFFFF" : "#FFFFFF",
       border: isOutline ? "1.5px solid rgba(255,255,255,0.4)" : "none",
-      fontFamily: "var(--ds-font-body)", fontSize: small ? "clamp(0.75rem, 2.5vw, 0.82rem)" : "clamp(0.8rem, 2.8vw, 0.9rem)",
+      fontFamily: "var(--ds-font-body)", fontSize: small ? "0.82rem" : "0.9rem",
       fontWeight: 700, padding: small ? "8px 16px" : "12px 22px",
       borderRadius: "9999px", textDecoration: "none",
       transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
@@ -186,7 +186,7 @@ function WaBtn({ label = "WhatsApp", url, small = false, full = false, variant =
       maxWidth: "100%",
       boxSizing: "border-box",
       textAlign: "center",
-      wordBreak: "break-word"
+      whiteSpace: "nowrap"
     }}
       onMouseEnter={e => {
         if (isWhite) {
@@ -256,31 +256,7 @@ function Button({ children, variant = "primary", size = "medium", iconEnd, onCli
   )
 }
 
-// ─── Header & Smart Sticky Navbar (Épure & Hiérarchie Senior) ─────────────────
-function AnnouncementBar() {
-  return (
-    <div style={{ background: "#080C16", padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-      <div className="site-container" style={{
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        gap: 6, flexWrap: "wrap",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
-          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "inline-block", flexShrink: 0, animation: "pulse 2s infinite" }} />
-          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.65rem, 2vw, 0.72rem)", color: "#94A3B8", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-            Dépôts Cotonou (Akpakpa) &amp; Calavi (Kpota) · Stock Garanti · Lun–Sam 7h30–18h00
-          </span>
-        </div>
-        <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", alignItems: "center", gap: 4, textDecoration: "none", flexShrink: 0 }}>
-          <Phone size={11} style={{ color: "#10B981" }} />
-          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.65rem, 2vw, 0.72rem)", color: "white", fontWeight: 600 }}>
-            {PHONE_DISPLAY}
-          </span>
-        </a>
-      </div>
-    </div>
-  )
-}
-
+// ─── STRICTEMENT 1 SEULE LIGNE : NAVBAR PRESTIGE UNIFIÉE ─────────────────────
 function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   const [open, setOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
@@ -290,9 +266,9 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      setIsScrolled(currentScrollY > 50)
+      setIsScrolled(currentScrollY > 40)
 
-      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+      if (currentScrollY > lastScrollY.current && currentScrollY > 90) {
         setIsVisible(false)
       } else {
         setIsVisible(true)
@@ -304,13 +280,12 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // 4 Piliers Clairs (Fin de la liste entassée de 8 liens)
   const links = [
-    { label: "Catalogue Matériaux", id: "produits" },
-    { label: "Garantie & Logistique", id: "autorite" },
-    { label: "Simulateur de Métré", id: "simulateur", isSpecial: true },
+    { label: "Matériaux", id: "produits" },
+    { label: "Garantie & Dépôts", id: "autorite" },
+    { label: "Simulateur Métré", id: "simulateur", isSpecial: true },
     { label: "Comment Commander", id: "commande" },
-    { label: "Avis & FAQ", id: "faq" },
+    { label: "FAQ", id: "faq" },
   ]
 
   return (
@@ -318,63 +293,60 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
       position: "sticky", top: 0, zIndex: 100,
       transform: isVisible ? "translateY(0)" : "translateY(-100%)",
       transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, box-shadow 0.2s ease",
-      background: isScrolled ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.94)",
+      background: isScrolled ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.95)",
       backdropFilter: "blur(20px)",
       borderBottom: "1px solid #E2E8F0",
       boxShadow: isScrolled ? "0 4px 20px rgba(0,0,0,0.06)" : "none",
+      height: 64,
+      display: "flex",
+      alignItems: "center"
     }}>
       <div className="site-container" style={{
-        height: isScrolled ? 62 : 72, display: "flex", alignItems: "center", justifyContent: "space-between",
-        transition: "height 0.25s ease"
+        width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16
       }}>
-        {/* Brand Logo Industriel Haute Définition */}
-        <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", minWidth: 0 }}>
+        {/* 1. Logo & Identité (Strictement 1 ligne) */}
+        <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", flexShrink: 0 }}>
           <div style={{
-            width: isScrolled ? 36 : 40, height: isScrolled ? 36 : 40, borderRadius: 10,
+            width: 36, height: 36, borderRadius: 10,
             background: "linear-gradient(135deg, #1E3A8A 0%, #0F2444 100%)",
-            border: "1.5px solid rgba(255,255,255,0.15)",
+            border: "1.5px solid rgba(255,255,255,0.2)",
             display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-            boxShadow: "0 4px 12px rgba(30,58,138,0.25)",
-            transition: "all 0.25s ease"
+            boxShadow: "0 3px 10px rgba(30,58,138,0.25)",
           }}>
-            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: isScrolled ? "1rem" : "1.15rem", fontWeight: 800, color: "white", letterSpacing: "-0.02em" }}>M</span>
+            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1rem", fontWeight: 800, color: "white" }}>M</span>
           </div>
-          <div style={{ minWidth: 0 }}>
-            <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.6vw, 1rem)", fontWeight: 800, color: "#0F172A", lineHeight: 1.15, letterSpacing: "-0.02em" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>
               {COMPANY_NAME}
-            </div>
-            <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.55rem, 1.8vw, 0.62rem)", fontWeight: 700, color: "#D97706", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              IMPORTATEUR DIRECT BÉNIN
-            </div>
+            </span>
+            <span className="brand-tag-desktop" style={{ fontSize: "0.62rem", fontWeight: 700, color: "#D97706", background: "#FEF3C7", padding: "2px 7px", borderRadius: 9999, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+              Bénin Import
+            </span>
           </div>
         </div>
 
-        {/* Desktop Navigation 4 Piliers */}
-        <nav style={{ display: "flex", gap: 20, alignItems: "center" }} className="nav-desktop">
+        {/* 2. Menu Navigation Desktop (Aligné horizontalement sans wrap) */}
+        <nav style={{ display: "flex", gap: 18, alignItems: "center", whiteSpace: "nowrap" }} className="nav-desktop">
           {links.map(({ label, id, isSpecial }) => (
             <a key={id} href={`#${id}`}
               onClick={e => { e.preventDefault(); onNavigate(id) }}
               style={{
-                fontFamily: "var(--ds-font-body)", fontSize: "0.85rem",
+                fontFamily: "var(--ds-font-body)", fontSize: "0.84rem",
                 fontWeight: 600,
                 color: isSpecial ? "#1E3A8A" : "#475569",
                 textDecoration: "none",
-                display: "inline-flex", alignItems: "center", gap: 5,
-                padding: isSpecial ? "5px 12px" : "6px 0",
+                display: "inline-flex", alignItems: "center", gap: 4,
+                padding: isSpecial ? "4px 10px" : "4px 0",
                 borderRadius: isSpecial ? 9999 : 0,
                 background: isSpecial ? "#EFF6FF" : "transparent",
                 border: isSpecial ? "1px solid #DBEAFE" : "none",
-                transition: "color 0.2s ease, transform 0.2s ease"
+                transition: "all 0.2s ease"
               }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.color = "#1E3A8A"
-                if (!isSpecial) (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"
               }}
               onMouseLeave={e => {
-                if (!isSpecial) {
-                  (e.currentTarget as HTMLElement).style.color = "#475569"
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)"
-                }
+                if (!isSpecial) (e.currentTarget as HTMLElement).style.color = "#475569"
               }}
             >
               {isSpecial && <Calculator size={13} />}
@@ -383,33 +355,52 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
           ))}
         </nav>
 
-        {/* CTA Desktop */}
-        <div className="nav-desktop">
-          <WaBtn label="Demander un Devis" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mon chantier.`)} small />
-        </div>
+        {/* 3. Statut & CTA Direct */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+          <div className="nav-status-desktop" style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 10px", background: "#F8FAFC", borderRadius: 9999, border: "1px solid #E2E8F0" }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "inline-block", animation: "pulse 2s infinite" }} />
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>
+              Dépôts Ouverts · Lun–Sam
+            </span>
+          </div>
 
-        {/* Mobile Toggle */}
-        <button onClick={() => setOpen(!open)} aria-label={open ? "Fermer le menu" : "Ouvrir le menu"} style={{
-          background: "none", border: "none", cursor: "pointer",
-          padding: 6, color: "#0F172A", flexShrink: 0
-        }} className="nav-mobile-toggle">
-          {open ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          <div className="nav-desktop">
+            <WaBtn label="Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mon chantier.`)} small />
+          </div>
+
+          {/* Mobile Actions (Sur 1 seule ligne) */}
+          <div className="nav-mobile-actions" style={{ display: "none", alignItems: "center", gap: 8 }}>
+            <WaBtn label="WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis.`)} small />
+            <button onClick={() => setOpen(!open)} aria-label={open ? "Fermer le menu" : "Ouvrir le menu"} style={{
+              background: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: 8, cursor: "pointer",
+              padding: "7px 9px", color: "#0F172A", display: "flex", alignItems: "center", justifyContent: "center"
+            }}>
+              {open ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Mobile Menu Dropdown */}
       {open && (
         <div style={{
-          borderTop: "1px solid #E2E8F0",
+          position: "absolute", top: 64, left: 0, right: 0,
+          borderBottom: "1px solid #E2E8F0",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
           padding: "16px 20px 24px",
           display: "flex", flexDirection: "column", gap: 10,
           background: "#FFFFFF", maxHeight: "80vh", overflowY: "auto"
         }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", background: "#F8FAFC", borderRadius: 10, marginBottom: 6 }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "block" }} />
+            <span style={{ fontSize: "0.75rem", color: "#475569", fontWeight: 600 }}>Dépôts Cotonou &amp; Calavi · Stock Garanti</span>
+          </div>
+
           {links.map(({ label, id, isSpecial }) => (
             <a key={id} href={`#${id}`}
               onClick={e => { e.preventDefault(); onNavigate(id); setOpen(false) }}
               style={{
-                fontFamily: "var(--ds-font-body)", fontSize: "0.95rem",
+                fontFamily: "var(--ds-font-body)", fontSize: "0.92rem",
                 fontWeight: 600, color: isSpecial ? "#1E3A8A" : "#0F172A",
                 textDecoration: "none", padding: "10px 0",
                 display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -417,10 +408,15 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
               }}
             >
               <span>{label}</span>
-              {isSpecial ? <span style={{ fontSize: "0.7rem", background: "#EFF6FF", color: "#1E3A8A", padding: "2px 8px", borderRadius: 9999, fontWeight: 700 }}>Simulateur</span> : <ChevronRight size={14} color="#94A3B8" />}
+              {isSpecial ? <span style={{ fontSize: "0.68rem", background: "#EFF6FF", color: "#1E3A8A", padding: "2px 8px", borderRadius: 9999, fontWeight: 700 }}>Simulateur</span> : <ChevronRight size={14} color="#94A3B8" />}
             </a>
           ))}
+
           <div style={{ paddingTop: 8 }}>
+            <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "12px", borderRadius: 9999, background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A", textDecoration: "none", fontWeight: 700, fontSize: "0.85rem", marginBottom: 8 }}>
+              <Phone size={15} color="#10B981" />
+              <span>Appel Direct : {PHONE_DISPLAY}</span>
+            </a>
             <WaBtn label="WhatsApp Express Direct" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis.`)} full />
           </div>
         </div>
@@ -1891,7 +1887,9 @@ const CSS = `
   }
 
   .nav-desktop { display: flex; align-items: center; }
-  .nav-mobile-toggle { display: none; }
+  .brand-tag-desktop { display: inline-block; }
+  .nav-status-desktop { display: flex; }
+  .nav-mobile-actions { display: none !important; }
   .mobile-dock { display: none !important; }
 
   .hero-grid { grid-template-columns: 1.15fr 0.85fr; }
@@ -1917,6 +1915,7 @@ const CSS = `
 
   /* ── Tablets Landscape & Small Desktops (769px - 1024px) ── */
   @media (max-width: 1024px) {
+    .nav-status-desktop { display: none !important; }
     .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .why-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .supply-grid { grid-template-columns: repeat(2, 1fr) !important; }
@@ -1930,7 +1929,9 @@ const CSS = `
   /* ── Mobile Phones & Phablets (<= 768px) ── */
   @media (max-width: 768px) {
     .nav-desktop { display: none !important; }
-    .nav-mobile-toggle { display: flex !important; }
+    .brand-tag-desktop { display: none !important; }
+    .nav-status-desktop { display: none !important; }
+    .nav-mobile-actions { display: flex !important; }
     .mobile-dock { display: flex !important; }
     main { padding-bottom: 92px !important; }
 
@@ -1969,7 +1970,7 @@ const CSS = `
     .footer-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
   }
 
-  /* ── Ultra-Small Phones, Foldables & Connected Watches (<= 380px) ── */
+  /* ── Ultra-Small Phones & Watches (<= 380px) ── */
   @media (max-width: 380px) {
     .site-container {
       padding-left: 8px !important;
@@ -1992,7 +1993,7 @@ const CSS = `
     }
   }
 
-  /* ── Smartwatches & Micro Screens (<= 280px) ── */
+  /* ── Smartwatches (<= 280px) ── */
   @media (max-width: 280px) {
     .hero-stats-grid {
       grid-template-columns: 1fr !important;
@@ -2029,7 +2030,6 @@ export default function App() {
     <>
       <style>{CSS}</style>
       <div style={{ fontFamily: "var(--ds-font-body)", minHeight: "100vh", overflowX: "hidden", width: "100%", maxWidth: "100vw", boxSizing: "border-box" }}>
-        <AnnouncementBar />
         <Navbar onNavigate={handleNavigate} />
         
         <main>
