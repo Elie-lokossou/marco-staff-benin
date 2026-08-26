@@ -40,25 +40,25 @@ interface Product {
   application: string
 }
 
-// ─── Catalogue Produits (Données Industrielles Haut de Gamme) ────────────────
+// ─── Catalogue Produits Épuré & Haute Définition ─────────────────────────────
 const PRODUCTS: Product[] = [
   {
     id: "gypse-40kg",
     nom: "Poudre de Gypse Marco — Extra White 40 KG",
     nomCourt: "Gypse Marco 40kg",
     categorie: "Gypse & Plâtre de Moulage",
-    origine: "Égypte",
+    origine: "Égypte (Alexandrie)",
     drapeau: "🇪🇬",
-    badge: "Extra White · Import Égypte",
-    remiseBadge: "Tarif Dégressif dès 20 sacs",
-    conditionnement: "Sac 40 KG · Palette 60 sacs",
+    badge: "Extra White · Import Direct",
+    remiseBadge: "Remise dès 20 sacs",
+    conditionnement: "Sac 40 KG · Palette 60 sacs (2,4 T)",
     image: imgGypse,
     description: "Poudre de gypse de moulage extra blanche importée directement d'Égypte. Granulométrie micronique ultra-fine pour un gâchage fluide sans grumeaux, une prise régulière et une finition miroir sans aucune craquelure.",
     highlights: [
-      "Blancheur éclatante 100% sans aucun jaunissement",
+      "Blancheur immaculée 100% sans aucun jaunissement",
       "Prise progressive (20 – 30 min) : idéal plafonds & corniches"
     ],
-    dosage: "0,60 L d'eau par kg de poudre (Gâchage souple et onctueux)",
+    dosage: "0,60 L d'eau par kg de poudre (24L par sac de 40 kg)",
     application: "Faux-plafonds suspendus, plaques lissées, corniches moulées et rosaces.",
     specs: [
       { label: "Origine", valeur: "Import direct Égypte (Carrières d'Alexandrie)" },
@@ -78,8 +78,8 @@ const PRODUCTS: Product[] = [
     origine: "Dubaï, UAE",
     drapeau: "🇦🇪",
     badge: "Import Dubaï (UAE)",
-    remiseBadge: "Tarif Dégressif dès 10 sacs",
-    conditionnement: "Sac 40 KG · Palette 50 sacs",
+    remiseBadge: "Remise dès 10 sacs",
+    conditionnement: "Sac 40 KG · Palette 50 sacs (2,0 T)",
     image: imgChaux,
     description: "White Lime pure de première qualité importée de Dubaï (Oki General Trading). Pureté calcique exceptionnelle et haute réactivité pour des enduits respirants, étanches et naturellement anti-salpêtre.",
     highlights: [
@@ -102,15 +102,15 @@ const PRODUCTS: Product[] = [
     nom: "Filasse de Sisal Pure Naturelle du Kenya",
     nomCourt: "Filasse Sisal Kenya",
     categorie: "Fibres & Armatures Staff",
-    origine: "Kenya",
+    origine: "Kenya (Mombasa)",
     drapeau: "🇰🇪",
-    badge: "Produce of Kenya · 100% Pur",
+    badge: "100% Sisal Pur Végétal",
     remiseBadge: "Tarif Dégressif par Balle",
     conditionnement: "Balle pressée 25 / 50 KG",
     image: imgFilasse,
     description: "Fibres végétales de sisal pur sélectionnées et peignées au Kenya. Fibres longues d'une résistance mécanique extrême à la traction, garantissant l'armature indestructible de tous vos éléments en staff.",
     highlights: [
-      "Fibres végétales 100% naturelles sélectionnées (Agave Sisalana)",
+      "Fibres végétales 100% naturelles peignées (Agave Sisalana)",
       "Résistance extrême à la traction (> 300 MPa) contre les secousses"
     ],
     dosage: "Trempage direct dans la barbotine de gypse avant incorporation",
@@ -270,7 +270,6 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
       const currentScrollY = window.scrollY
       setIsScrolled(currentScrollY > 20)
 
-      // Hystérésis de 12px pour éviter tout clignotement lors de micro-scrolls
       if (currentScrollY > lastScrollY.current + 12 && currentScrollY > 90) {
         setIsVisible(false)
       } else if (currentScrollY < lastScrollY.current - 10 || currentScrollY <= 90) {
@@ -405,8 +404,8 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
           background: "#FFFFFF", maxHeight: "85vh", overflowY: "auto", boxSizing: "border-box"
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 10px", background: "#F8FAFC", borderRadius: 8, marginBottom: 4 }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "block" }} />
-            <span style={{ fontSize: "0.72rem", color: "#475569", fontWeight: 600 }}>Dépôts Cotonou &amp; Calavi · Stock Garanti</span>
+            <MapPin size={14} color="#10B981" />
+            <span style={{ fontSize: "0.72rem", color: "#475569", fontWeight: 600 }}>Dépôts : Cotonou (Akpakpa) &amp; Calavi (Kpota)</span>
           </div>
 
           {links.map(({ label, id, isSpecial }) => (
@@ -499,12 +498,20 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
               Approvisionnez vos chantiers directement à la source. <strong>Poudre de Gypse Marco 40 KG</strong> (Égypte), <strong>Chaux Vive pure</strong> (Dubaï) et <strong>Filasse Sisal haute ténacité</strong> (Kenya). Qualité certifiée, zéro fissure, stock permanent et livraison rapide sur chantier.
             </p>
 
-            {/* Action CTAs */}
-            <div className="hero-cta-group" style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", marginBottom: "clamp(20px, 3.5vw, 32px)" }}>
-              <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} />
-              <Button variant="neutral" iconEnd={<Calculator size={15} color="#1E3A8A" />} onClick={onSimulateur}>
-                Calculer mes besoins
-              </Button>
+            {/* Action CTAs avec Réassurance */}
+            <div>
+              <div className="hero-cta-group" style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", marginBottom: 8 }}>
+                <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} />
+                <Button variant="neutral" iconEnd={<Calculator size={15} color="#1E3A8A" />} onClick={onSimulateur}>
+                  Calculer mes besoins
+                </Button>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: "clamp(20px, 3.5vw, 32px)" }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "inline-block" }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B", fontWeight: 600 }}>
+                  Devis proforma gratuit sous 15 à 30 minutes · Sans engagement
+                </span>
+              </div>
             </div>
 
             {/* Trust stats row */}
@@ -588,7 +595,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
   )
 }
 
-// ─── 2. Catalogue Produits (Cards Épurées & Fiche Technique Complète) ─────────
+// ─── 2. Catalogue Produits (Épuré & Direct Usine) ────────────────────────────
 function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void }) {
   return (
     <section id="produits" style={{ background: "#F8FAFC", padding: "clamp(36px, 5.5vw, 84px) 0" }}>
@@ -612,7 +619,7 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
             Nos 3 Matériaux Phares en Stock Permanent
           </h2>
           <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 1.8vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
-            Chaque sac et balle provient directement des usines partenaires. Zéro intermédiaire, qualité certifiée pour les staffeurs et promoteurs du Bénin.
+            Chaque sac et balle provient directement des carrières et usines partenaires. Zéro intermédiaire, qualité certifiée pour les staffeurs et promoteurs du Bénin.
           </p>
         </div>
 
@@ -632,14 +639,14 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
                 e.currentTarget.style.transform = "translateY(0)"
               }}
             >
-              {/* Image Frame */}
+              {/* Image Frame Épurée */}
               <div style={{ position: "relative", height: "clamp(160px, 28vw, 220px)", background: "#F8FAFC", padding: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <img src={imgSrc(p.image)} alt={p.nom} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                 <span style={{
                   position: "absolute", top: 8, left: 8,
                   background: "#1E3A8A", color: "white",
                   fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", fontWeight: 700,
-                  padding: "2px 7px", borderRadius: 9999
+                  padding: "3px 8px", borderRadius: 9999
                 }}>
                   {p.badge}
                 </span>
@@ -881,7 +888,7 @@ function AutoriteBTPSection() {
   )
 }
 
-// ─── 4. Cockpit Simulateur Pro avec Ergonomie Mobile 1-Main (2 Colonnes) ─────
+// ─── 4. Cockpit Simulateur Pro avec Ratios Précis & Feedback Dynamique ────────
 function InteractiveSimulateurSection() {
   const [surface, setSurface] = useState(60)
   const [typeOuvrage, setTypeOuvrage] = useState<"plafond" | "corniche">("plafond")
@@ -901,7 +908,9 @@ function InteractiveSimulateurSection() {
   const kgFilasse = Math.max(1, Math.round(surface * coefFilasse))
   const nbSacsChaux = Math.max(1, Math.ceil(surface * coefChaux))
 
-  const poidsTotalKg = (nbSacsGypse * 40) + kgFilasse + (nbSacsChaux * 40)
+  const poidsGypseKg = nbSacsGypse * 40
+  const poidsChauxKg = nbSacsChaux * 40
+  const poidsTotalKg = poidsGypseKg + kgFilasse + poidsChauxKg
   const poidsTotalTonnes = (poidsTotalKg / 1000).toFixed(2)
   const eauEstimeeLitres = Math.round(nbSacsGypse * 24)
 
@@ -918,9 +927,9 @@ function InteractiveSimulateurSection() {
     `• Poids matériel calculé : ~${poidsTotalKg} kg (${poidsTotalTonnes} Tonnes)\n` +
     `• Transport recommandé : ${vehiculeRecommande}\n\n` +
     `📦 *Quantités Estimées :*\n` +
-    `• Poudre de Gypse Marco 40kg : ${nbSacsGypse} sacs\n` +
+    `• Poudre de Gypse Marco 40kg : ${nbSacsGypse} sacs (${poidsGypseKg} kg)\n` +
     `• Filasse de Sisal Kenya : ${kgFilasse} kg\n` +
-    `• Chaux Vive Marco (Dubaï) : ${nbSacsChaux} sacs\n\n` +
+    `• Chaux Vive Marco (Dubaï) : ${nbSacsChaux} sacs (${poidsChauxKg} kg)\n\n` +
     `Pouvez-vous me transmettre votre meilleur devis avec confirmation du stock et délai de livraison ? Merci !`
   )
 
@@ -946,7 +955,7 @@ function InteractiveSimulateurSection() {
             Simulateur de Besoins en Matériaux
           </h2>
           <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 1.8vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
-            Sélectionnez votre type de chantier ou ajustez le curseur pour obtenir instantanément le quantitatif de sacs de Gypse Marco, Chaux Vive et Filasse Sisal.
+            Sélectionnez votre type de chantier ou ajustez le curseur pour obtenir instantanément le quantitatif exact en sacs scellés de 40 KG et balles de sisal.
           </p>
         </div>
 
@@ -1047,20 +1056,20 @@ function InteractiveSimulateurSection() {
               <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "8px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
                 <Scale size={14} style={{ color: "#1E3A8A", flexShrink: 0 }} />
                 <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>
-                  Poids : <strong>~{poidsTotalKg} kg</strong> ({poidsTotalTonnes} T)
+                  Poids total : <strong>~{poidsTotalKg} kg</strong> ({poidsTotalTonnes} T)
                 </span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "8px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
                 <Droplets size={14} style={{ color: "#2563EB", flexShrink: 0 }} />
                 <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>
-                  Eau : <strong>~{eauEstimeeLitres} L</strong>
+                  Eau de gâchage : <strong>~{eauEstimeeLitres} L</strong>
                 </span>
               </div>
             </div>
 
           </div>
 
-          {/* Colonne Droite : Panneau de Devis & Quantités */}
+          {/* Colonne Droite : Panneau de Devis & Quantités avec Précision Unitaire */}
           <div aria-live="polite" style={{
             background: "#F8FAFC", borderRadius: "clamp(14px, 2vw, 18px)", border: "1.5px solid #E2E8F0",
             padding: "clamp(14px, 2vw, 20px)", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 12
@@ -1071,15 +1080,15 @@ function InteractiveSimulateurSection() {
                   Quantités calculées ({surface} m²) :
                 </span>
                 <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 6px", borderRadius: 6 }}>
-                  Stock Disponible
+                  Stock Garanti en Dépôt
                 </span>
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 12px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
                   <div>
-                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Gypse Marco (40kg)</div>
-                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇪🇬 Import Égypte</div>
+                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Gypse Marco (Sacs 40kg)</div>
+                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇪🇬 Total : {poidsGypseKg} kg net</div>
                   </div>
                   <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "#1E3A8A" }}>
                     {nbSacsGypse} <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
@@ -1098,8 +1107,8 @@ function InteractiveSimulateurSection() {
 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 12px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
                   <div>
-                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Chaux Vive (40kg)</div>
-                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇦🇪 Dubaï Pure</div>
+                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Chaux Vive (Sacs 40kg)</div>
+                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇦🇪 Total : {poidsChauxKg} kg net</div>
                   </div>
                   <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "#0F172A" }}>
                     {nbSacsChaux} <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
@@ -1111,7 +1120,7 @@ function InteractiveSimulateurSection() {
               <div style={{ marginTop: 8, padding: "8px 10px", background: "#EFF6FF", borderRadius: 8, border: "1px solid #DBEAFE", display: "flex", alignItems: "center", gap: 6 }}>
                 <Truck size={14} style={{ color: "#1E3A8A", flexShrink: 0 }} />
                 <span style={{ fontSize: "0.7rem", color: "#1E3A8A", fontWeight: 600 }}>
-                  {vehiculeRecommande}
+                  Logistique : <strong>{vehiculeRecommande}</strong>
                 </span>
               </div>
             </div>
@@ -1119,7 +1128,7 @@ function InteractiveSimulateurSection() {
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
               <WaBtn label="Recevoir mon devis officiel sur WhatsApp" url={msgSimu} full />
               <span style={{ fontSize: "0.65rem", color: "#64748B", textAlign: "center" }}>
-                ⚡ Devis proforma immédiat par retour de message
+                ⚡ Devis proforma immédiat par retour de message · Sans engagement
               </span>
             </div>
 
@@ -1294,11 +1303,11 @@ function ApplicationsSection() {
   )
 }
 
-// ─── 7. Témoignages & Avis Clients ───────────────────────────────────────────
+// ─── 7. Témoignages & Avis Clients Géolocalisés Bénin ─────────────────────────
 const TEMOIGNAGES = [
-  { initials: "KB", color: "#1E3A8A", nom: "Kouassi Bernard", role: "Maître Staffeur depuis 14 ans", ville: "Cotonou", note: 5, texte: "Le gypse Marco est sans équivalent au Bénin. La pâte est fluide, prend sans chauffer excessivement et ne fait aucune fissure. Mes chantiers sont validés du premier coup." },
-  { initials: "AM", color: "#10B981", nom: "Adéola Moussa", role: "Conducteur de Travaux BTP", ville: "Abomey-Calavi", note: 5, texte: "La réactivité sur WhatsApp est top. En envoyant la surface, on a le devis et la livraison sur chantier à Calavi arrive dans les temps. La filasse du Kenya est très propre." },
-  { initials: "FD", color: "#D97706", nom: "Fatou Diallo", role: "Architecte d'Intérieur", ville: "Cotonou", note: 5, texte: "Pour les faux-plafonds à gorges lumineuses de mes clients, j'exige le Gypse Marco et la Chaux Vive de Dubaï. La blancheur est parfaite, prête pour la peinture." },
+  { initials: "KB", color: "#1E3A8A", nom: "Kouassi Bernard", role: "Maître Staffeur (Villas Haie Vive & Cadjèhoun)", ville: "Cotonou", note: 5, texte: "Le gypse Marco est sans équivalent au Bénin. La pâte est fluide, prend sans chauffer excessivement et ne fait aucune fissure. Mes chantiers sont validés du premier coup." },
+  { initials: "AM", color: "#10B981", nom: "Adéola Moussa", role: "Conducteur de Travaux (Chantiers Arconville)", ville: "Abomey-Calavi", note: 5, texte: "La réactivité sur WhatsApp est top. En envoyant la surface, on a le devis et la livraison sur chantier à Calavi arrive dans les temps. La filasse du Kenya est très propre." },
+  { initials: "FD", color: "#D97706", nom: "Fatou Diallo", role: "Architecte d'Intérieur (Résidences Fidjrossè)", ville: "Cotonou", note: 5, texte: "Pour les faux-plafonds à gorges lumineuses de mes clients, j'exige le Gypse Marco et la Chaux Vive de Dubaï. La blancheur est parfaite, prête pour la peinture." },
 ]
 
 function ReassuranceSection() {
@@ -1562,11 +1571,11 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
             </div>
 
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 2, flexWrap: "wrap", gap: 4 }}>
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#94A3B8" }}>
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#CBD5E1" }}>
                 Ligne : {PHONE_DISPLAY}
               </span>
               <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#10B981", fontWeight: 600 }}>
-                • Dépôt Ouvert
+                • Dépôts Ouverts Lun–Sam
               </span>
             </div>
           </div>
@@ -1578,10 +1587,10 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
   )
 }
 
-// ─── 10. Modale / Tiroir Slide-Over Fiche Produit avec Sticky CTA ────────────
-function SlideOverProductModal({ product, onClose }: { product: Product; onClose: () => void }) {
+// ─── 10. Modale / Tiroir Slide-Over Fiche Produit avec Passerelle Simulateur ──
+function SlideOverProductModal({ product, onClose, onOpenSimulateur }: { product: Product; onClose: () => void; onOpenSimulateur: () => void }) {
   const [qty, setQty] = useState(5)
-  const msgCmd = waUrl(`Bonjour ${COMPANY_NAME}, je souhaite commander ${qty} sac(s) de *${product.nom}* (${product.conditionnement}).\n\nPouvez-vous me confirmer le tarif et les modalités de livraison ? Merci !`)
+  const msgCmd = waUrl(`Bonjour ${COMPANY_NAME}, je souhaite commander ${qty} sac(s) de *${product.nom}* (${product.conditionnement}).\n\nPouvez-vous me confirmer le tarif dégressif et les modalités de livraison ? Merci !`)
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -1693,6 +1702,19 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
             </div>
           </div>
 
+          {/* Passerelle vers le simulateur */}
+          <div style={{ padding: "10px 12px", background: "#EFF6FF", borderRadius: 10, border: "1px solid #DBEAFE", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <span style={{ fontSize: "0.74rem", color: "#1E3A8A", fontWeight: 600 }}>
+              Besoin de calculer vos quantités selon votre surface ?
+            </span>
+            <button onClick={() => { onClose(); onOpenSimulateur() }} style={{
+              background: "#1E3A8A", color: "white", border: "none", borderRadius: 9999,
+              padding: "6px 12px", fontSize: "0.7rem", fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap"
+            }}>
+              Simulateur ➔
+            </button>
+          </div>
+
         </div>
 
         {/* Sticky Drawer Footer with CTA */}
@@ -1748,7 +1770,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
                 <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.88rem", fontWeight: 800, color: "white", lineHeight: 1.1 }}>
                   {COMPANY_NAME}
                 </div>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.55rem", fontWeight: 600, color: "#94A3B8", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.55rem", fontWeight: 600, color: "#CBD5E1", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                   {COMPANY_SUBTITLE}
                 </div>
               </div>
@@ -1844,14 +1866,14 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
           paddingTop: 16, borderTop: "1px solid rgba(255,255,255,0.06)",
           display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, alignItems: "center"
         }}>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8", margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#CBD5E1", margin: 0 }}>
             © 2026 {COMPANY_NAME} · {COMPANY_SUBTITLE}
           </p>
           <div style={{ display: "flex", gap: 10 }}>
-            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8" }}>
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#CBD5E1" }}>
               Qualité ISO 9001
             </span>
-            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8" }}>
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#CBD5E1" }}>
               Bénin BTP
             </span>
           </div>
@@ -2077,7 +2099,11 @@ export default function App() {
 
         {/* Modal Tiroir Slide-Over Fiche Produit (z-index 1000 au-dessus du dock) */}
         {selectedProduct && (
-          <SlideOverProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+          <SlideOverProductModal
+            product={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+            onOpenSimulateur={() => handleNavigate("simulateur")}
+          />
         )}
 
         {/* Scroll-To-Top Accessible Button avec dégagement au-dessus du dock */}
