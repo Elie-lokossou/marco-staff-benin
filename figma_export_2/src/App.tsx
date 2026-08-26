@@ -5,7 +5,7 @@ import {
   Clock, Calculator, ShieldCheck, Truck, Award, ChevronDown,
   Plus, Minus, ArrowRight, HelpCircle, Layers, Sparkles,
   ArrowUp, Building2, Warehouse, Hammer, Check, Info, FileText,
-  Sliders, ArrowDownRight, Scale
+  Sliders, Scale, CheckCheck, ArrowDownRight, Compass
 } from "lucide-react"
 import imgGypse from "@/imports/photo2.jpeg"
 import imgChaux from "@/imports/photo1.jpeg"
@@ -41,7 +41,7 @@ interface Product {
   application: string
 }
 
-// ─── Catalogue Produits (Données Riches pour Tiroir & Cartes Épurées) ─────────
+// ─── Catalogue Produits Réels (Écosystème BTP Officiel) ──────────────────────
 const PRODUCTS: Product[] = [
   {
     id: "gypse-40kg",
@@ -55,8 +55,8 @@ const PRODUCTS: Product[] = [
     image: imgGypse,
     description: "Poudre de gypse de moulage extra blanche importée directement d'Égypte. Granulométrie micronique ultra-fine pour un gâchage fluide sans grumeaux, une prise régulière et une finition miroir sans aucune craquelure.",
     highlights: [
-      "Blancheur éclatante 100% sans aucun jaunissement",
-      "Prise régulière (20 – 30 min) : idéal plafonds & corniches"
+      "Blancheur éclatante 100% sans jaunissement",
+      "Prise progressive régulière (20 – 30 min)"
     ],
     arguments: [
       "Blancheur éclatante 100% sans aucun jaunissement dans le temps",
@@ -64,7 +64,7 @@ const PRODUCTS: Product[] = [
       "Prise régulière (20 – 30 min) : idéal pour faux-plafonds et moulures",
       "Zéro retrait et zéro fissuration après séchage complet"
     ],
-    dosage: "0,60 L d'eau par kg de poudre (Gâchage souple et crémeux)",
+    dosage: "0,60 L d'eau par kg de poudre (Gâchage souple et onctueux)",
     application: "Faux-plafonds suspendus, plaques lissées, corniches moulées et rosaces.",
     specs: [
       { label: "Origine", valeur: "Import direct Égypte (Usine certifiée)" },
@@ -121,7 +121,7 @@ const PRODUCTS: Product[] = [
     description: "Fibres végétales de sisal pur sélectionnées et peignées au Kenya. Fibres longues d'une résistance mécanique extrême à la traction, garantissant l'armature indestructible de tous vos éléments en staff.",
     highlights: [
       "Fibres végétales 100% naturelles sélectionnées (Agave Sisalana)",
-      "Résistance extrême à la traction (> 300 MPa) contre les secousses"
+      "Résistance extrême à la traction (> 300 MPa) contre les fissures"
     ],
     arguments: [
       "Fibres végétales 100% naturelles sélectionnées (Agave Sisalana)",
@@ -279,7 +279,7 @@ function AnnouncementBar() {
         <div style={{ display: "flex", alignItems: "center", gap: 8, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "inline-block", flexShrink: 0, animation: "pulse 2s infinite" }} />
           <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8", fontWeight: 500 }}>
-            Dépôts Cotonou &amp; Calavi · Stock Disponible · Lun–Sam 7h30–18h00
+            Dépôts Cotonou (Akpakpa) &amp; Calavi (Kpota) · Stock Garanti · Lun–Sam 7h30–18h00
           </span>
         </div>
         <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", alignItems: "center", gap: 5, textDecoration: "none", flexShrink: 0 }}>
@@ -319,8 +319,9 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   const links = [
     { label: "Accueil", id: "accueil" },
     { label: "Nos Matériaux", id: "produits" },
-    { label: "Engagements & Logistique", id: "autorite" },
-    { label: "Simulateur Chantier", id: "simulateur", isSpecial: true },
+    { label: "Autorité BTP", id: "autorite" },
+    { label: "Simulateur", id: "simulateur", isSpecial: true },
+    { label: "Comment Commander", id: "commande" },
     { label: "Applications", id: "applications" },
     { label: "Avis Staffeurs", id: "avis" },
     { label: "FAQ", id: "faq" },
@@ -434,7 +435,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   )
 }
 
-// ─── 1. Hero Section (Composition Studio 3 Matériaux Équilibrée) ─────────────
+// ─── 1. Hero Section (Composition Studio 3 Matériaux Haute Définition) ───────
 function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => void; onSimulateur: () => void }) {
   return (
     <section id="accueil" style={{ background: "#FFFFFF", position: "relative", overflow: "hidden" }}>
@@ -568,7 +569,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
   )
 }
 
-// ─── 2. Catalogue Produits (Cards Épurées avec Fiche Technique Enrichie) ───────
+// ─── 2. Catalogue Produits (Cards Épurées & Fiche Technique Complète) ─────────
 function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void }) {
   return (
     <section id="produits" style={{ background: "#F8FAFC", padding: "clamp(48px, 6vw, 80px) 0" }}>
@@ -674,7 +675,7 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
                     transition: "all 0.2s ease",
                   }}>
                     <FileText size={14} />
-                    <span>Fiche &amp; Conseils Techniques</span>
+                    <span>Fiche &amp; Spécifications Complètes</span>
                   </button>
                 </div>
               </div>
@@ -687,10 +688,8 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
   )
 }
 
-// ─── 3. Section d'Autorité BTP : Engagements & Timeline Interactive ───────────
+// ─── 3. Grande Section d'Autorité BTP : Flux Narratif Continu (Zéro Onglet) ───
 function AutoriteBTPSection() {
-  const [activeTab, setActiveTab] = useState<"engagements" | "logistique">("engagements")
-
   const engagements = [
     {
       icon: Award,
@@ -714,30 +713,30 @@ function AutoriteBTPSection() {
     }
   ]
 
-  const timelineSteps = [
+  const pipeline = [
     {
       num: "01",
       phase: "Phase Usine",
-      titre: "Importation Directe",
-      desc: "Contrôles stricts de pureté chimique et d'ensachage étanche dès le départ des ports d'Alexandrie, Dubaï et Mombasa."
+      titre: "Contrôles à l'Embarquement",
+      desc: "Vérification des indices de blancheur, pureté chimique CaO > 95% et ensachage scellé avant départ des ports d'Alexandrie, Dubaï et Mombasa."
     },
     {
       num: "02",
       phase: "Phase Stockage",
-      titre: "Entrepôts Ventilés",
-      desc: "Stockage protégé dans nos dépôts de Cotonou & Calavi pour préserver la poudre de toute humidité tropicale."
+      titre: "Entrepôts Ventilés Protégés",
+      desc: "Stockage sous hygrométrie contrôlée à Cotonou et Calavi pour garantir que la poudre conserve 100% de sa réactivité sans prise d'humidité."
     },
     {
       num: "03",
       phase: "Phase Préparation",
-      titre: "Contrôle par Lots",
-      desc: "Vérification systématique de l'intégrité des sacs de 40 KG et des balles de sisal avant chaque chargement camion."
+      titre: "Vérification & Palettisation",
+      desc: "Contrôle visuel systématique de l'intégrité de chaque sac de 40 KG et de chaque balle de sisal avant mise sur camion."
     },
     {
       num: "04",
       phase: "Phase Chantier",
-      titre: "Livraison Déchargée",
-      desc: "Acheminement sous 24h à 48h directement sur votre zone de travail pour démarrer le gâchage sans délai."
+      titre: "Livraison Déchargée sur Site",
+      desc: "Acheminement rapide sous 24h à 48h directement sur votre zone de pose dans tout le Grand Cotonou."
     }
   ]
 
@@ -745,7 +744,8 @@ function AutoriteBTPSection() {
     <section id="autorite" style={{ background: "#FFFFFF", padding: "clamp(56px, 7vw, 90px) 0" }}>
       <div className="site-container">
         
-        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(28px, 4vw, 40px)" }}>
+        {/* Header Section */}
+        <div style={{ textAlign: "center", maxWidth: 760, margin: "0 auto clamp(36px, 5vw, 54px)" }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
@@ -753,94 +753,83 @@ function AutoriteBTPSection() {
             letterSpacing: "0.12em", marginBottom: 12,
             background: "#F3F0FF", padding: "6px 14px", borderRadius: 9999
           }}>
-            <ShieldCheck size={14} /> Rigueur &amp; Organisation BTP
+            <ShieldCheck size={14} /> Autorité Industrielle &amp; Logistique
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.8rem, 3.4vw, 2.5rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
             lineHeight: 1.2, marginBottom: 12
           }}>
-            Pourquoi les Professionnels Choisissent Marco Staff ?
+            La Garantie d&apos;un Grand Importateur BTP
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
-            Une exigence de qualité sans concession et une logistique rodée pour sécuriser vos chantiers du début à la fin.
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.88rem, 1.4vw, 1rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+            Une sélection rigoureuse à la source et une chaîne logistique maîtrisée pour sécuriser les cadences de vos chantiers au Bénin.
           </p>
         </div>
 
-        {/* Tab switcher pour fluidité mobile & desktop */}
-        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 32 }}>
-          <button onClick={() => setActiveTab("engagements")} style={{
-            padding: "9px 20px", borderRadius: 9999,
-            border: `1.5px solid ${activeTab === "engagements" ? "#674FF5" : "#E2E8F0"}`,
-            background: activeTab === "engagements" ? "#F3F0FF" : "white",
-            color: activeTab === "engagements" ? "#674FF5" : "#475569",
-            fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", fontWeight: 700,
-            cursor: "pointer", transition: "all 0.2s ease", display: "flex", alignItems: "center", gap: 6
-          }}>
-            <Award size={15} />
-            <span>Nos 4 Engagements Qualité</span>
-          </button>
-          <button onClick={() => setActiveTab("logistique")} style={{
-            padding: "9px 20px", borderRadius: 9999,
-            border: `1.5px solid ${activeTab === "logistique" ? "#674FF5" : "#E2E8F0"}`,
-            background: activeTab === "logistique" ? "#F3F0FF" : "white",
-            color: activeTab === "logistique" ? "#674FF5" : "#475569",
-            fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", fontWeight: 700,
-            cursor: "pointer", transition: "all 0.2s ease", display: "flex", alignItems: "center", gap: 6
-          }}>
-            <Truck size={15} />
-            <span>Chaîne Logistique &amp; Livraison</span>
-          </button>
+        {/* 1. Nos 4 Piliers d'Engagements */}
+        <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(16px, 2.5vw, 24px)", marginBottom: "clamp(40px, 5vw, 64px)" }}>
+          {engagements.map(({ icon: Icon, titre, desc }) => (
+            <div key={titre} style={{
+              background: "#F8FAFC", borderRadius: 20,
+              border: "1px solid #E2E8F0", padding: "clamp(20px, 3vw, 26px)",
+              display: "flex", flexDirection: "column", gap: 12,
+              transition: "all 0.25s ease"
+            }}
+              onMouseEnter={e => {
+                e.currentTarget.style.boxShadow = "0 10px 24px -4px rgba(15, 23, 42, 0.08)"
+                e.currentTarget.style.transform = "translateY(-3px)"
+                e.currentTarget.style.borderColor = "#674FF5"
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.boxShadow = "none"
+                e.currentTarget.style.transform = "translateY(0)"
+                e.currentTarget.style.borderColor = "#E2E8F0"
+              }}
+            >
+              <div style={{
+                width: 42, height: 42, borderRadius: 12,
+                background: "#F3F0FF", color: "#674FF5",
+                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+              }}>
+                <Icon size={20} />
+              </div>
+              <div>
+                <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#0F172A", margin: "0 0 6px" }}>
+                  {titre}
+                </h3>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "#475569", lineHeight: 1.55, margin: 0 }}>
+                  {desc}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Tab 1 : Engagements */}
-        {activeTab === "engagements" && (
-          <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(16px, 2.5vw, 24px)" }}>
-            {engagements.map(({ icon: Icon, titre, desc }) => (
-              <div key={titre} style={{
-                background: "#F8FAFC", borderRadius: 20,
-                border: "1px solid #E2E8F0", padding: "clamp(20px, 3vw, 26px)",
-                display: "flex", flexDirection: "column", gap: 12,
-                transition: "all 0.25s ease"
-              }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.boxShadow = "0 10px 24px -4px rgba(15, 23, 42, 0.08)"
-                  e.currentTarget.style.transform = "translateY(-3px)"
-                  e.currentTarget.style.borderColor = "#674FF5"
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.boxShadow = "none"
-                  e.currentTarget.style.transform = "translateY(0)"
-                  e.currentTarget.style.borderColor = "#E2E8F0"
-                }}
-              >
-                <div style={{
-                  width: 42, height: 42, borderRadius: 12,
-                  background: "#F3F0FF", color: "#674FF5",
-                  display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
-                }}>
-                  <Icon size={20} />
-                </div>
-                <div>
-                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#0F172A", margin: "0 0 6px" }}>
-                    {titre}
-                  </h3>
-                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "#475569", lineHeight: 1.55, margin: 0 }}>
-                    {desc}
-                  </p>
-                </div>
-              </div>
-            ))}
+        {/* 2. Le Pipeline Logistique Continu (Visible, Connecté, Sans Onglet) */}
+        <div style={{
+          background: "#F8FAFC", borderRadius: 28, border: "1px solid #E2E8F0",
+          padding: "clamp(28px, 4vw, 48px) clamp(20px, 3vw, 36px)"
+        }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 28, flexWrap: "wrap", gap: 12 }}>
+            <div>
+              <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "4px 10px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                Traçabilité Totale
+              </span>
+              <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.3rem, 2.2vw, 1.7rem)", fontWeight: 800, color: "#0F172A", margin: "8px 0 0" }}>
+                Notre Chaîne d&apos;Approvisionnement Usine ➔ Chantier
+              </h3>
+            </div>
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#64748B" }}>
+              4 étapes certifiées sans rupture de qualité
+            </span>
           </div>
-        )}
 
-        {/* Tab 2 : Chaîne Logistique */}
-        {activeTab === "logistique" && (
-          <div className="supply-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(16px, 2vw, 24px)" }}>
-            {timelineSteps.map(({ num, phase, titre, desc }) => (
+          <div className="supply-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(14px, 2vw, 20px)" }}>
+            {pipeline.map(({ num, phase, titre, desc }) => (
               <div key={num} style={{
-                background: "#F8FAFC", borderRadius: 20,
-                border: "1px solid #E2E8F0", padding: "clamp(20px, 3vw, 26px)",
+                background: "#FFFFFF", borderRadius: 18,
+                border: "1px solid #E2E8F0", padding: "clamp(18px, 2.5vw, 22px)",
                 display: "flex", flexDirection: "column", gap: 10,
                 boxShadow: "0 2px 6px rgba(0,0,0,0.02)"
               }}>
@@ -848,30 +837,37 @@ function AutoriteBTPSection() {
                   <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.4rem", fontWeight: 800, color: "#674FF5" }}>
                     {num}
                   </span>
-                  <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 8px", borderRadius: 6, textTransform: "uppercase" }}>
+                  <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#674FF5", background: "#F3F0FF", padding: "2px 8px", borderRadius: 6, textTransform: "uppercase" }}>
                     {phase}
                   </span>
                 </div>
                 <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.92rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
                   {titre}
                 </h4>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "#64748B", lineHeight: 1.55, margin: 0 }}>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#64748B", lineHeight: 1.55, margin: 0 }}>
                   {desc}
                 </p>
               </div>
             ))}
           </div>
-        )}
+        </div>
 
       </div>
     </section>
   )
 }
 
-// ─── 4. Cockpit Simulateur 2 Colonnes (Paramètres & Résultats en Direct) ──────
+// ─── 4. Cockpit Simulateur Pro avec Presets Métiers (2 Colonnes) ──────────────
 function InteractiveSimulateurSection() {
   const [surface, setSurface] = useState(60)
   const [typeOuvrage, setTypeOuvrage] = useState<"plafond" | "corniche">("plafond")
+
+  const presets = [
+    { label: "Chambre / Salon", val: 30 },
+    { label: "Appartement F3/F4", val: 80 },
+    { label: "Villa Standing", val: 150 },
+    { label: "Immeuble / Grand Chantier", val: 300 },
+  ]
 
   const coefGypse = typeOuvrage === "plafond" ? 0.35 : 0.25
   const coefFilasse = typeOuvrage === "plafond" ? 0.15 : 0.10
@@ -881,7 +877,6 @@ function InteractiveSimulateurSection() {
   const kgFilasse = Math.max(1, Math.round(surface * coefFilasse))
   const nbSacsChaux = Math.max(1, Math.ceil(surface * coefChaux))
 
-  // Poids total estimé en tonnes / kg
   const poidsTotalKg = (nbSacsGypse * 40) + kgFilasse + (nbSacsChaux * 40)
   const poidsTotalTonnes = (poidsTotalKg / 1000).toFixed(2)
 
@@ -894,7 +889,7 @@ function InteractiveSimulateurSection() {
 ` +
     `• Surface estimée : ${surface} m²
 ` +
-    `• Poids total estimé : ~${poidsTotalKg} kg (${poidsTotalTonnes} Tonnes)
+    `• Poids matériel calculé : ~${poidsTotalKg} kg (${poidsTotalTonnes} Tonnes)
 
 ` +
     `📦 *Quantités Estimées :*
@@ -931,11 +926,11 @@ function InteractiveSimulateurSection() {
             Simulateur de Besoins en Matériaux
           </h2>
           <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
-            Ajustez votre surface en temps réel pour obtenir instantanément le quantitatif de sacs de Gypse Marco, Chaux Vive et Filasse Sisal selon les ratios des maîtres staffeurs.
+            Sélectionnez votre type de chantier ou ajustez le curseur pour obtenir instantanément le quantitatif de sacs de Gypse Marco, Chaux Vive et Filasse Sisal.
           </p>
         </div>
 
-        {/* Cockpit 2 Colonnes Pro (Paramètres à gauche, Résultats en direct à droite) */}
+        {/* Cockpit 2 Colonnes Pro */}
         <div className="simu-cockpit-grid" style={{
           background: "#FFFFFF", borderRadius: 28, border: "1px solid #E2E8F0",
           padding: "clamp(24px, 4vw, 40px)", boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.06)",
@@ -943,16 +938,18 @@ function InteractiveSimulateurSection() {
           alignItems: "stretch"
         }}>
           
-          {/* Colonne Gauche : Paramétrage */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 24, justifyContent: "space-between" }}>
+          {/* Colonne Gauche : Contrôles & Presets */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+            
+            {/* Step 1 : Choix Ouvrage */}
             <div>
-              <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 12 }}>
+              <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 10 }}>
                 1. Choisissez le type d&apos;ouvrage :
               </label>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                 <button type="button" onClick={() => setTypeOuvrage("plafond")} style={{
-                  padding: "14px 16px", borderRadius: 14,
-                  fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", fontWeight: 700,
+                  padding: "12px 14px", borderRadius: 14,
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", fontWeight: 700,
                   border: `2px solid ${typeOuvrage === "plafond" ? "#674FF5" : "#E2E8F0"}`,
                   background: typeOuvrage === "plafond" ? "#F3F0FF" : "#FFFFFF",
                   color: typeOuvrage === "plafond" ? "#674FF5" : "#475569",
@@ -963,8 +960,8 @@ function InteractiveSimulateurSection() {
                   {typeOuvrage === "plafond" && <Check size={16} color="#674FF5" />}
                 </button>
                 <button type="button" onClick={() => setTypeOuvrage("corniche")} style={{
-                  padding: "14px 16px", borderRadius: 14,
-                  fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", fontWeight: 700,
+                  padding: "12px 14px", borderRadius: 14,
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", fontWeight: 700,
                   border: `2px solid ${typeOuvrage === "corniche" ? "#674FF5" : "#E2E8F0"}`,
                   background: typeOuvrage === "corniche" ? "#F3F0FF" : "#FFFFFF",
                   color: typeOuvrage === "corniche" ? "#674FF5" : "#475569",
@@ -977,33 +974,47 @@ function InteractiveSimulateurSection() {
               </div>
             </div>
 
+            {/* Presets rapides de surface */}
             <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
-                <label style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                  2. Superficie du chantier :
-                </label>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
-                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.8rem", fontWeight: 800, color: "#674FF5" }}>
-                    {surface}
-                  </span>
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", color: "#475569", fontWeight: 700 }}>
-                    m²
-                  </span>
-                </div>
+              <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>
+                2. Presets rapides ou ajustement manuel :
+              </label>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 12 }} className="presets-grid">
+                {presets.map(p => (
+                  <button key={p.val} onClick={() => setSurface(p.val)} style={{
+                    padding: "8px 6px", borderRadius: 10,
+                    border: `1.5px solid ${surface === p.val ? "#674FF5" : "#E2E8F0"}`,
+                    background: surface === p.val ? "#F3F0FF" : "white",
+                    color: surface === p.val ? "#674FF5" : "#475569",
+                    cursor: "pointer", fontSize: "0.75rem", fontWeight: 700,
+                    transition: "all 0.2s ease", textAlign: "center"
+                  }}>
+                    <div>{p.val} m²</div>
+                    <div style={{ fontSize: "0.6rem", color: "#94A3B8", fontWeight: 500 }}>{p.label}</div>
+                  </button>
+                ))}
+              </div>
+
+              {/* Slider interactif */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+                <span style={{ fontSize: "0.75rem", color: "#64748B" }}>Surface précise :</span>
+                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.5rem", fontWeight: 800, color: "#674FF5" }}>
+                  {surface} <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#475569" }}>m²</span>
+                </span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <button onClick={() => setSurface(s => Math.max(10, s - 10))} aria-label="Moins 10m²"
-                  style={{ width: 44, height: 44, borderRadius: "50%", border: "1px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
-                  <Minus size={16} />
+                  style={{ width: 40, height: 40, borderRadius: "50%", border: "1px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
+                  <Minus size={15} />
                 </button>
                 <input type="range" min={10} max={500} step={5} value={surface}
                   onChange={e => setSurface(Number(e.target.value))}
                   style={{ flex: 1, accentColor: "#674FF5", height: 8, cursor: "pointer" }}
                 />
                 <button onClick={() => setSurface(s => Math.min(500, s + 10))} aria-label="Plus 10m²"
-                  style={{ width: 44, height: 44, borderRadius: "50%", border: "1px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
-                  <Plus size={16} />
+                  style={{ width: 40, height: 40, borderRadius: "50%", border: "1px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
+                  <Plus size={15} />
                 </button>
               </div>
             </div>
@@ -1019,46 +1030,46 @@ function InteractiveSimulateurSection() {
           {/* Colonne Droite : Panneau de Devis & Quantités */}
           <div style={{
             background: "#F8FAFC", borderRadius: 20, border: "1px solid #E2E8F0",
-            padding: "24px", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 16
+            padding: "22px", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 14
           }}>
             <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
                 <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase" }}>
-                  Estimation pour {surface} m² :
+                  Quantités calculées ({surface} m²) :
                 </span>
                 <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 8px", borderRadius: 6 }}>
-                  Stock Vérifié
+                  Stock Disponible
                 </span>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 14px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 12px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
                   <div>
                     <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Gypse Marco (40kg)</div>
                     <div style={{ fontSize: "0.68rem", color: "#94A3B8" }}>🇪🇬 Import Égypte</div>
                   </div>
                   <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.2rem", fontWeight: 800, color: "#674FF5" }}>
-                    {nbSacsGypse} <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
+                    {nbSacsGypse} <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
                   </div>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 14px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 12px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
                   <div>
                     <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Filasse Sisal Pure</div>
                     <div style={{ fontSize: "0.68rem", color: "#94A3B8" }}>🇰🇪 Produce of Kenya</div>
                   </div>
                   <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.2rem", fontWeight: 800, color: "#10B981" }}>
-                    {kgFilasse} <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#64748B" }}>kg</span>
+                    {kgFilasse} <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "#64748B" }}>kg</span>
                   </div>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 14px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 12px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
                   <div>
                     <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Chaux Vive (40kg)</div>
                     <div style={{ fontSize: "0.68rem", color: "#94A3B8" }}>🇦🇪 Dubaï Pure</div>
                   </div>
                   <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.2rem", fontWeight: 800, color: "#0F172A" }}>
-                    {nbSacsChaux} <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
+                    {nbSacsChaux} <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
                   </div>
                 </div>
               </div>
@@ -1080,7 +1091,86 @@ function InteractiveSimulateurSection() {
   )
 }
 
-// ─── 5. Applications & Réalisations ──────────────────────────────────────────
+// ─── 5. Processus de Commande Clair en 4 Étapes (01 ➔ 02 ➔ 03 ➔ 04) ───────────
+function HowToOrderSection() {
+  const steps = [
+    {
+      num: "01",
+      titre: "Sélection & Métré",
+      desc: "Choisissez vos matériaux sur le catalogue ou calculez vos besoins exacts avec notre simulateur de chantier."
+    },
+    {
+      num: "02",
+      titre: "Devis WhatsApp Express",
+      desc: "Transmettez votre métré en 1 clic pour recevoir votre proforma avec tarif dégressif sous 15 à 30 minutes."
+    },
+    {
+      num: "03",
+      titre: "Confirmation de Commande",
+      desc: "Validation des quantités, du mode de règlement et réservation immédiate de vos lots dans nos dépôts."
+    },
+    {
+      num: "04",
+      titre: "Retrait ou Livraison Chantier",
+      desc: "Chargement direct à nos dépôts de Cotonou & Calavi ou livraison camion déchargée sur votre chantier sous 24-48h."
+    }
+  ]
+
+  return (
+    <section id="commande" style={{ background: "#FFFFFF", padding: "clamp(48px, 6vw, 80px) 0" }}>
+      <div className="site-container">
+        
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(32px, 5vw, 48px)" }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
+            fontWeight: 700, color: "#674FF5", textTransform: "uppercase",
+            letterSpacing: "0.12em", marginBottom: 12,
+            background: "#F3F0FF", padding: "6px 14px", borderRadius: 9999
+          }}>
+            <Clock size={14} /> Parcours Simple &amp; Sécurisé
+          </span>
+          <h2 style={{
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)",
+            fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
+            lineHeight: 1.2, marginBottom: 12
+          }}>
+            Comment Commander Vos Matériaux ?
+          </h2>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+            Un processus d&apos;achat fluide et réactif conçu pour respecter le rythme intensif des chantiers.
+          </p>
+        </div>
+
+        <div className="order-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(16px, 2.5vw, 24px)" }}>
+          {steps.map(({ num, titre, desc }) => (
+            <div key={num} style={{
+              background: "#F8FAFC", borderRadius: 20,
+              border: "1px solid #E2E8F0", padding: "clamp(20px, 3vw, 26px)",
+              display: "flex", flexDirection: "column", gap: 10
+            }}>
+              <span style={{
+                fontFamily: "var(--ds-font-heading)", fontSize: "1.4rem",
+                fontWeight: 800, color: "#10B981", lineHeight: 1
+              }}>
+                {num}
+              </span>
+              <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
+                {titre}
+              </h3>
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "#475569", lineHeight: 1.55, margin: 0 }}>
+                {desc}
+              </p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+// ─── 6. Applications & Réalisations ──────────────────────────────────────────
 function ApplicationsSection() {
   const apps = [
     {
@@ -1104,7 +1194,7 @@ function ApplicationsSection() {
   ]
 
   return (
-    <section id="applications" style={{ background: "#FFFFFF", padding: "clamp(48px, 6vw, 80px) 0" }}>
+    <section id="applications" style={{ background: "#F8FAFC", padding: "clamp(48px, 6vw, 80px) 0" }}>
       <div className="site-container">
         
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(32px, 5vw, 48px)" }}>
@@ -1132,13 +1222,13 @@ function ApplicationsSection() {
         <div className="apps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(20px, 3vw, 28px)" }}>
           {apps.map(({ titre, produit, desc, icon: Icon }) => (
             <div key={titre} style={{
-              background: "#F8FAFC", borderRadius: 20,
+              background: "#FFFFFF", borderRadius: 20,
               border: "1px solid #E2E8F0", padding: "clamp(24px, 3.5vw, 32px)",
               display: "flex", flexDirection: "column", gap: 14
             }}>
               <div style={{
                 width: 44, height: 44, borderRadius: 12,
-                background: "white", color: "#674FF5", border: "1px solid #E2E8F0",
+                background: "#F3F0FF", color: "#674FF5", border: "1px solid #E2E8F0",
                 display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
               }}>
                 <Icon size={22} />
@@ -1163,7 +1253,7 @@ function ApplicationsSection() {
   )
 }
 
-// ─── 6. Témoignages & Avis Clients ───────────────────────────────────────────
+// ─── 7. Témoignages & Avis Clients ───────────────────────────────────────────
 const TEMOIGNAGES = [
   { initials: "KB", color: "#674FF5", nom: "Kouassi Bernard", role: "Maître Staffeur depuis 14 ans", ville: "Cotonou", note: 5, texte: "Le gypse Marco est sans équivalent au Bénin. La pâte est fluide, prend sans chauffer excessivement et ne fait aucune fissure. Mes chantiers sont validés du premier coup." },
   { initials: "AM", color: "#10B981", nom: "Adéola Moussa", role: "Conducteur de Travaux BTP", ville: "Abomey-Calavi", note: 5, texte: "La réactivité sur WhatsApp est top. En envoyant la surface, on a le devis et la livraison sur chantier à Calavi arrive dans les temps. La filasse du Kenya est très propre." },
@@ -1172,7 +1262,7 @@ const TEMOIGNAGES = [
 
 function ReassuranceSection() {
   return (
-    <section id="avis" style={{ background: "#F8FAFC", padding: "clamp(48px, 6vw, 80px) 0" }}>
+    <section id="avis" style={{ background: "#FFFFFF", padding: "clamp(48px, 6vw, 80px) 0" }}>
       <div className="site-container">
         
         <div style={{ textAlign: "center", marginBottom: "clamp(32px, 5vw, 48px)" }}>
@@ -1190,7 +1280,7 @@ function ReassuranceSection() {
         <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(20px, 3vw, 28px)" }}>
           {TEMOIGNAGES.map(({ initials, color, nom, role, ville, note, texte }) => (
             <div key={nom} style={{
-              background: "white", border: "1px solid #E2E8F0", borderRadius: 20,
+              background: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: 20,
               padding: "clamp(20px, 3vw, 28px)", display: "flex", flexDirection: "column", gap: 16,
               boxShadow: "0 2px 4px rgba(15, 23, 42, 0.04)"
             }}>
@@ -1218,7 +1308,7 @@ function ReassuranceSection() {
   )
 }
 
-// ─── 7. FAQ Thématique & Accessible ──────────────────────────────────────────
+// ─── 8. FAQ Thématique & Accessible ──────────────────────────────────────────
 function FAQSection() {
   const [filter, setFilter] = useState<string>("all")
   const [openIndex, setOpenIndex] = useState<number | null>(0)
@@ -1230,7 +1320,7 @@ function FAQSection() {
   }
 
   return (
-    <section id="faq" style={{ background: "#FFFFFF", padding: "clamp(48px, 6vw, 80px) 0" }}>
+    <section id="faq" style={{ background: "#F8FAFC", padding: "clamp(48px, 6vw, 80px) 0" }}>
       <div className="site-container" style={{ maxWidth: 880 }}>
         
         <div style={{ textAlign: "center", marginBottom: "clamp(28px, 4vw, 36px)" }}>
@@ -1278,7 +1368,7 @@ function FAQSection() {
             const isOpen = openIndex === i
             return (
               <div key={faq.q} style={{
-                background: "#F8FAFC", borderRadius: 16,
+                background: "#FFFFFF", borderRadius: 16,
                 border: `1.5px solid ${isOpen ? "#674FF5" : "#E2E8F0"}`,
                 overflow: "hidden", transition: "all 0.2s ease"
               }}>
@@ -1297,7 +1387,7 @@ function FAQSection() {
                   </span>
                   <div style={{
                     width: 28, height: 28, borderRadius: "50%",
-                    background: isOpen ? "#F3F0FF" : "white",
+                    background: isOpen ? "#F3F0FF" : "#F8FAFC",
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
                     color: isOpen ? "#674FF5" : "#94A3B8",
                   }}>
@@ -1322,7 +1412,7 @@ function FAQSection() {
   )
 }
 
-// ─── 8. Section CTA Finale : ARCHITECTURALE SANS DÉGRADÉ (NO GRADIENT) ────────
+// ─── 9. Section CTA Finale : ARCHITECTURALE SANS DÉGRADÉ (NO GRADIENT) ────────
 function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void }) {
   return (
     <section style={{
@@ -1446,7 +1536,7 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
   )
 }
 
-// ─── 9. Modale / Tiroir Slide-Over Fiche Produit (Expérience Technique Enrichie)
+// ─── 10. Modale / Tiroir Slide-Over Fiche Produit (Expérience Technique Enrichie)
 function SlideOverProductModal({ product, onClose }: { product: Product; onClose: () => void }) {
   const [qty, setQty] = useState(5)
   const msgCmd = waUrl(`Bonjour ${COMPANY_NAME}, je souhaite commander ${qty} sac(s) de *${product.nom}* (${product.conditionnement}). Pouvez-vous me confirmer le tarif et les modalités de livraison ? Merci !`)
@@ -1532,7 +1622,7 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
               </span>
             </div>
             <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#475569", margin: 0, lineHeight: 1.5 }}>
-              💧 <strong>Dosage :</strong> {product.dosage}
+              💧 <strong>Dosage d&apos;eau :</strong> {product.dosage}
             </p>
             <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#475569", margin: 0, lineHeight: 1.5 }}>
               🏛️ <strong>Usages types :</strong> {product.application}
@@ -1591,7 +1681,7 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
   )
 }
 
-// ─── 10. Footer Officiel 2026 ────────────────────────────────────────────────
+// ─── 11. Footer Officiel 2026 ────────────────────────────────────────────────
 function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
   return (
     <footer id="contact" style={{ background: "#0A0F1D", color: "white", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
@@ -1663,8 +1753,9 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
               {[
                 { label: "Accueil", id: "accueil" },
                 { label: "Nos Matériaux", id: "produits" },
-                { label: "Engagements & Logistique", id: "autorite" },
+                { label: "Autorité BTP", id: "autorite" },
                 { label: "Simulateur Chantier", id: "simulateur" },
+                { label: "Comment Commander", id: "commande" },
                 { label: "Applications", id: "applications" },
                 { label: "Avis Staffeurs", id: "avis" },
                 { label: "FAQ", id: "faq" },
@@ -1678,16 +1769,17 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
             </ul>
           </div>
 
-          {/* Col 4 Dépôts */}
+          {/* Col 4 Dépôts Bénin */}
           <div>
             <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.75rem", fontWeight: 700, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
-              Dépôts &amp; Horaires
+              Dépôts Physiques au Bénin
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
                 <MapPin size={14} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
                 <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "#94A3B8", lineHeight: 1.5 }}>
-                  Dépôts Cotonou &amp; Abomey-Calavi, Bénin
+                  <strong>Dépôt Cotonou :</strong> Akpakpa, Zone Industrielle<br />
+                  <strong>Dépôt Calavi :</strong> Carrefour Kpota / Arconville
                 </span>
               </div>
               <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
@@ -1698,7 +1790,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
               </div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(16,185,129,0.15)", borderRadius: 9999, padding: "5px 12px", width: "fit-content" }}>
                 <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "block" }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#10B981" }}>En Stock Dépôt</span>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#10B981" }}>Stock Garanti en Dépôt</span>
               </div>
             </div>
           </div>
@@ -1748,6 +1840,7 @@ const CSS = `
   .product-grid { grid-template-columns: repeat(3, 1fr); }
   .why-grid { grid-template-columns: repeat(4, 1fr); }
   .supply-grid { grid-template-columns: repeat(4, 1fr); }
+  .order-grid { grid-template-columns: repeat(4, 1fr); }
   .apps-grid { grid-template-columns: repeat(3, 1fr); }
   .simu-cockpit-grid { grid-template-columns: 1.15fr 0.85fr; }
   .cta-architectural-grid { grid-template-columns: 1.2fr 0.8fr; }
@@ -1762,6 +1855,7 @@ const CSS = `
     .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .why-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .supply-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .order-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .apps-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .footer-grid { grid-template-columns: 1fr 1fr !important; }
     .simu-cockpit-grid { grid-template-columns: 1fr !important; }
@@ -1803,7 +1897,9 @@ const CSS = `
     .product-grid { grid-template-columns: 1fr !important; }
     .why-grid { grid-template-columns: 1fr !important; }
     .supply-grid { grid-template-columns: 1fr !important; }
+    .order-grid { grid-template-columns: 1fr !important; }
     .apps-grid { grid-template-columns: 1fr !important; }
+    .presets-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .footer-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
   }
 
@@ -1850,6 +1946,7 @@ export default function App() {
           <ProductsSection onOpenDetail={(p) => setSelectedProduct(p)} />
           <AutoriteBTPSection />
           <InteractiveSimulateurSection />
+          <HowToOrderSection />
           <ApplicationsSection />
           <ArchitecturalCTASection onSimulateur={() => handleNavigate("simulateur")} />
           <ReassuranceSection />
@@ -1858,7 +1955,7 @@ export default function App() {
 
         <Footer onNavigate={handleNavigate} />
 
-        {/* Modal Tiroir Slide-Over Fiche Produit (Expérience Technique) */}
+        {/* Modal Tiroir Slide-Over Fiche Produit */}
         {selectedProduct && (
           <SlideOverProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
         )}
