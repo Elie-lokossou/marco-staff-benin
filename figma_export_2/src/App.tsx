@@ -4,7 +4,7 @@ import {
   CheckCircle2, Star, Package, Clock, Calculator, ShieldCheck,
   Truck, Award, ChevronDown, Plus, Minus, HelpCircle,
   Layers, Sparkles, ArrowUp, Building2, Warehouse, Hammer, Check,
-  Info, FileText, Scale, Droplets
+  Info, FileText, Scale, Droplets, ArrowRight, ShieldAlert, BadgePercent
 } from "lucide-react"
 import imgGypse from "@/imports/photo2.jpeg"
 import imgChaux from "@/imports/photo1.jpeg"
@@ -129,7 +129,7 @@ const PRODUCTS: Product[] = [
 const imgSrc = (img: string | { src: string }) =>
   typeof img === "string" ? img : img.src
 
-// ─── FAQ Thématique & Accessible ─────────────────────────────────────────────
+// ─── FAQ Thématique ───────────────────────────────────────────────────────────
 const FAQS = [
   {
     cat: "logistique",
@@ -178,7 +178,7 @@ function WaBtn({ label = "WhatsApp", url, small = false, full = false, variant =
       color: isWhite ? "#0F172A" : isOutline ? "#FFFFFF" : "#FFFFFF",
       border: isOutline ? "1.5px solid rgba(255,255,255,0.4)" : "none",
       fontFamily: "var(--ds-font-body)", fontSize: small ? "clamp(0.75rem, 2.5vw, 0.82rem)" : "clamp(0.8rem, 2.8vw, 0.9rem)",
-      fontWeight: 700, padding: small ? "8px 14px" : "12px 20px",
+      fontWeight: 700, padding: small ? "8px 16px" : "12px 22px",
       borderRadius: "9999px", textDecoration: "none",
       transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
       boxShadow: isWhite ? "0 4px 20px rgba(0,0,0,0.15)" : isOutline ? "none" : "0 4px 14px rgba(16, 185, 129, 0.35)",
@@ -256,10 +256,10 @@ function Button({ children, variant = "primary", size = "medium", iconEnd, onCli
   )
 }
 
-// ─── Header & Smart Sticky Navbar (Compacité Mobile & Smartwatch) ─────────────
+// ─── Header & Smart Sticky Navbar (Épure & Hiérarchie Senior) ─────────────────
 function AnnouncementBar() {
   return (
-    <div style={{ background: "#0A0F1D", padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+    <div style={{ background: "#080C16", padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
       <div className="site-container" style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
         gap: 6, flexWrap: "wrap",
@@ -267,7 +267,7 @@ function AnnouncementBar() {
         <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "inline-block", flexShrink: 0, animation: "pulse 2s infinite" }} />
           <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.65rem, 2vw, 0.72rem)", color: "#94A3B8", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-            Dépôts Cotonou &amp; Calavi · Stock Garanti · Lun–Sam 7h30–18h00
+            Dépôts Cotonou (Akpakpa) &amp; Calavi (Kpota) · Stock Garanti · Lun–Sam 7h30–18h00
           </span>
         </div>
         <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", alignItems: "center", gap: 4, textDecoration: "none", flexShrink: 0 }}>
@@ -304,15 +304,13 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // 4 Piliers Clairs (Fin de la liste entassée de 8 liens)
   const links = [
-    { label: "Accueil", id: "accueil" },
-    { label: "Nos Matériaux", id: "produits" },
-    { label: "Autorité BTP", id: "autorite" },
-    { label: "Simulateur", id: "simulateur", isSpecial: true },
+    { label: "Catalogue Matériaux", id: "produits" },
+    { label: "Garantie & Logistique", id: "autorite" },
+    { label: "Simulateur de Métré", id: "simulateur", isSpecial: true },
     { label: "Comment Commander", id: "commande" },
-    { label: "Applications", id: "applications" },
-    { label: "Avis Staffeurs", id: "avis" },
-    { label: "FAQ", id: "faq" },
+    { label: "Avis & FAQ", id: "faq" },
   ]
 
   return (
@@ -320,56 +318,63 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
       position: "sticky", top: 0, zIndex: 100,
       transform: isVisible ? "translateY(0)" : "translateY(-100%)",
       transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, box-shadow 0.2s ease",
-      background: isScrolled ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.95)",
-      backdropFilter: "blur(16px)",
+      background: isScrolled ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.94)",
+      backdropFilter: "blur(20px)",
       borderBottom: "1px solid #E2E8F0",
       boxShadow: isScrolled ? "0 4px 20px rgba(0,0,0,0.06)" : "none",
     }}>
       <div className="site-container" style={{
-        height: isScrolled ? "clamp(52px, 8vw, 60px)" : "clamp(58px, 9vw, 70px)",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
+        height: isScrolled ? 62 : 72, display: "flex", alignItems: "center", justifyContent: "space-between",
         transition: "height 0.25s ease"
       }}>
-        {/* Brand Logo Industriel */}
-        <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: "clamp(6px, 1.5vw, 10px)", cursor: "pointer", minWidth: 0 }}>
+        {/* Brand Logo Industriel Haute Définition */}
+        <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", minWidth: 0 }}>
           <div style={{
-            width: "clamp(30px, 5vw, 38px)", height: "clamp(30px, 5vw, 38px)", borderRadius: 10,
-            background: "#1E3A8A", display: "flex", alignItems: "center",
-            justifyContent: "center", flexShrink: 0,
-            boxShadow: "0 2px 10px rgba(30,58,138,0.3)",
+            width: isScrolled ? 36 : 40, height: isScrolled ? 36 : 40, borderRadius: 10,
+            background: "linear-gradient(135deg, #1E3A8A 0%, #0F2444 100%)",
+            border: "1.5px solid rgba(255,255,255,0.15)",
+            display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+            boxShadow: "0 4px 12px rgba(30,58,138,0.25)",
             transition: "all 0.25s ease"
           }}>
-            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.5vw, 1.1rem)", fontWeight: 800, color: "white" }}>M</span>
+            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: isScrolled ? "1rem" : "1.15rem", fontWeight: 800, color: "white", letterSpacing: "-0.02em" }}>M</span>
           </div>
           <div style={{ minWidth: 0 }}>
-            <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.8rem, 2.6vw, 0.95rem)", fontWeight: 800, color: "#0F172A", lineHeight: 1.15, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.6vw, 1rem)", fontWeight: 800, color: "#0F172A", lineHeight: 1.15, letterSpacing: "-0.02em" }}>
               {COMPANY_NAME}
             </div>
-            <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.55rem, 1.8vw, 0.62rem)", fontWeight: 600, color: "#64748B", letterSpacing: "0.04em", textTransform: "uppercase", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-              {COMPANY_SUBTITLE}
+            <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.55rem, 1.8vw, 0.62rem)", fontWeight: 700, color: "#D97706", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              IMPORTATEUR DIRECT BÉNIN
             </div>
           </div>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav style={{ display: "flex", gap: 16, alignItems: "center" }} className="nav-desktop">
+        {/* Desktop Navigation 4 Piliers */}
+        <nav style={{ display: "flex", gap: 20, alignItems: "center" }} className="nav-desktop">
           {links.map(({ label, id, isSpecial }) => (
             <a key={id} href={`#${id}`}
               onClick={e => { e.preventDefault(); onNavigate(id) }}
               style={{
-                fontFamily: "var(--ds-font-body)", fontSize: "0.82rem",
+                fontFamily: "var(--ds-font-body)", fontSize: "0.85rem",
                 fontWeight: 600,
                 color: isSpecial ? "#1E3A8A" : "#475569",
                 textDecoration: "none",
-                display: "inline-flex", alignItems: "center", gap: 4,
-                padding: isSpecial ? "4px 10px" : "4px 0",
+                display: "inline-flex", alignItems: "center", gap: 5,
+                padding: isSpecial ? "5px 12px" : "6px 0",
                 borderRadius: isSpecial ? 9999 : 0,
                 background: isSpecial ? "#EFF6FF" : "transparent",
-                transition: "color 0.2s ease"
+                border: isSpecial ? "1px solid #DBEAFE" : "none",
+                transition: "color 0.2s ease, transform 0.2s ease"
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#1E3A8A" }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.color = "#1E3A8A"
+                if (!isSpecial) (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"
+              }}
               onMouseLeave={e => {
-                if (!isSpecial) (e.currentTarget as HTMLElement).style.color = "#475569"
+                if (!isSpecial) {
+                  (e.currentTarget as HTMLElement).style.color = "#475569"
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)"
+                }
               }}
             >
               {isSpecial && <Calculator size={13} />}
@@ -388,7 +393,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
           background: "none", border: "none", cursor: "pointer",
           padding: 6, color: "#0F172A", flexShrink: 0
         }} className="nav-mobile-toggle">
-          {open ? <X size={22} /> : <Menu size={22} />}
+          {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
@@ -396,7 +401,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
       {open && (
         <div style={{
           borderTop: "1px solid #E2E8F0",
-          padding: "14px 16px 20px",
+          padding: "16px 20px 24px",
           display: "flex", flexDirection: "column", gap: 10,
           background: "#FFFFFF", maxHeight: "80vh", overflowY: "auto"
         }}>
@@ -404,18 +409,18 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
             <a key={id} href={`#${id}`}
               onClick={e => { e.preventDefault(); onNavigate(id); setOpen(false) }}
               style={{
-                fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 3.5vw, 0.95rem)",
+                fontFamily: "var(--ds-font-body)", fontSize: "0.95rem",
                 fontWeight: 600, color: isSpecial ? "#1E3A8A" : "#0F172A",
-                textDecoration: "none", padding: "8px 0",
+                textDecoration: "none", padding: "10px 0",
                 display: "flex", alignItems: "center", justifyContent: "space-between",
                 borderBottom: "1px solid #F1F5F9"
               }}
             >
               <span>{label}</span>
-              {isSpecial ? <span style={{ fontSize: "0.68rem", background: "#EFF6FF", color: "#1E3A8A", padding: "2px 8px", borderRadius: 9999, fontWeight: 700 }}>Simulateur</span> : <ChevronRight size={14} color="#94A3B8" />}
+              {isSpecial ? <span style={{ fontSize: "0.7rem", background: "#EFF6FF", color: "#1E3A8A", padding: "2px 8px", borderRadius: 9999, fontWeight: 700 }}>Simulateur</span> : <ChevronRight size={14} color="#94A3B8" />}
             </a>
           ))}
-          <div style={{ paddingTop: 6 }}>
+          <div style={{ paddingTop: 8 }}>
             <WaBtn label="WhatsApp Express Direct" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis.`)} full />
           </div>
         </div>
@@ -427,14 +432,20 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
 // ─── 1. Hero Section (Composition Studio 3 Matériaux Haute Définition) ───────
 function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => void; onSimulateur: () => void }) {
   return (
-    <section id="accueil" style={{ background: "#FFFFFF", position: "relative", overflow: "hidden" }}>
+    <section id="accueil" style={{
+      background: "#FFFFFF",
+      position: "relative",
+      overflow: "hidden",
+      backgroundImage: "radial-gradient(#E2E8F0 1px, transparent 1px)",
+      backgroundSize: "32px 32px"
+    }}>
       <div className="site-container" style={{
-        paddingTop: "clamp(20px, 4vw, 56px)",
-        paddingBottom: "clamp(32px, 5vw, 72px)",
+        paddingTop: "clamp(24px, 4.5vw, 56px)",
+        paddingBottom: "clamp(36px, 5.5vw, 72px)",
       }}>
         <div className="hero-grid" style={{
           display: "grid", gridTemplateColumns: "1.15fr 0.85fr",
-          gap: "clamp(20px, 4vw, 48px)", alignItems: "center", position: "relative",
+          gap: "clamp(24px, 4vw, 48px)", alignItems: "center", position: "relative",
         }}>
 
           {/* Left Col */}
@@ -449,10 +460,11 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
               ].map(({ flag, label }) => (
                 <span key={label} style={{
                   display: "inline-flex", alignItems: "center", gap: 5,
-                  background: "#F8FAFC", border: "1.5px solid #E2E8F0",
-                  borderRadius: "9999px", padding: "3px 10px",
+                  background: "#FFFFFF", border: "1.5px solid #E2E8F0",
+                  borderRadius: "9999px", padding: "4px 12px",
                   fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2vw, 0.75rem)",
                   fontWeight: 700, color: "#0F172A",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.02)"
                 }}>{flag} {label}</span>
               ))}
             </div>
@@ -460,7 +472,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
             {/* Main Headline */}
             <h1 style={{
               fontFamily: "var(--ds-font-heading)",
-              fontSize: "clamp(1.5rem, 4.8vw, 3.2rem)",
+              fontSize: "clamp(1.75rem, 4.2vw, 3.2rem)",
               fontWeight: 800, color: "#0F172A", lineHeight: 1.15,
               letterSpacing: "-0.035em", marginBottom: 14,
               wordBreak: "break-word"
@@ -470,16 +482,16 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
 
             {/* Sub-headline */}
             <p style={{
-              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2.2vw, 1rem)",
-              color: "#475569", lineHeight: 1.65, maxWidth: 520,
-              marginBottom: "clamp(18px, 3.5vw, 28px)",
+              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 2.2vw, 1rem)",
+              color: "#475569", lineHeight: 1.7, maxWidth: 520,
+              marginBottom: "clamp(20px, 3.5vw, 28px)",
               wordBreak: "break-word"
             }}>
               Approvisionnez vos chantiers directement à la source. <strong>Poudre de Gypse Marco 40 KG</strong> (Égypte), <strong>Chaux Vive pure</strong> (Dubaï) et <strong>Filasse Sisal haute ténacité</strong> (Kenya). Qualité certifiée, zéro fissure, stock permanent et livraison rapide sur chantier.
             </p>
 
             {/* Action CTAs */}
-            <div className="hero-cta-group" style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", marginBottom: "clamp(20px, 4vw, 32px)" }}>
+            <div className="hero-cta-group" style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", marginBottom: "clamp(24px, 4vw, 32px)" }}>
               <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} />
               <Button variant="neutral" iconEnd={<Calculator size={15} color="#1E3A8A" />} onClick={onSimulateur}>
                 Calculer mes besoins
@@ -489,7 +501,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
             {/* Trust stats row */}
             <div className="hero-stats-grid" style={{
               display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(8px, 2vw, 14px)",
-              paddingTop: 16, borderTop: "1.5px solid #E2E8F0",
+              paddingTop: 18, borderTop: "1.5px solid #E2E8F0",
             }}>
               {[
                 { val: "100%", label: "Pureté & Zéro Fissure" },
@@ -498,8 +510,8 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
                 { val: "Stock", label: "Permanent en Dépôt" },
               ].map(({ val, label }) => (
                 <div key={label}>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1rem, 2.8vw, 1.45rem)", fontWeight: 800, color: "#1E3A8A", lineHeight: 1 }}>{val}</div>
-                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.62rem, 1.8vw, 0.7rem)", color: "#64748B", marginTop: 4, fontWeight: 500 }}>{label}</div>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.1rem, 2.8vw, 1.45rem)", fontWeight: 800, color: "#1E3A8A", lineHeight: 1 }}>{val}</div>
+                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.62rem, 1.8vw, 0.7rem)", color: "#64748B", marginTop: 4, fontWeight: 600 }}>{label}</div>
                 </div>
               ))}
             </div>
@@ -508,45 +520,51 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
           {/* Right Col – Studio Showcase Multi-Matières */}
           <div className="hero-visual" style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{
-              position: "relative", zIndex: 2, width: "100%", maxWidth: 360,
-              background: "#FFFFFF", borderRadius: "clamp(16px, 3vw, 24px)",
-              boxShadow: "0 20px 50px -10px rgba(15, 23, 42, 0.12)",
-              border: "1.5px solid #E2E8F0", overflow: "hidden", padding: "clamp(12px, 3vw, 20px)"
+              position: "relative", zIndex: 2, width: "100%", maxWidth: 380,
+              background: "#FFFFFF", borderRadius: "clamp(18px, 3vw, 24px)",
+              boxShadow: "0 24px 60px -12px rgba(15, 23, 42, 0.14)",
+              border: "1.5px solid #E2E8F0", overflow: "hidden", padding: "clamp(16px, 3vw, 22px)"
             }}>
               {/* Main Product Showcase */}
-              <div style={{ background: "#F8FAFC", borderRadius: 14, border: "1px solid #E2E8F0", padding: 12, height: "clamp(160px, 30vw, 210px)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ background: "#F8FAFC", borderRadius: 16, border: "1px solid #E2E8F0", padding: 14, height: "clamp(170px, 30vw, 220px)", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
                 <img src={imgSrc(imgGypse)} alt="Gypse Marco 40 KG" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
+                <span style={{
+                  position: "absolute", top: 10, right: 10,
+                  background: "#10B981", color: "white", fontSize: "0.65rem", fontWeight: 700, padding: "2px 7px", borderRadius: 9999
+                }}>
+                  En Stock Dépôt
+                </span>
               </div>
 
               <div style={{ marginTop: 12 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.82rem, 2.4vw, 0.92rem)", fontWeight: 800, color: "#0F172A" }}>Poudre de Gypse Marco</span>
-                  <span style={{ background: "#EFF6FF", color: "#1E3A8A", fontSize: "0.65rem", fontWeight: 700, padding: "2px 6px", borderRadius: 9999 }}>Sac 40 KG</span>
+                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.4vw, 0.95rem)", fontWeight: 800, color: "#0F172A" }}>Poudre de Gypse Marco</span>
+                  <span style={{ background: "#EFF6FF", color: "#1E3A8A", fontSize: "0.68rem", fontWeight: 700, padding: "2px 8px", borderRadius: 9999 }}>Sac 40 KG</span>
                 </div>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.7rem, 2vw, 0.75rem)", color: "#64748B", margin: 0 }}>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.72rem, 2vw, 0.76rem)", color: "#64748B", margin: 0 }}>
                   Extra White · Prise 20-30 min · Formule anti-fissure
                 </p>
               </div>
 
               {/* Mini thumbnails row for 2 other products */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 10, paddingTop: 10, borderTop: "1px solid #E2E8F0" }}>
-                <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, cursor: "pointer", border: "1px solid #E2E8F0" }}>
-                  <div style={{ width: 28, height: 28, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 12, paddingTop: 10, borderTop: "1px solid #E2E8F0" }}>
+                <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "8px 10px", borderRadius: 10, cursor: "pointer", border: "1px solid #E2E8F0" }}>
+                  <div style={{ width: 30, height: 30, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <img src={imgSrc(imgChaux)} alt="Chaux Vive" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Chaux Vive</div>
-                    <div style={{ fontSize: "0.58rem", color: "#64748B" }}>🇦🇪 Dubaï 40kg</div>
+                    <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Chaux Vive</div>
+                    <div style={{ fontSize: "0.6rem", color: "#64748B" }}>🇦🇪 Dubaï 40kg</div>
                   </div>
                 </div>
 
-                <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, cursor: "pointer", border: "1px solid #E2E8F0" }}>
-                  <div style={{ width: 28, height: 28, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "8px 10px", borderRadius: 10, cursor: "pointer", border: "1px solid #E2E8F0" }}>
+                  <div style={{ width: 30, height: 30, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <img src={imgSrc(imgFilasse)} alt="Filasse Sisal" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Filasse Sisal</div>
-                    <div style={{ fontSize: "0.58rem", color: "#64748B" }}>🇰🇪 Kenya Pure</div>
+                    <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Filasse Sisal</div>
+                    <div style={{ fontSize: "0.6rem", color: "#64748B" }}>🇰🇪 Kenya Pure</div>
                   </div>
                 </div>
               </div>
@@ -563,10 +581,10 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
 // ─── 2. Catalogue Produits (Cards Épurées & Fiche Technique Complète) ─────────
 function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void }) {
   return (
-    <section id="produits" style={{ background: "#F8FAFC", padding: "clamp(36px, 5vw, 80px) 0" }}>
+    <section id="produits" style={{ background: "#F8FAFC", padding: "clamp(40px, 6vw, 84px) 0" }}>
       <div className="site-container">
         
-        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(24px, 4vw, 48px)" }}>
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(28px, 4.5vw, 48px)" }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2vw, 0.75rem)",
@@ -577,18 +595,18 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
             <Package size={13} /> Catalogue Officiel Direct Usine
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.8vw, 2.4rem)",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.4rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
             lineHeight: 1.2, marginBottom: 10, wordBreak: "break-word"
           }}>
             Nos 3 Matériaux Phares en Stock Permanent
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
             Chaque sac et balle provient directement des usines partenaires. Zéro intermédiaire, qualité certifiée pour les staffeurs et promoteurs du Bénin.
           </p>
         </div>
 
-        <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(16px, 3vw, 28px)" }}>
+        <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(18px, 3vw, 28px)" }}>
           {PRODUCTS.map((p) => (
             <div key={p.id} style={{
               background: "white", border: "1.5px solid #E2E8F0",
@@ -627,7 +645,7 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
               </div>
 
               {/* Info Frame Épurée */}
-              <div style={{ padding: "clamp(14px, 3vw, 22px)", flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={{ padding: "clamp(16px, 3vw, 22px)", flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4, flexWrap: "wrap", gap: 4 }}>
                     <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#1E3A8A", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>
@@ -637,7 +655,7 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
                       {p.remiseBadge}
                     </span>
                   </div>
-                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.88rem, 2.4vw, 0.98rem)", fontWeight: 800, color: "#0F172A", margin: "2px 0 0", lineHeight: 1.3 }}>
+                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.9rem, 2.4vw, 1rem)", fontWeight: 800, color: "#0F172A", margin: "2px 0 0", lineHeight: 1.3 }}>
                     {p.nom}
                   </h3>
                 </div>
@@ -647,7 +665,7 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
                   {p.highlights.map(h => (
                     <li key={h} style={{ display: "flex", gap: 6, alignItems: "flex-start" }}>
                       <CheckCircle2 size={14} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
-                      <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.75rem, 2vw, 0.8rem)", color: "#475569", lineHeight: 1.45 }}>
+                      <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.76rem, 2vw, 0.82rem)", color: "#475569", lineHeight: 1.45 }}>
                         {h}
                       </span>
                     </li>
@@ -661,13 +679,13 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
                   </span>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: "auto", paddingTop: 4 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: "auto", paddingTop: 6 }}>
                   <WaBtn label="Commander / Prix WhatsApp" url={waProduitMsg(p.nom, p.conditionnement)} full />
                   <button onClick={() => onOpenDetail(p)} style={{
                     display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                    fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", fontWeight: 700,
+                    fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", fontWeight: 700,
                     color: "#1E3A8A", background: "#EFF6FF", border: "1px solid #DBEAFE",
-                    borderRadius: 9999, padding: "9px 14px", cursor: "pointer",
+                    borderRadius: 9999, padding: "10px 16px", cursor: "pointer",
                     transition: "all 0.2s ease",
                   }}>
                     <FileText size={13} />
@@ -737,7 +755,7 @@ function AutoriteBTPSection() {
   ]
 
   return (
-    <section id="autorite" style={{ background: "#FFFFFF", padding: "clamp(40px, 6vw, 90px) 0" }}>
+    <section id="autorite" style={{ background: "#FFFFFF", padding: "clamp(48px, 6vw, 90px) 0" }}>
       <div className="site-container">
         
         {/* Header Section */}
@@ -752,13 +770,13 @@ function AutoriteBTPSection() {
             <ShieldCheck size={13} /> Autorité Industrielle &amp; Logistique
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.8vw, 2.5rem)",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.5rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
             lineHeight: 1.2, marginBottom: 10, wordBreak: "break-word"
           }}>
             La Garantie d&apos;un Grand Importateur BTP
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 1rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 1rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
             Une sélection rigoureuse à la source et une chaîne logistique maîtrisée pour sécuriser les cadences de vos chantiers au Bénin.
           </p>
         </div>
@@ -910,7 +928,7 @@ function InteractiveSimulateurSection() {
   )
 
   return (
-    <section id="simulateur" style={{ background: "#F8FAFC", padding: "clamp(36px, 5vw, 80px) 0" }}>
+    <section id="simulateur" style={{ background: "#F8FAFC", padding: "clamp(40px, 6vw, 84px) 0" }}>
       <div className="site-container">
         
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(24px, 4vw, 44px)" }}>
@@ -924,13 +942,13 @@ function InteractiveSimulateurSection() {
             <Calculator size={13} /> Métré Interactif de Chantier
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.8vw, 2.4rem)",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.4rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
             lineHeight: 1.2, marginBottom: 10, wordBreak: "break-word"
           }}>
             Simulateur de Besoins en Matériaux
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
             Sélectionnez votre type de chantier ou ajustez le curseur pour obtenir instantanément le quantitatif de sacs de Gypse Marco, Chaux Vive et Filasse Sisal.
           </p>
         </div>
@@ -938,13 +956,13 @@ function InteractiveSimulateurSection() {
         {/* Cockpit 2 Colonnes Pro */}
         <div className="simu-cockpit-grid" style={{
           background: "#FFFFFF", borderRadius: "clamp(18px, 3vw, 28px)", border: "1.5px solid #E2E8F0",
-          padding: "clamp(16px, 3.5vw, 40px)", boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.06)",
-          display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "clamp(18px, 3vw, 40px)",
+          padding: "clamp(18px, 3.5vw, 40px)", boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.06)",
+          display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "clamp(20px, 3vw, 40px)",
           alignItems: "stretch"
         }}>
           
           {/* Colonne Gauche : Contrôles & Presets */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             
             {/* Step 1 : Choix Ouvrage */}
             <div>
@@ -953,7 +971,7 @@ function InteractiveSimulateurSection() {
               </label>
               <div className="simu-type-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                 <button type="button" onClick={() => setTypeOuvrage("plafond")} style={{
-                  padding: "10px 12px", borderRadius: 12,
+                  padding: "12px 14px", borderRadius: 12,
                   fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.75rem, 2vw, 0.82rem)", fontWeight: 700,
                   border: `2px solid ${typeOuvrage === "plafond" ? "#1E3A8A" : "#E2E8F0"}`,
                   background: typeOuvrage === "plafond" ? "#EFF6FF" : "#FFFFFF",
@@ -965,7 +983,7 @@ function InteractiveSimulateurSection() {
                   {typeOuvrage === "plafond" && <Check size={15} color="#1E3A8A" />}
                 </button>
                 <button type="button" onClick={() => setTypeOuvrage("corniche")} style={{
-                  padding: "10px 12px", borderRadius: 12,
+                  padding: "12px 14px", borderRadius: 12,
                   fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.75rem, 2vw, 0.82rem)", fontWeight: 700,
                   border: `2px solid ${typeOuvrage === "corniche" ? "#1E3A8A" : "#E2E8F0"}`,
                   background: typeOuvrage === "corniche" ? "#EFF6FF" : "#FFFFFF",
@@ -973,7 +991,7 @@ function InteractiveSimulateurSection() {
                   cursor: "pointer", transition: "all 0.2s ease",
                   display: "flex", alignItems: "center", justifyContent: "space-between"
                 }}>
-                  <span>✨ Corniches</span>
+                  <span>✨ Corniches &amp; Moulures</span>
                   {typeOuvrage === "corniche" && <Check size={15} color="#1E3A8A" />}
                 </button>
               </div>
@@ -987,7 +1005,7 @@ function InteractiveSimulateurSection() {
               <div className="presets-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 10 }}>
                 {presets.map(p => (
                   <button key={p.val} onClick={() => setSurface(p.val)} style={{
-                    padding: "6px 4px", borderRadius: 8,
+                    padding: "8px 6px", borderRadius: 8,
                     border: `1.5px solid ${surface === p.val ? "#1E3A8A" : "#E2E8F0"}`,
                     background: surface === p.val ? "#EFF6FF" : "white",
                     color: surface === p.val ? "#1E3A8A" : "#475569",
@@ -1026,15 +1044,15 @@ function InteractiveSimulateurSection() {
 
             {/* Infos techniques gâchage & poids */}
             <div className="simu-tech-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "6px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "8px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
                 <Scale size={14} style={{ color: "#1E3A8A", flexShrink: 0 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#64748B" }}>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>
                   Poids : <strong>~{poidsTotalKg} kg</strong> ({poidsTotalTonnes} T)
                 </span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "6px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "8px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
                 <Droplets size={14} style={{ color: "#2563EB", flexShrink: 0 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#64748B" }}>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>
                   Eau requise : <strong>~{eauEstimeeLitres} L</strong>
                 </span>
               </div>
@@ -1045,54 +1063,54 @@ function InteractiveSimulateurSection() {
           {/* Colonne Droite : Panneau de Devis & Quantités */}
           <div style={{
             background: "#F8FAFC", borderRadius: "clamp(14px, 2.5vw, 20px)", border: "1.5px solid #E2E8F0",
-            padding: "clamp(14px, 2.5vw, 20px)", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 12
+            padding: "clamp(16px, 2.5vw, 22px)", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 14
           }}>
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase" }}>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase" }}>
                   Quantités calculées ({surface} m²) :
                 </span>
-                <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 6px", borderRadius: 6 }}>
+                <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 6px", borderRadius: 6 }}>
                   Stock Disponible
                 </span>
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 10px", borderRadius: 10, border: "1px solid #E2E8F0" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 12px", borderRadius: 10, border: "1px solid #E2E8F0" }}>
                   <div>
-                    <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#0F172A" }}>Gypse Marco (40kg)</div>
-                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇪🇬 Import Égypte</div>
+                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Gypse Marco (40kg)</div>
+                    <div style={{ fontSize: "0.64rem", color: "#64748B" }}>🇪🇬 Import Égypte</div>
                   </div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "#1E3A8A" }}>
-                    {nbSacsGypse} <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.15rem", fontWeight: 800, color: "#1E3A8A" }}>
+                    {nbSacsGypse} <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
                   </div>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 10px", borderRadius: 10, border: "1px solid #E2E8F0" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 12px", borderRadius: 10, border: "1px solid #E2E8F0" }}>
                   <div>
-                    <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#0F172A" }}>Filasse Sisal Pure</div>
-                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇰🇪 Produce of Kenya</div>
+                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Filasse Sisal Pure</div>
+                    <div style={{ fontSize: "0.64rem", color: "#64748B" }}>🇰🇪 Produce of Kenya</div>
                   </div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "#10B981" }}>
-                    {kgFilasse} <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "#64748B" }}>kg</span>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.15rem", fontWeight: 800, color: "#10B981" }}>
+                    {kgFilasse} <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>kg</span>
                   </div>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 10px", borderRadius: 10, border: "1px solid #E2E8F0" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 12px", borderRadius: 10, border: "1px solid #E2E8F0" }}>
                   <div>
-                    <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#0F172A" }}>Chaux Vive (40kg)</div>
-                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇦🇪 Dubaï Pure</div>
+                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Chaux Vive (40kg)</div>
+                    <div style={{ fontSize: "0.64rem", color: "#64748B" }}>🇦🇪 Dubaï Pure</div>
                   </div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "#0F172A" }}>
-                    {nbSacsChaux} <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.15rem", fontWeight: 800, color: "#0F172A" }}>
+                    {nbSacsChaux} <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
                   </div>
                 </div>
               </div>
 
               {/* Véhicule recommandé */}
-              <div style={{ marginTop: 8, padding: "6px 10px", background: "#EFF6FF", borderRadius: 8, border: "1px solid #DBEAFE", display: "flex", alignItems: "center", gap: 6 }}>
-                <Truck size={13} style={{ color: "#1E3A8A", flexShrink: 0 }} />
-                <span style={{ fontSize: "0.68rem", color: "#1E3A8A", fontWeight: 600 }}>
+              <div style={{ marginTop: 8, padding: "8px 10px", background: "#EFF6FF", borderRadius: 8, border: "1px solid #DBEAFE", display: "flex", alignItems: "center", gap: 6 }}>
+                <Truck size={14} style={{ color: "#1E3A8A", flexShrink: 0 }} />
+                <span style={{ fontSize: "0.7rem", color: "#1E3A8A", fontWeight: 600 }}>
                   {vehiculeRecommande}
                 </span>
               </div>
@@ -1100,7 +1118,7 @@ function InteractiveSimulateurSection() {
 
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               <WaBtn label="Recevoir mon devis officiel sur WhatsApp" url={msgSimu} full />
-              <span style={{ fontSize: "0.65rem", color: "#64748B", textAlign: "center" }}>
+              <span style={{ fontSize: "0.68rem", color: "#64748B", textAlign: "center" }}>
                 ⚡ Devis proforma avec tarif dégressif par retour de message
               </span>
             </div>
@@ -1140,7 +1158,7 @@ function HowToOrderSection() {
   ]
 
   return (
-    <section id="commande" style={{ background: "#FFFFFF", padding: "clamp(36px, 5vw, 80px) 0" }}>
+    <section id="commande" style={{ background: "#FFFFFF", padding: "clamp(40px, 6vw, 84px) 0" }}>
       <div className="site-container">
         
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(24px, 4vw, 48px)" }}>
@@ -1154,13 +1172,13 @@ function HowToOrderSection() {
             <Clock size={13} /> Parcours Simple &amp; Sécurisé
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.8vw, 2.4rem)",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.4rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
             lineHeight: 1.2, marginBottom: 10, wordBreak: "break-word"
           }}>
             Comment Commander Vos Matériaux ?
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
             Un processus d&apos;achat fluide et réactif conçu pour respecter le rythme intensif des chantiers.
           </p>
         </div>
@@ -1173,7 +1191,7 @@ function HowToOrderSection() {
               display: "flex", flexDirection: "column", gap: 8
             }}>
               <span style={{
-                fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)",
+                fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.2rem, 2.5vw, 1.4rem)",
                 fontWeight: 800, color: "#10B981", lineHeight: 1
               }}>
                 {num}
@@ -1217,7 +1235,7 @@ function ApplicationsSection() {
   ]
 
   return (
-    <section id="applications" style={{ background: "#F8FAFC", padding: "clamp(36px, 5vw, 80px) 0" }}>
+    <section id="applications" style={{ background: "#F8FAFC", padding: "clamp(40px, 6vw, 84px) 0" }}>
       <div className="site-container">
         
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(24px, 4vw, 48px)" }}>
@@ -1231,22 +1249,22 @@ function ApplicationsSection() {
             <Hammer size={13} /> Domaines d&apos;Application
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.8vw, 2.4rem)",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.4rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
             lineHeight: 1.2, marginBottom: 10, wordBreak: "break-word"
           }}>
             Des Matériaux Pensés pour Vos Réalisations
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
             Du faux-plafond suspendu aux corniches complexes, des solutions adaptées à chaque étape de votre finition.
           </p>
         </div>
 
-        <div className="apps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(16px, 3vw, 28px)" }}>
+        <div className="apps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(18px, 3vw, 28px)" }}>
           {apps.map(({ titre, produit, desc, icon: Icon }) => (
             <div key={titre} style={{
               background: "#FFFFFF", borderRadius: "clamp(16px, 2.5vw, 20px)",
-              border: "1.5px solid #E2E8F0", padding: "clamp(18px, 3vw, 32px)",
+              border: "1.5px solid #E2E8F0", padding: "clamp(20px, 3vw, 32px)",
               display: "flex", flexDirection: "column", gap: 12
             }}>
               <div style={{
@@ -1263,7 +1281,7 @@ function ApplicationsSection() {
                 <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.92rem, 2.4vw, 1.05rem)", fontWeight: 800, color: "#0F172A", margin: "4px 0 6px" }}>
                   {titre}
                 </h3>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.75rem, 2vw, 0.82rem)", color: "#475569", lineHeight: 1.55, margin: 0 }}>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.76rem, 2vw, 0.82rem)", color: "#475569", lineHeight: 1.55, margin: 0 }}>
                   {desc}
                 </p>
               </div>
@@ -1285,26 +1303,26 @@ const TEMOIGNAGES = [
 
 function ReassuranceSection() {
   return (
-    <section id="avis" style={{ background: "#FFFFFF", padding: "clamp(36px, 5vw, 80px) 0" }}>
+    <section id="avis" style={{ background: "#FFFFFF", padding: "clamp(40px, 6vw, 84px) 0" }}>
       <div className="site-container">
         
         <div style={{ textAlign: "center", marginBottom: "clamp(24px, 4vw, 48px)" }}>
           <span style={{ display: "inline-block", fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
             Retours d&apos;Expérience
           </span>
-          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.8vw, 2.4rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: 6, wordBreak: "break-word" }}>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.4rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: 6, wordBreak: "break-word" }}>
             Approuvé par les Maîtres Staffeurs &amp; Artisans
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 0.95rem)", color: "#475569" }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569" }}>
             Découvrez pourquoi les professionnels du bâtiment choisissent Marco Staff
           </p>
         </div>
 
-        <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(16px, 3vw, 28px)" }}>
+        <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(18px, 3vw, 28px)" }}>
           {TEMOIGNAGES.map(({ initials, color, nom, role, ville, note, texte }) => (
             <div key={nom} style={{
               background: "#F8FAFC", border: "1.5px solid #E2E8F0", borderRadius: "clamp(14px, 2vw, 20px)",
-              padding: "clamp(16px, 2.5vw, 28px)", display: "flex", flexDirection: "column", gap: 12,
+              padding: "clamp(18px, 2.5vw, 28px)", display: "flex", flexDirection: "column", gap: 12,
               boxShadow: "0 2px 4px rgba(15, 23, 42, 0.04)"
             }}>
               <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
@@ -1343,7 +1361,7 @@ function FAQSection() {
   }
 
   return (
-    <section id="faq" style={{ background: "#F8FAFC", padding: "clamp(36px, 5vw, 80px) 0" }}>
+    <section id="faq" style={{ background: "#F8FAFC", padding: "clamp(40px, 6vw, 84px) 0" }}>
       <div className="site-container" style={{ maxWidth: 880 }}>
         
         <div style={{ textAlign: "center", marginBottom: "clamp(20px, 3.5vw, 36px)" }}>
@@ -1356,10 +1374,10 @@ function FAQSection() {
           }}>
             <HelpCircle size={13} /> Foire Aux Questions
           </span>
-          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.8vw, 2.3rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", margin: "4px 0 8px", wordBreak: "break-word" }}>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.3rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", margin: "4px 0 8px", wordBreak: "break-word" }}>
             Questions Fréquentes sur nos Matériaux
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 0.95rem)", color: "#475569" }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569" }}>
             Réponses claires sur nos spécifications techniques, nos délais de livraison et nos conditions tarifaires.
           </p>
         </div>
@@ -1373,11 +1391,11 @@ function FAQSection() {
             { id: "tarifs", label: "Commandes & Devis" },
           ].map(({ id, label }) => (
             <button key={id} onClick={() => { setFilter(id); setOpenIndex(0) }} style={{
-              padding: "6px 12px", borderRadius: 9999,
+              padding: "6px 14px", borderRadius: 9999,
               border: `1.5px solid ${filter === id ? "#1E3A8A" : "#E2E8F0"}`,
               background: filter === id ? "#EFF6FF" : "white",
               color: filter === id ? "#1E3A8A" : "#475569",
-              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.72rem, 2vw, 0.8rem)", fontWeight: 700,
+              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.74rem, 2vw, 0.8rem)", fontWeight: 700,
               cursor: "pointer", transition: "all 0.2s ease"
             }}>
               {label}
@@ -1400,12 +1418,12 @@ function FAQSection() {
                   onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(i) } }}
                   aria-expanded={isOpen}
                   style={{
-                    width: "100%", padding: "clamp(12px, 2.5vw, 18px) clamp(14px, 3vw, 20px)", display: "flex",
+                    width: "100%", padding: "clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 20px)", display: "flex",
                     alignItems: "center", justifyContent: "space-between", gap: 12,
                     background: "none", border: "none", cursor: "pointer", textAlign: "left"
                   }}
                 >
-                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.82rem, 2.2vw, 0.9rem)", fontWeight: 700, color: "#0F172A", lineHeight: 1.35 }}>
+                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.2vw, 0.92rem)", fontWeight: 700, color: "#0F172A", lineHeight: 1.35 }}>
                     {faq.q}
                   </span>
                   <div style={{
@@ -1419,8 +1437,8 @@ function FAQSection() {
                 </button>
 
                 {isOpen && (
-                  <div style={{ padding: "0 clamp(14px, 3vw, 20px) 16px", borderTop: "1px solid #E2E8F0", paddingTop: 12 }}>
-                    <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.75rem, 2vw, 0.82rem)", color: "#475569", lineHeight: 1.65, margin: 0 }}>
+                  <div style={{ padding: "0 clamp(16px, 3vw, 20px) 16px", borderTop: "1px solid #E2E8F0", paddingTop: 12 }}>
+                    <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.76rem, 2vw, 0.82rem)", color: "#475569", lineHeight: 1.65, margin: 0 }}>
                       {faq.a}
                     </p>
                   </div>
@@ -1440,7 +1458,7 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
   return (
     <section style={{
       background: "#0A0F1D",
-      padding: "clamp(48px, 6vw, 96px) 0",
+      padding: "clamp(56px, 7vw, 96px) 0",
       position: "relative",
       overflow: "hidden"
     }}>
@@ -1459,7 +1477,7 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
           background: "#131B2E",
           borderRadius: "clamp(18px, 3vw, 28px)",
           border: "1px solid rgba(255, 255, 255, 0.12)",
-          padding: "clamp(24px, 4vw, 64px) clamp(16px, 3.5vw, 56px)",
+          padding: "clamp(28px, 4.5vw, 64px) clamp(18px, 3.5vw, 56px)",
           display: "grid",
           gridTemplateColumns: "1.2fr 0.8fr",
           gap: "clamp(24px, 4vw, 64px)",
@@ -1478,7 +1496,7 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
 
             <h2 style={{
               fontFamily: "var(--ds-font-heading)",
-              fontSize: "clamp(1.6rem, 4vw, 3rem)",
+              fontSize: "clamp(1.75rem, 4vw, 3rem)",
               fontWeight: 800,
               color: "#FFFFFF",
               lineHeight: 1.15,
@@ -1491,7 +1509,7 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
 
             <p style={{
               fontFamily: "var(--ds-font-body)",
-              fontSize: "clamp(0.82rem, 2vw, 1.05rem)",
+              fontSize: "clamp(0.85rem, 2vw, 1.05rem)",
               color: "#94A3B8",
               lineHeight: 1.65,
               margin: 0,
@@ -1506,13 +1524,13 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
             background: "#1E293B",
             borderRadius: "clamp(14px, 2.5vw, 20px)",
             border: "1px solid rgba(255, 255, 255, 0.1)",
-            padding: "clamp(18px, 3vw, 32px)",
+            padding: "clamp(20px, 3vw, 32px)",
             display: "flex",
             flexDirection: "column",
             gap: 14
           }}>
             <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: 12 }}>
-              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.88rem, 2.4vw, 1rem)", fontWeight: 800, color: "white" }}>
+              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.92rem, 2.4vw, 1rem)", fontWeight: 800, color: "white" }}>
                 Demande Commerciale Express
               </span>
               <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.72rem, 1.8vw, 0.78rem)", color: "#94A3B8", margin: "4px 0 0" }}>
@@ -1525,8 +1543,8 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
               <button onClick={onSimulateur} style={{
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                 background: "transparent", border: "1.5px solid rgba(255,255,255,0.25)",
-                borderRadius: 9999, padding: "11px 18px", color: "white",
-                fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 2vw, 0.85rem)", fontWeight: 700,
+                borderRadius: 9999, padding: "12px 18px", color: "white",
+                fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 0.85rem)", fontWeight: 700,
                 cursor: "pointer", transition: "all 0.2s ease"
               }}
                 onMouseEnter={e => {
@@ -1544,10 +1562,10 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
             </div>
 
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 4, flexWrap: "wrap", gap: 4 }}>
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#64748B" }}>
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#64748B" }}>
                 Ligne directe : {PHONE_DISPLAY}
               </span>
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#10B981", fontWeight: 600 }}>
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#10B981", fontWeight: 600 }}>
                 • Dépôt Ouvert
               </span>
             </div>
@@ -1588,7 +1606,7 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
         
         {/* Drawer Header */}
         <div style={{
-          padding: "clamp(12px, 2.5vw, 16px) clamp(16px, 3vw, 24px)", borderBottom: "1.5px solid #E2E8F0",
+          padding: "clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 24px)", borderBottom: "1.5px solid #E2E8F0",
           display: "flex", alignItems: "center", justifyContent: "space-between",
           position: "sticky", top: 0, background: "#FFFFFF", zIndex: 10
         }}>
@@ -1596,7 +1614,7 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
             <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#1E3A8A", fontWeight: 700, textTransform: "uppercase" }}>
               {product.categorie}
             </span>
-            <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.95rem, 2.5vw, 1.1rem)", fontWeight: 800, color: "#0F172A", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1rem, 2.5vw, 1.15rem)", fontWeight: 800, color: "#0F172A", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
               Dossier Technique Produit
             </h3>
           </div>
@@ -1632,10 +1650,10 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
                 {product.drapeau} {product.origine}
               </span>
             </div>
-            <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.05rem, 2.8vw, 1.25rem)", fontWeight: 800, color: "#0F172A", margin: "0 0 8px" }}>
+            <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.1rem, 2.8vw, 1.25rem)", fontWeight: 800, color: "#0F172A", margin: "0 0 8px" }}>
               {product.nom}
             </h2>
-            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 2vw, 0.85rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 0.85rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
               {product.description}
             </p>
           </div>
@@ -1711,8 +1729,8 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
 // ─── 11. Footer Officiel 2026 ────────────────────────────────────────────────
 function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
   return (
-    <footer id="contact" style={{ background: "#0A0F1D", color: "white", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-      <div className="site-container" style={{ padding: "clamp(40px, 5vw, 64px) 0 24px" }}>
+    <footer id="contact" style={{ background: "#080C16", color: "white", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+      <div className="site-container" style={{ padding: "clamp(44px, 5.5vw, 64px) 0 24px" }}>
         
         <div className="footer-grid" style={{
           display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.2fr", gap: "clamp(20px, 3.5vw, 48px)",
@@ -1723,14 +1741,14 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{
-                width: 32, height: 32, borderRadius: 8,
+                width: 34, height: 34, borderRadius: 8,
                 background: "#1E3A8A", display: "flex", alignItems: "center",
                 justifyContent: "center", flexShrink: 0,
               }}>
                 <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "white" }}>M</span>
               </div>
               <div>
-                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.9rem", fontWeight: 800, color: "white", lineHeight: 1.1 }}>
+                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.92rem", fontWeight: 800, color: "white", lineHeight: 1.1 }}>
                   {COMPANY_NAME}
                 </div>
                 <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.58rem", fontWeight: 600, color: "#94A3B8", letterSpacing: "0.05em", textTransform: "uppercase" }}>
@@ -1826,7 +1844,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
 
         {/* Copyright Bar */}
         <div style={{
-          paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.08)",
+          paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.06)",
           display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10, alignItems: "center"
         }}>
           <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8", margin: 0 }}>
