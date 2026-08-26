@@ -438,6 +438,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
 }
 
 // ─── 1. Hero Section (Composition Studio 3 Matériaux Haute Définition) ───────
+// ─── 1. Hero Section (Composition Studio Desktop + Composition Mobile-First Ciblée) ──
 function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => void; onSimulateur: () => void }) {
   return (
     <section id="accueil" style={{
@@ -448,10 +449,11 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
       backgroundSize: "32px 32px"
     }}>
       <div className="site-container" style={{
-        paddingTop: "clamp(20px, 4vw, 56px)",
-        paddingBottom: "clamp(32px, 5vw, 72px)",
+        paddingTop: "clamp(16px, 3.5vw, 56px)",
+        paddingBottom: "clamp(24px, 4vw, 72px)",
       }}>
-        <div className="hero-grid" style={{
+        {/* Desktop Layout (>= 769px) */}
+        <div className="hero-grid desktop-hero" style={{
           display: "grid", gridTemplateColumns: "1.15fr 0.85fr",
           gap: "clamp(20px, 3.5vw, 48px)", alignItems: "center", position: "relative",
         }}>
@@ -459,8 +461,8 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
           {/* Left Col */}
           <div style={{ position: "relative", zIndex: 1 }}>
             
-            {/* Origin pills */}
-            <div style={{ display: "flex", gap: "clamp(4px, 1vw, 8px)", marginBottom: "clamp(10px, 2vw, 18px)", flexWrap: "wrap" }}>
+            {/* Desktop Origin Pills */}
+            <div className="hero-origin-pills" style={{ display: "flex", gap: "clamp(4px, 1vw, 8px)", marginBottom: "clamp(10px, 2vw, 18px)", flexWrap: "wrap" }}>
               {[
                 { flag: "🇪🇬", label: "Gypse d'Égypte" },
                 { flag: "🇦🇪", label: "Chaux de Dubaï" },
@@ -590,12 +592,163 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
           </div>
 
         </div>
+
+        {/* Mobile Composition (<= 768px) Véritable Hiérarchie Mobile-First */}
+        <div className="mobile-hero" style={{ display: "none", flexDirection: "column", gap: 12 }}>
+          
+          {/* 1. Micro-label institutionnel */}
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{
+              fontFamily: "var(--ds-font-body)",
+              fontSize: "clamp(0.68rem, 2.5vw, 0.74rem)",
+              fontWeight: 700,
+              color: "#1E3A8A",
+              background: "#EFF6FF",
+              border: "1px solid #DBEAFE",
+              padding: "4px 10px",
+              borderRadius: "9999px",
+              textTransform: "uppercase",
+              letterSpacing: "0.06em"
+            }}>
+              Importateur Direct BTP · Bénin
+            </span>
+          </div>
+
+          {/* 2. Headline */}
+          <h1 style={{
+            fontFamily: "var(--ds-font-heading)",
+            fontSize: "clamp(1.4rem, 6.5vw, 1.85rem)",
+            fontWeight: 800,
+            color: "#0F172A",
+            lineHeight: 1.2,
+            letterSpacing: "-0.03em",
+            margin: 0,
+            wordBreak: "break-word"
+          }}>
+            L&apos;Excellence des <span style={{ color: "#1E3A8A" }}>Matériaux de Staff</span> &amp; Finition au Bénin.
+          </h1>
+
+          {/* 3. Proposition de valeur courte */}
+          <p style={{
+            fontFamily: "var(--ds-font-body)",
+            fontSize: "clamp(0.78rem, 3.2vw, 0.88rem)",
+            color: "#475569",
+            lineHeight: 1.55,
+            margin: 0,
+            wordBreak: "break-word"
+          }}>
+            Approvisionnez vos chantiers à la source : <strong>Gypse Marco 40 KG</strong> (Égypte), <strong>Chaux Vive pure</strong> (Dubaï) et <strong>Filasse Sisal</strong> (Kenya). Qualité certifiée zéro fissure et stock permanent en dépôts à Cotonou et Calavi.
+          </p>
+
+          {/* 4 & 5. CTAs WhatsApp Principal & Simulateur Secondaire */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 2 }}>
+            <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} full />
+            <Button variant="neutral" iconEnd={<Calculator size={15} color="#1E3A8A" />} onClick={onSimulateur} full>
+              Calculer mes besoins de chantier
+            </Button>
+          </div>
+
+          {/* 6. Preuve / Réassurance */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "2px 0" }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", flexShrink: 0 }} />
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2.5vw, 0.72rem)", color: "#64748B", fontWeight: 600, textAlign: "center" }}>
+              Devis proforma gratuit sous 15–30 min · Sans engagement
+            </span>
+          </div>
+
+          {/* 7. Visuel Produit Central */}
+          <div style={{
+            background: "#FFFFFF",
+            borderRadius: "clamp(14px, 3.5vw, 20px)",
+            border: "1.5px solid #E2E8F0",
+            padding: "clamp(12px, 3vw, 16px)",
+            boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.08)",
+            marginTop: 4,
+            boxSizing: "border-box"
+          }}>
+            <div style={{
+              background: "#F8FAFC",
+              borderRadius: 12,
+              border: "1px solid #E2E8F0",
+              height: "clamp(160px, 45vw, 200px)",
+              padding: 10,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative"
+            }}>
+              <img src={imgSrc(imgGypse)} alt="Gypse Marco 40 KG" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
+              <span style={{
+                position: "absolute", top: 8, right: 8,
+                background: "#10B981", color: "white", fontSize: "0.62rem", fontWeight: 700, padding: "2px 7px", borderRadius: 9999
+              }}>
+                En Stock Dépôt
+              </span>
+            </div>
+
+            <div style={{ marginTop: 8 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
+                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 3vw, 0.95rem)", fontWeight: 800, color: "#0F172A" }}>
+                  Poudre de Gypse Marco 40 KG
+                </span>
+                <span style={{ background: "#EFF6FF", color: "#1E3A8A", fontSize: "0.65rem", fontWeight: 700, padding: "2px 6px", borderRadius: 9999 }}>
+                  Sac 40 KG
+                </span>
+              </div>
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B", margin: 0 }}>
+                Extra White · Prise 20-30 min · Formule anti-fissure
+              </p>
+            </div>
+
+            {/* Mini thumbnails 2 other products */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginTop: 8, paddingTop: 8, borderTop: "1px solid #E2E8F0" }}>
+              <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, cursor: "pointer", border: "1px solid #E2E8F0" }}>
+                <div style={{ width: 24, height: 24, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <img src={imgSrc(imgChaux)} alt="Chaux Vive" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
+                </div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Chaux Vive</div>
+                  <div style={{ fontSize: "0.58rem", color: "#64748B" }}>🇦🇪 40kg</div>
+                </div>
+              </div>
+
+              <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, cursor: "pointer", border: "1px solid #E2E8F0" }}>
+                <div style={{ width: 24, height: 24, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <img src={imgSrc(imgFilasse)} alt="Filasse Sisal" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
+                </div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Filasse Sisal</div>
+                  <div style={{ fontSize: "0.58rem", color: "#64748B" }}>🇰🇪 Kenya</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 8. Statistiques */}
+          <div className="hero-stats-grid" style={{
+            display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8,
+            paddingTop: 10, borderTop: "1.5px solid #E2E8F0", marginTop: 2
+          }}>
+            {[
+              { val: "100%", label: "Pureté & Zéro Fissure" },
+              { val: "3", label: "Origines Directes Usine" },
+              { val: "24/48h", label: "Livraison sur Chantier" },
+              { val: "Stock", label: "Permanent en Dépôt" },
+            ].map(({ val, label }) => (
+              <div key={label} style={{ background: "#F8FAFC", padding: "8px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
+                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.05rem", fontWeight: 800, color: "#1E3A8A", lineHeight: 1 }}>{val}</div>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", color: "#64748B", marginTop: 3, fontWeight: 600 }}>{label}</div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
       </div>
     </section>
   )
 }
 
-// ─── 2. Catalogue Produits (Épuré & Direct Usine) ────────────────────────────
 function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void }) {
   return (
     <section id="produits" style={{ background: "#F8FAFC", padding: "clamp(36px, 5.5vw, 84px) 0" }}>
@@ -1919,7 +2072,7 @@ const CSS = `
   .nav-mobile-actions { display: none !important; }
   .mobile-dock { display: none !important; }
 
-  .hero-grid { grid-template-columns: 1.15fr 0.85fr; }
+  .hero-grid { grid-template-columns: 1.15fr 0.85fr; }\n  .desktop-hero { display: grid !important; }\n  .mobile-hero { display: none !important; }
   .hero-stats-grid { grid-template-columns: repeat(4, 1fr); }
   .product-grid { grid-template-columns: repeat(3, 1fr); }
   .why-grid { grid-template-columns: repeat(4, 1fr); }
@@ -1960,7 +2113,7 @@ const CSS = `
   }
 
   /* ── Mobile Phones & Phablets (<= 768px) ── */
-  @media (max-width: 768px) {
+  @media (max-width: 768px) {\n    .desktop-hero { display: none !important; }\n    .mobile-hero { display: flex !important; }
     .nav-desktop { display: none !important; }
     .brand-tag-desktop { display: none !important; }
     .nav-status-desktop { display: none !important; }
