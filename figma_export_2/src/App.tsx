@@ -1,11 +1,10 @@
 import { useState, useCallback, useEffect, useRef } from "react"
 import {
   MessageCircle, Phone, MapPin, Menu, X, ChevronRight,
-  ArrowLeft, CheckCircle2, Star, Package,
-  Clock, Calculator, ShieldCheck, Truck, Award, ChevronDown,
-  Plus, Minus, ArrowRight, HelpCircle, Layers, Sparkles,
-  ArrowUp, Building2, Warehouse, Hammer, Check, Info, FileText,
-  Sliders, Scale, CheckCheck, ArrowDownRight, Compass
+  CheckCircle2, Star, Package, Clock, Calculator, ShieldCheck,
+  Truck, Award, ChevronDown, Plus, Minus, ArrowRight, HelpCircle,
+  Layers, Sparkles, ArrowUp, Building2, Warehouse, Hammer, Check,
+  Info, FileText, Scale, Droplets
 } from "lucide-react"
 import imgGypse from "@/imports/photo2.jpeg"
 import imgChaux from "@/imports/photo1.jpeg"
@@ -21,7 +20,7 @@ const waUrl = (msg: string) =>
   `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`
 
 const waProduitMsg = (produit: string, conditionnement: string) =>
-  waUrl(`Bonjour ${COMPANY_NAME}, je souhaite commander ou obtenir un devis pour : *${produit}* (${conditionnement}). Pouvez-vous m'indiquer la disponibilité et le tarif dégressif ? Merci !`)
+  waUrl(`Bonjour ${COMPANY_NAME}, je souhaite commander ou obtenir un devis pour : *${produit}* (${conditionnement}). Pouvez-vous m'indiquer le tarif dégressif et la disponibilité immédiate ? Merci !`)
 
 interface Product {
   id: string
@@ -31,17 +30,17 @@ interface Product {
   origine: string
   drapeau: string
   badge: string
+  remiseBadge: string
   conditionnement: string
   image: string | { src: string }
   description: string
   highlights: string[]
-  arguments: string[]
   specs: { label: string; valeur: string }[]
   dosage: string
   application: string
 }
 
-// ─── Catalogue Produits Réels (Écosystème BTP Officiel) ──────────────────────
+// ─── Catalogue Produits (Données Industrielles Haut de Gamme) ────────────────
 const PRODUCTS: Product[] = [
   {
     id: "gypse-40kg",
@@ -51,29 +50,24 @@ const PRODUCTS: Product[] = [
     origine: "Égypte",
     drapeau: "🇪🇬",
     badge: "Extra White · Import Égypte",
+    remiseBadge: "Tarif Dégressif dès 20 sacs",
     conditionnement: "Sac scellé de 40 KG",
     image: imgGypse,
     description: "Poudre de gypse de moulage extra blanche importée directement d'Égypte. Granulométrie micronique ultra-fine pour un gâchage fluide sans grumeaux, une prise régulière et une finition miroir sans aucune craquelure.",
     highlights: [
-      "Blancheur éclatante 100% sans jaunissement",
-      "Prise progressive régulière (20 – 30 min)"
-    ],
-    arguments: [
-      "Blancheur éclatante 100% sans aucun jaunissement dans le temps",
-      "Finesse micronique supérieure : gâchage fluide et sans grumeaux",
-      "Prise régulière (20 – 30 min) : idéal pour faux-plafonds et moulures",
-      "Zéro retrait et zéro fissuration après séchage complet"
+      "Blancheur éclatante 100% sans aucun jaunissement",
+      "Prise progressive (20 – 30 min) : idéal plafonds & corniches"
     ],
     dosage: "0,60 L d'eau par kg de poudre (Gâchage souple et onctueux)",
     application: "Faux-plafonds suspendus, plaques lissées, corniches moulées et rosaces.",
     specs: [
-      { label: "Origine", valeur: "Import direct Égypte (Usine certifiée)" },
-      { label: "Conditionnement", valeur: "Sac scellé de 40 KG (80 lbs)" },
-      { label: "Temps de prise", valeur: "20 à 30 minutes (régulier)" },
-      { label: "Dosage d'eau indicatif", valeur: "0,60 L par kg de poudre" },
+      { label: "Origine", valeur: "Import direct Égypte (Carrières d'Alexandrie)" },
+      { label: "Conditionnement", valeur: "Sac scellé étanche de 40 KG (80 lbs)" },
+      { label: "Temps de prise", valeur: "20 à 30 minutes (régulier sans échauffement)" },
+      { label: "Dosage d'eau indicatif", valeur: "0,60 L par kg de poudre (24L / sac)" },
       { label: "Finesse / Tamisage", valeur: "< 80 microns (finesse supérieure)" },
       { label: "Indice de blancheur", valeur: "Extra White 100%" },
-      { label: "Rendement indicatif", valeur: "~10 à 12 m² par sac selon épaisseur" }
+      { label: "Conditionnement palette", valeur: "Palette complète de 60 sacs (2,4 Tonnes)" }
     ],
   },
   {
@@ -84,6 +78,7 @@ const PRODUCTS: Product[] = [
     origine: "Dubaï, UAE",
     drapeau: "🇦🇪",
     badge: "Import Dubaï (UAE)",
+    remiseBadge: "Tarif Dégressif dès 10 sacs",
     conditionnement: "Sac étanche de 40 KG",
     image: imgChaux,
     description: "White Lime pure de première qualité importée de Dubaï (Oki General Trading). Pureté calcique exceptionnelle et haute réactivité pour des enduits respirants, étanches et naturellement anti-salpêtre.",
@@ -91,21 +86,15 @@ const PRODUCTS: Product[] = [
       "Pureté calcique CaO > 95% pour réactivité thermique maximale",
       "Action antifongique et anti-salpêtre naturelle pour climat côtier"
     ],
-    arguments: [
-      "Pureté calcique CaO > 95% pour une réactivité thermique maximale",
-      "Pouvoir assainissant, bactéricide et anti-moisissure naturel",
-      "Excellente perméabilité à la vapeur : protège contre l'humidité",
-      "Forte adhérence sur tous supports maçonnés et ouvrages staff"
-    ],
     dosage: "Extinction progressive avec 2 à 3 volumes d'eau par volume de chaux",
     application: "Enduits traditionnels, chaulage assainissant, protection anti-salpêtre.",
     specs: [
       { label: "Origine", valeur: "Import direct Dubaï, UAE (Oki General Trading)" },
       { label: "Conditionnement", valeur: "Sac étanche protecteur de 40 KG" },
-      { label: "Teneur en CaO (Pureté)", valeur: "> 95% pureté garantie" },
-      { label: "Réactivité (T60)", valeur: "< 2 minutes (haute réactivité)" },
-      { label: "Propriétés", valeur: "Fongicide, assainissant et respirant" },
-      { label: "Rendement indicatif", valeur: "~8 à 10 m² par sac en enduit de finition" }
+      { label: "Teneur en CaO (Pureté)", valeur: "> 95% pureté garantie certifiée" },
+      { label: "Réactivité (T60)", valeur: "< 2 minutes (haute réactivité thermique)" },
+      { label: "Propriétés", valeur: "Fongicide naturel, assainissant et respirant" },
+      { label: "Conditionnement palette", valeur: "Palette complète de 50 sacs (2 Tonnes)" }
     ],
   },
   {
@@ -116,28 +105,23 @@ const PRODUCTS: Product[] = [
     origine: "Kenya",
     drapeau: "🇰🇪",
     badge: "Produce of Kenya · 100% Pur",
+    remiseBadge: "Tarif Dégressif par Balle",
     conditionnement: "Balle pressée 25 / 50 KG",
     image: imgFilasse,
     description: "Fibres végétales de sisal pur sélectionnées et peignées au Kenya. Fibres longues d'une résistance mécanique extrême à la traction, garantissant l'armature indestructible de tous vos éléments en staff.",
     highlights: [
       "Fibres végétales 100% naturelles sélectionnées (Agave Sisalana)",
-      "Résistance extrême à la traction (> 300 MPa) contre les fissures"
-    ],
-    arguments: [
-      "Fibres végétales 100% naturelles sélectionnées (Agave Sisalana)",
-      "Fibres longues peignées (60 à 120 cm) sans déchets ni poussière",
-      "Imprégnation plâtre instantanée pour un bloc structurel indéformable",
       "Résistance extrême à la traction (> 300 MPa) contre les secousses"
     ],
     dosage: "Trempage direct dans la barbotine de gypse avant incorporation",
     application: "Armature de corniches lourdes, retombées de plafonds, rosaces et plaques.",
     specs: [
-      { label: "Origine", valeur: "Produce of Kenya (Import direct)" },
+      { label: "Origine", valeur: "Produce of Kenya (Import direct Mombasa)" },
       { label: "Type de fibre", valeur: "Sisal naturel pur 100% végétal" },
-      { label: "Longueur des brins", valeur: "60 cm à 120 cm (fibres longues)" },
-      { label: "Conditionnement", valeur: "Balle pressée de 25 KG ou 50 KG" },
-      { label: "Résistance traction", valeur: "> 300 MPa" },
-      { label: "Usage recommandé", valeur: "Armature de corniches lourdes, rosaces et plaques staff" }
+      { label: "Longueur des brins", valeur: "60 cm à 120 cm (fibres longues peignées)" },
+      { label: "Conditionnement", valeur: "Balle pressée haute densité de 25 KG ou 50 KG" },
+      { label: "Résistance traction", valeur: "> 300 MPa (anti-fissuration absolue)" },
+      { label: "Propreté", valeur: "Sans débris, sans poussière, 100% utilisable" }
     ],
   },
 ]
@@ -150,7 +134,7 @@ const FAQS = [
   {
     cat: "logistique",
     q: "Quels sont les délais de livraison sur les chantiers dans le Grand Cotonou ?",
-    a: "Nous assurons la livraison directe sur vos chantiers sous 24h à 48h maximum à Cotonou, Abomey-Calavi, Sèmè-Kpodji, Ouidah et Porto-Novo. Un retrait immédiat est également possible à nos dépôts physiques."
+    a: "Nous assurons la livraison directe sur vos chantiers sous 24h à 48h maximum à Cotonou, Abomey-Calavi, Sèmè-Kpodji, Ouidah et Porto-Novo. Un retrait immédiat est également possible à nos dépôts d'Akpakpa et Calavi."
   },
   {
     cat: "qualite",
@@ -160,7 +144,7 @@ const FAQS = [
   {
     cat: "tarifs",
     q: "Proposez-vous des tarifs dégressifs pour les grossistes et gros chantiers ?",
-    a: "Absolument. Nous appliquons des remises sur volume dès 20 sacs de Gypse Marco, 5 sacs de Chaux Vive ou 1 balle complète de Filasse Sisal. Contactez notre équipe sur WhatsApp avec votre métré pour obtenir une proposition adaptée."
+    a: "Absolument. Nous appliquons des remises sur volume dès 20 sacs de Gypse Marco, 10 sacs de Chaux Vive ou 1 balle complète de Filasse Sisal. Contactez notre équipe sur WhatsApp avec votre métré pour obtenir une proposition adaptée."
   },
   {
     cat: "qualite",
@@ -194,7 +178,7 @@ function WaBtn({ label = "WhatsApp", url, small = false, full = false, variant =
       color: isWhite ? "#0F172A" : isOutline ? "#FFFFFF" : "#FFFFFF",
       border: isOutline ? "1.5px solid rgba(255,255,255,0.4)" : "none",
       fontFamily: "var(--ds-font-body)", fontSize: small ? "0.82rem" : "0.9rem",
-      fontWeight: 600, padding: small ? "9px 18px" : "13px 24px",
+      fontWeight: 700, padding: small ? "9px 18px" : "13px 24px",
       borderRadius: "9999px", textDecoration: "none",
       transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
       boxShadow: isWhite ? "0 4px 20px rgba(0,0,0,0.15)" : isOutline ? "none" : "0 4px 14px rgba(16, 185, 129, 0.35)",
@@ -242,24 +226,24 @@ function Button({ children, variant = "primary", size = "medium", iconEnd, onCli
   return (
     <button onClick={onClick} style={{
       display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
-      background: isPrimary ? "#674FF5" : isDark ? "#0A0F1D" : "#F1F5F9",
+      background: isPrimary ? "#1E3A8A" : isDark ? "#0A0F1D" : "#F8FAFC",
       color: isPrimary || isDark ? "white" : "#0F172A",
-      border: isPrimary || isDark ? "none" : "1px solid #E2E8F0",
+      border: isPrimary || isDark ? "none" : "1.5px solid #E2E8F0",
       borderRadius: "9999px",
       padding: isSmall ? "8px 16px" : isLarge ? "14px 28px" : "12px 22px",
       fontFamily: "var(--ds-font-body)", fontSize: isSmall ? "0.8rem" : "0.9rem",
-      fontWeight: 600, cursor: "pointer", width: full ? "100%" : undefined,
-      boxShadow: isPrimary ? "0 4px 16px rgba(103,79,245,0.35)" : "none",
+      fontWeight: 700, cursor: "pointer", width: full ? "100%" : undefined,
+      boxShadow: isPrimary ? "0 4px 16px rgba(30,58,138,0.25)" : "none",
       transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
       ...style
     }}
       onMouseEnter={e => {
         e.currentTarget.style.transform = "translateY(-1px)"
-        if (isPrimary) e.currentTarget.style.background = "#5438E8"
+        if (isPrimary) e.currentTarget.style.background = "#172554"
       }}
       onMouseLeave={e => {
         e.currentTarget.style.transform = "translateY(0)"
-        if (isPrimary) e.currentTarget.style.background = "#674FF5"
+        if (isPrimary) e.currentTarget.style.background = "#1E3A8A"
       }}
     >
       {children}
@@ -341,13 +325,13 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
         height: isScrolled ? 60 : 70, display: "flex", alignItems: "center", justifyContent: "space-between",
         transition: "height 0.25s ease"
       }}>
-        {/* Brand Logo */}
+        {/* Brand Logo Industriel */}
         <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
           <div style={{
             width: isScrolled ? 34 : 38, height: isScrolled ? 34 : 38, borderRadius: 10,
-            background: "#674FF5", display: "flex", alignItems: "center",
+            background: "#1E3A8A", display: "flex", alignItems: "center",
             justifyContent: "center", flexShrink: 0,
-            boxShadow: "0 2px 10px rgba(103,79,245,0.35)",
+            boxShadow: "0 2px 10px rgba(30,58,138,0.3)",
             transition: "all 0.25s ease"
           }}>
             <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: isScrolled ? "0.95rem" : "1.1rem", fontWeight: 800, color: "white" }}>M</span>
@@ -356,7 +340,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
             <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#0F172A", lineHeight: 1.15 }}>
               {COMPANY_NAME}
             </div>
-            <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.62rem", fontWeight: 500, color: "#94A3B8", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+            <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.62rem", fontWeight: 600, color: "#64748B", letterSpacing: "0.04em", textTransform: "uppercase" }}>
               {COMPANY_SUBTITLE}
             </div>
           </div>
@@ -370,15 +354,15 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
               style={{
                 fontFamily: "var(--ds-font-body)", fontSize: "0.84rem",
                 fontWeight: 600,
-                color: isSpecial ? "#674FF5" : "#475569",
+                color: isSpecial ? "#1E3A8A" : "#475569",
                 textDecoration: "none",
                 display: "inline-flex", alignItems: "center", gap: 4,
                 padding: isSpecial ? "4px 10px" : "4px 0",
                 borderRadius: isSpecial ? 9999 : 0,
-                background: isSpecial ? "#F3F0FF" : "transparent",
+                background: isSpecial ? "#EFF6FF" : "transparent",
                 transition: "color 0.2s ease"
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#674FF5" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#1E3A8A" }}
               onMouseLeave={e => {
                 if (!isSpecial) (e.currentTarget as HTMLElement).style.color = "#475569"
               }}
@@ -416,14 +400,14 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
               onClick={e => { e.preventDefault(); onNavigate(id); setOpen(false) }}
               style={{
                 fontFamily: "var(--ds-font-body)", fontSize: "0.95rem",
-                fontWeight: 600, color: isSpecial ? "#674FF5" : "#0F172A",
+                fontWeight: 600, color: isSpecial ? "#1E3A8A" : "#0F172A",
                 textDecoration: "none", padding: "8px 0",
                 display: "flex", alignItems: "center", justifyContent: "space-between",
                 borderBottom: "1px solid #F1F5F9"
               }}
             >
               <span>{label}</span>
-              {isSpecial ? <span style={{ fontSize: "0.7rem", background: "#F3F0FF", color: "#674FF5", padding: "2px 8px", borderRadius: 9999, fontWeight: 700 }}>Simulateur</span> : <ChevronRight size={14} color="#94A3B8" />}
+              {isSpecial ? <span style={{ fontSize: "0.7rem", background: "#EFF6FF", color: "#1E3A8A", padding: "2px 8px", borderRadius: 9999, fontWeight: 700 }}>Simulateur</span> : <ChevronRight size={14} color="#94A3B8" />}
             </a>
           ))}
           <div style={{ paddingTop: 8 }}>
@@ -460,10 +444,10 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
               ].map(({ flag, label }) => (
                 <span key={label} style={{
                   display: "inline-flex", alignItems: "center", gap: 6,
-                  background: "#F8FAFC", border: "1px solid #E2E8F0",
+                  background: "#F8FAFC", border: "1.5px solid #E2E8F0",
                   borderRadius: "9999px", padding: "4px 12px",
                   fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
-                  fontWeight: 600, color: "#0F172A",
+                  fontWeight: 700, color: "#0F172A",
                 }}>{flag} {label}</span>
               ))}
             </div>
@@ -475,7 +459,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
               fontWeight: 800, color: "#0F172A", lineHeight: 1.15,
               letterSpacing: "-0.035em", marginBottom: 16,
             }}>
-              L&apos;Excellence des <span style={{ color: "#674FF5" }}>Matériaux de Staff</span> &amp; Finition au Bénin.
+              L&apos;Excellence des <span style={{ color: "#1E3A8A" }}>Matériaux de Staff</span> &amp; Finition au Bénin.
             </h1>
 
             {/* Sub-headline */}
@@ -490,7 +474,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
             {/* Action CTAs */}
             <div className="hero-cta-group" style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", marginBottom: 32 }}>
               <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} />
-              <Button variant="neutral" iconEnd={<Calculator size={15} color="#674FF5" />} onClick={onSimulateur}>
+              <Button variant="neutral" iconEnd={<Calculator size={15} color="#1E3A8A" />} onClick={onSimulateur}>
                 Calculer mes besoins
               </Button>
             </div>
@@ -498,7 +482,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
             {/* Trust stats row */}
             <div className="hero-stats-grid" style={{
               display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14,
-              paddingTop: 20, borderTop: "1px solid #E2E8F0",
+              paddingTop: 20, borderTop: "1.5px solid #E2E8F0",
             }}>
               {[
                 { val: "100%", label: "Pureté & Zéro Fissure" },
@@ -507,8 +491,8 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
                 { val: "Stock", label: "Permanent en Dépôt" },
               ].map(({ val, label }) => (
                 <div key={label}>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.15rem, 2vw, 1.45rem)", fontWeight: 800, color: "#674FF5", lineHeight: 1 }}>{val}</div>
-                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#94A3B8", marginTop: 4 }}>{label}</div>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.15rem, 2vw, 1.45rem)", fontWeight: 800, color: "#1E3A8A", lineHeight: 1 }}>{val}</div>
+                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#64748B", marginTop: 4, fontWeight: 500 }}>{label}</div>
                 </div>
               ))}
             </div>
@@ -520,7 +504,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
               position: "relative", zIndex: 2, width: "100%", maxWidth: 360,
               background: "#FFFFFF", borderRadius: 24,
               boxShadow: "0 20px 50px -10px rgba(15, 23, 42, 0.12)",
-              border: "1px solid #E2E8F0", overflow: "hidden", padding: "20px"
+              border: "1.5px solid #E2E8F0", overflow: "hidden", padding: "20px"
             }}>
               {/* Main Product Showcase */}
               <div style={{ background: "#F8FAFC", borderRadius: 16, border: "1px solid #E2E8F0", padding: 16, height: 210, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -530,7 +514,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
               <div style={{ marginTop: 14 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                   <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.92rem", fontWeight: 800, color: "#0F172A" }}>Poudre de Gypse Marco</span>
-                  <span style={{ background: "#F3F0FF", color: "#674FF5", fontSize: "0.68rem", fontWeight: 700, padding: "2px 8px", borderRadius: 9999 }}>Sac 40 KG</span>
+                  <span style={{ background: "#EFF6FF", color: "#1E3A8A", fontSize: "0.68rem", fontWeight: 700, padding: "2px 8px", borderRadius: 9999 }}>Sac 40 KG</span>
                 </div>
                 <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#64748B", margin: 0 }}>
                   Extra White · Prise 20-30 min · Formule anti-fissure
@@ -545,7 +529,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
                   </div>
                   <div>
                     <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1 }}>Chaux Vive</div>
-                    <div style={{ fontSize: "0.62rem", color: "#94A3B8" }}>🇦🇪 Dubaï 40kg</div>
+                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇦🇪 Dubaï 40kg</div>
                   </div>
                 </div>
 
@@ -555,7 +539,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
                   </div>
                   <div>
                     <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1 }}>Filasse Sisal</div>
-                    <div style={{ fontSize: "0.62rem", color: "#94A3B8" }}>🇰🇪 Kenya Pure</div>
+                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇰🇪 Kenya Pure</div>
                   </div>
                 </div>
               </div>
@@ -579,9 +563,9 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
-            fontWeight: 700, color: "#674FF5", textTransform: "uppercase",
+            fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
             letterSpacing: "0.12em", marginBottom: 12,
-            background: "#F3F0FF", padding: "6px 14px", borderRadius: 9999
+            background: "#EFF6FF", padding: "6px 14px", borderRadius: 9999
           }}>
             <Package size={14} /> Catalogue Officiel Direct Usine
           </span>
@@ -600,7 +584,7 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
         <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(20px, 3vw, 28px)" }}>
           {PRODUCTS.map((p) => (
             <div key={p.id} style={{
-              background: "white", border: "1px solid #E2E8F0",
+              background: "white", border: "1.5px solid #E2E8F0",
               borderRadius: 24, overflow: "hidden", display: "flex", flexDirection: "column",
               boxShadow: "0 2px 4px rgba(15, 23, 42, 0.04)", transition: "all 0.25s ease"
             }}
@@ -618,7 +602,7 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
                 <img src={imgSrc(p.image)} alt={p.nom} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                 <span style={{
                   position: "absolute", top: 12, left: 12,
-                  background: "#674FF5", color: "white",
+                  background: "#1E3A8A", color: "white",
                   fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700,
                   padding: "4px 10px", borderRadius: 9999
                 }}>
@@ -627,7 +611,7 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
                 <span style={{
                   position: "absolute", bottom: 10, right: 12,
                   background: "rgba(255,255,255,0.95)",
-                  fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 600,
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700,
                   color: "#0F172A", padding: "3px 9px", borderRadius: 9999,
                   boxShadow: "0 2px 6px rgba(0,0,0,0.06)", border: "1px solid #E2E8F0"
                 }}>
@@ -638,10 +622,15 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
               {/* Info Frame Épurée */}
               <div style={{ padding: "clamp(18px, 3vw, 22px)", flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
                 <div>
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#674FF5", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                    {p.categorie}
-                  </span>
-                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.98rem", fontWeight: 800, color: "#0F172A", margin: "4px 0 0", lineHeight: 1.3 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                    <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#1E3A8A", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                      {p.categorie}
+                    </span>
+                    <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#D97706", background: "#FEF3C7", padding: "2px 8px", borderRadius: 6 }}>
+                      {p.remiseBadge}
+                    </span>
+                  </div>
+                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.98rem", fontWeight: 800, color: "#0F172A", margin: "2px 0 0", lineHeight: 1.3 }}>
                     {p.nom}
                   </h3>
                 </div>
@@ -659,7 +648,7 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
                 </ul>
 
                 <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "5px 10px", background: "#F8FAFC", borderRadius: 8, width: "fit-content" }}>
-                  <Package size={13} style={{ color: "#94A3B8" }} />
+                  <Package size={13} style={{ color: "#64748B" }} />
                   <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#475569", fontWeight: 600 }}>
                     {p.conditionnement}
                   </span>
@@ -670,7 +659,7 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
                   <button onClick={() => onOpenDetail(p)} style={{
                     display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                     fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", fontWeight: 700,
-                    color: "#674FF5", background: "#F3F0FF", border: "none",
+                    color: "#1E3A8A", background: "#EFF6FF", border: "1px solid #DBEAFE",
                     borderRadius: 9999, padding: "10px 18px", cursor: "pointer",
                     transition: "all 0.2s ease",
                   }}>
@@ -749,9 +738,9 @@ function AutoriteBTPSection() {
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
-            fontWeight: 700, color: "#674FF5", textTransform: "uppercase",
+            fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
             letterSpacing: "0.12em", marginBottom: 12,
-            background: "#F3F0FF", padding: "6px 14px", borderRadius: 9999
+            background: "#EFF6FF", padding: "6px 14px", borderRadius: 9999
           }}>
             <ShieldCheck size={14} /> Autorité Industrielle &amp; Logistique
           </span>
@@ -772,14 +761,14 @@ function AutoriteBTPSection() {
           {engagements.map(({ icon: Icon, titre, desc }) => (
             <div key={titre} style={{
               background: "#F8FAFC", borderRadius: 20,
-              border: "1px solid #E2E8F0", padding: "clamp(20px, 3vw, 26px)",
+              border: "1.5px solid #E2E8F0", padding: "clamp(20px, 3vw, 26px)",
               display: "flex", flexDirection: "column", gap: 12,
               transition: "all 0.25s ease"
             }}
               onMouseEnter={e => {
                 e.currentTarget.style.boxShadow = "0 10px 24px -4px rgba(15, 23, 42, 0.08)"
                 e.currentTarget.style.transform = "translateY(-3px)"
-                e.currentTarget.style.borderColor = "#674FF5"
+                e.currentTarget.style.borderColor = "#1E3A8A"
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.boxShadow = "none"
@@ -789,7 +778,7 @@ function AutoriteBTPSection() {
             >
               <div style={{
                 width: 42, height: 42, borderRadius: 12,
-                background: "#F3F0FF", color: "#674FF5",
+                background: "#EFF6FF", color: "#1E3A8A",
                 display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
               }}>
                 <Icon size={20} />
@@ -808,7 +797,7 @@ function AutoriteBTPSection() {
 
         {/* 2. Le Pipeline Logistique Continu (Visible, Connecté, Sans Onglet) */}
         <div style={{
-          background: "#F8FAFC", borderRadius: 28, border: "1px solid #E2E8F0",
+          background: "#F8FAFC", borderRadius: 28, border: "1.5px solid #E2E8F0",
           padding: "clamp(28px, 4vw, 48px) clamp(20px, 3vw, 36px)"
         }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 28, flexWrap: "wrap", gap: 12 }}>
@@ -829,15 +818,15 @@ function AutoriteBTPSection() {
             {pipeline.map(({ num, phase, titre, desc }) => (
               <div key={num} style={{
                 background: "#FFFFFF", borderRadius: 18,
-                border: "1px solid #E2E8F0", padding: "clamp(18px, 2.5vw, 22px)",
+                border: "1.5px solid #E2E8F0", padding: "clamp(18px, 2.5vw, 22px)",
                 display: "flex", flexDirection: "column", gap: 10,
                 boxShadow: "0 2px 6px rgba(0,0,0,0.02)"
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.4rem", fontWeight: 800, color: "#674FF5" }}>
+                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.4rem", fontWeight: 800, color: "#1E3A8A" }}>
                     {num}
                   </span>
-                  <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#674FF5", background: "#F3F0FF", padding: "2px 8px", borderRadius: 6, textTransform: "uppercase" }}>
+                  <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#1E3A8A", background: "#EFF6FF", padding: "2px 8px", borderRadius: 6, textTransform: "uppercase" }}>
                     {phase}
                   </span>
                 </div>
@@ -857,7 +846,7 @@ function AutoriteBTPSection() {
   )
 }
 
-// ─── 4. Cockpit Simulateur Pro avec Presets Métiers (2 Colonnes) ──────────────
+// ─── 4. Cockpit Simulateur Pro avec Presets & Logistique (2 Colonnes) ─────────
 function InteractiveSimulateurSection() {
   const [surface, setSurface] = useState(60)
   const [typeOuvrage, setTypeOuvrage] = useState<"plafond" | "corniche">("plafond")
@@ -879,6 +868,13 @@ function InteractiveSimulateurSection() {
 
   const poidsTotalKg = (nbSacsGypse * 40) + kgFilasse + (nbSacsChaux * 40)
   const poidsTotalTonnes = (poidsTotalKg / 1000).toFixed(2)
+  const eauEstimeeLitres = Math.round(nbSacsGypse * 24)
+
+  const vehiculeRecommande = poidsTotalKg < 1500 
+    ? "Camionnette 1.5 Tonne (Bâchée)" 
+    : poidsTotalKg < 3500 
+    ? "Camion Léger 3.5 Tonnes" 
+    : "Camion Plateau 5 à 10 Tonnes (Gros Chantier)"
 
   const msgSimu = waUrl(`Bonjour ${COMPANY_NAME}, j'ai calculé mes besoins sur votre simulateur de chantier :
 
@@ -890,6 +886,8 @@ function InteractiveSimulateurSection() {
     `• Surface estimée : ${surface} m²
 ` +
     `• Poids matériel calculé : ~${poidsTotalKg} kg (${poidsTotalTonnes} Tonnes)
+` +
+    `• Transport recommandé : ${vehiculeRecommande}
 
 ` +
     `📦 *Quantités Estimées :*
@@ -912,9 +910,9 @@ function InteractiveSimulateurSection() {
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
-            fontWeight: 700, color: "#674FF5", textTransform: "uppercase",
+            fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
             letterSpacing: "0.12em", marginBottom: 12,
-            background: "#F3F0FF", padding: "6px 14px", borderRadius: 9999
+            background: "#EFF6FF", padding: "6px 14px", borderRadius: 9999
           }}>
             <Calculator size={14} /> Métré Interactif de Chantier
           </span>
@@ -932,14 +930,14 @@ function InteractiveSimulateurSection() {
 
         {/* Cockpit 2 Colonnes Pro */}
         <div className="simu-cockpit-grid" style={{
-          background: "#FFFFFF", borderRadius: 28, border: "1px solid #E2E8F0",
+          background: "#FFFFFF", borderRadius: 28, border: "1.5px solid #E2E8F0",
           padding: "clamp(24px, 4vw, 40px)", boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.06)",
           display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "clamp(24px, 4vw, 40px)",
           alignItems: "stretch"
         }}>
           
           {/* Colonne Gauche : Contrôles & Presets */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             
             {/* Step 1 : Choix Ouvrage */}
             <div>
@@ -950,26 +948,26 @@ function InteractiveSimulateurSection() {
                 <button type="button" onClick={() => setTypeOuvrage("plafond")} style={{
                   padding: "12px 14px", borderRadius: 14,
                   fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", fontWeight: 700,
-                  border: `2px solid ${typeOuvrage === "plafond" ? "#674FF5" : "#E2E8F0"}`,
-                  background: typeOuvrage === "plafond" ? "#F3F0FF" : "#FFFFFF",
-                  color: typeOuvrage === "plafond" ? "#674FF5" : "#475569",
+                  border: `2px solid ${typeOuvrage === "plafond" ? "#1E3A8A" : "#E2E8F0"}`,
+                  background: typeOuvrage === "plafond" ? "#EFF6FF" : "#FFFFFF",
+                  color: typeOuvrage === "plafond" ? "#1E3A8A" : "#475569",
                   cursor: "pointer", transition: "all 0.2s ease",
                   display: "flex", alignItems: "center", justifyContent: "space-between"
                 }}>
                   <span>🏢 Plafonds Staff</span>
-                  {typeOuvrage === "plafond" && <Check size={16} color="#674FF5" />}
+                  {typeOuvrage === "plafond" && <Check size={16} color="#1E3A8A" />}
                 </button>
                 <button type="button" onClick={() => setTypeOuvrage("corniche")} style={{
                   padding: "12px 14px", borderRadius: 14,
                   fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", fontWeight: 700,
-                  border: `2px solid ${typeOuvrage === "corniche" ? "#674FF5" : "#E2E8F0"}`,
-                  background: typeOuvrage === "corniche" ? "#F3F0FF" : "#FFFFFF",
-                  color: typeOuvrage === "corniche" ? "#674FF5" : "#475569",
+                  border: `2px solid ${typeOuvrage === "corniche" ? "#1E3A8A" : "#E2E8F0"}`,
+                  background: typeOuvrage === "corniche" ? "#EFF6FF" : "#FFFFFF",
+                  color: typeOuvrage === "corniche" ? "#1E3A8A" : "#475569",
                   cursor: "pointer", transition: "all 0.2s ease",
                   display: "flex", alignItems: "center", justifyContent: "space-between"
                 }}>
                   <span>✨ Corniches &amp; Moulures</span>
-                  {typeOuvrage === "corniche" && <Check size={16} color="#674FF5" />}
+                  {typeOuvrage === "corniche" && <Check size={16} color="#1E3A8A" />}
                 </button>
               </div>
             </div>
@@ -983,14 +981,14 @@ function InteractiveSimulateurSection() {
                 {presets.map(p => (
                   <button key={p.val} onClick={() => setSurface(p.val)} style={{
                     padding: "8px 6px", borderRadius: 10,
-                    border: `1.5px solid ${surface === p.val ? "#674FF5" : "#E2E8F0"}`,
-                    background: surface === p.val ? "#F3F0FF" : "white",
-                    color: surface === p.val ? "#674FF5" : "#475569",
+                    border: `1.5px solid ${surface === p.val ? "#1E3A8A" : "#E2E8F0"}`,
+                    background: surface === p.val ? "#EFF6FF" : "white",
+                    color: surface === p.val ? "#1E3A8A" : "#475569",
                     cursor: "pointer", fontSize: "0.75rem", fontWeight: 700,
                     transition: "all 0.2s ease", textAlign: "center"
                   }}>
                     <div>{p.val} m²</div>
-                    <div style={{ fontSize: "0.6rem", color: "#94A3B8", fontWeight: 500 }}>{p.label}</div>
+                    <div style={{ fontSize: "0.6rem", color: "#64748B", fontWeight: 500 }}>{p.label}</div>
                   </button>
                 ))}
               </div>
@@ -998,43 +996,53 @@ function InteractiveSimulateurSection() {
               {/* Slider interactif */}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
                 <span style={{ fontSize: "0.75rem", color: "#64748B" }}>Surface précise :</span>
-                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.5rem", fontWeight: 800, color: "#674FF5" }}>
+                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.5rem", fontWeight: 800, color: "#1E3A8A" }}>
                   {surface} <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#475569" }}>m²</span>
                 </span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <button onClick={() => setSurface(s => Math.max(10, s - 10))} aria-label="Moins 10m²"
-                  style={{ width: 40, height: 40, borderRadius: "50%", border: "1px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
+                  style={{ width: 40, height: 40, borderRadius: "50%", border: "1.5px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
                   <Minus size={15} />
                 </button>
                 <input type="range" min={10} max={500} step={5} value={surface}
                   onChange={e => setSurface(Number(e.target.value))}
-                  style={{ flex: 1, accentColor: "#674FF5", height: 8, cursor: "pointer" }}
+                  style={{ flex: 1, accentColor: "#1E3A8A", height: 8, cursor: "pointer" }}
                 />
                 <button onClick={() => setSurface(s => Math.min(500, s + 10))} aria-label="Plus 10m²"
-                  style={{ width: 40, height: 40, borderRadius: "50%", border: "1px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
+                  style={{ width: 40, height: 40, borderRadius: "50%", border: "1.5px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
                   <Plus size={15} />
                 </button>
               </div>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "10px 14px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
-              <Scale size={16} style={{ color: "#674FF5", flexShrink: 0 }} />
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#64748B" }}>
-                Poids matériel estimé : <strong>~{poidsTotalKg} kg</strong> ({poidsTotalTonnes} Tonnes)
-              </span>
+            {/* Infos techniques gâchage & poids */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "8px 12px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
+                <Scale size={15} style={{ color: "#1E3A8A", flexShrink: 0 }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>
+                  Poids : <strong>~{poidsTotalKg} kg</strong> ({poidsTotalTonnes} T)
+                </span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "8px 12px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
+                <Droplets size={15} style={{ color: "#2563EB", flexShrink: 0 }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>
+                  Eau requise : <strong>~{eauEstimeeLitres} Litres</strong>
+                </span>
+              </div>
             </div>
+
           </div>
 
           {/* Colonne Droite : Panneau de Devis & Quantités */}
           <div style={{
-            background: "#F8FAFC", borderRadius: 20, border: "1px solid #E2E8F0",
+            background: "#F8FAFC", borderRadius: 20, border: "1.5px solid #E2E8F0",
             padding: "22px", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 14
           }}>
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase" }}>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase" }}>
                   Quantités calculées ({surface} m²) :
                 </span>
                 <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 8px", borderRadius: 6 }}>
@@ -1046,9 +1054,9 @@ function InteractiveSimulateurSection() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 12px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
                   <div>
                     <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Gypse Marco (40kg)</div>
-                    <div style={{ fontSize: "0.68rem", color: "#94A3B8" }}>🇪🇬 Import Égypte</div>
+                    <div style={{ fontSize: "0.68rem", color: "#64748B" }}>🇪🇬 Import Égypte</div>
                   </div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.2rem", fontWeight: 800, color: "#674FF5" }}>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.2rem", fontWeight: 800, color: "#1E3A8A" }}>
                     {nbSacsGypse} <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
                   </div>
                 </div>
@@ -1056,7 +1064,7 @@ function InteractiveSimulateurSection() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 12px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
                   <div>
                     <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Filasse Sisal Pure</div>
-                    <div style={{ fontSize: "0.68rem", color: "#94A3B8" }}>🇰🇪 Produce of Kenya</div>
+                    <div style={{ fontSize: "0.68rem", color: "#64748B" }}>🇰🇪 Produce of Kenya</div>
                   </div>
                   <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.2rem", fontWeight: 800, color: "#10B981" }}>
                     {kgFilasse} <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "#64748B" }}>kg</span>
@@ -1066,18 +1074,26 @@ function InteractiveSimulateurSection() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 12px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
                   <div>
                     <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Chaux Vive (40kg)</div>
-                    <div style={{ fontSize: "0.68rem", color: "#94A3B8" }}>🇦🇪 Dubaï Pure</div>
+                    <div style={{ fontSize: "0.68rem", color: "#64748B" }}>🇦🇪 Dubaï Pure</div>
                   </div>
                   <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.2rem", fontWeight: 800, color: "#0F172A" }}>
                     {nbSacsChaux} <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
                   </div>
                 </div>
               </div>
+
+              {/* Véhicule recommandé */}
+              <div style={{ marginTop: 10, padding: "8px 12px", background: "#EFF6FF", borderRadius: 10, border: "1px solid #DBEAFE", display: "flex", alignItems: "center", gap: 8 }}>
+                <Truck size={14} style={{ color: "#1E3A8A", flexShrink: 0 }} />
+                <span style={{ fontSize: "0.72rem", color: "#1E3A8A", fontWeight: 600 }}>
+                  {vehiculeRecommande}
+                </span>
+              </div>
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               <WaBtn label="Recevoir mon devis officiel sur WhatsApp" url={msgSimu} full />
-              <span style={{ fontSize: "0.7rem", color: "#94A3B8", textAlign: "center" }}>
+              <span style={{ fontSize: "0.7rem", color: "#64748B", textAlign: "center" }}>
                 ⚡ Devis proforma avec tarif dégressif par retour de message
               </span>
             </div>
@@ -1124,9 +1140,9 @@ function HowToOrderSection() {
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
-            fontWeight: 700, color: "#674FF5", textTransform: "uppercase",
+            fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
             letterSpacing: "0.12em", marginBottom: 12,
-            background: "#F3F0FF", padding: "6px 14px", borderRadius: 9999
+            background: "#EFF6FF", padding: "6px 14px", borderRadius: 9999
           }}>
             <Clock size={14} /> Parcours Simple &amp; Sécurisé
           </span>
@@ -1146,7 +1162,7 @@ function HowToOrderSection() {
           {steps.map(({ num, titre, desc }) => (
             <div key={num} style={{
               background: "#F8FAFC", borderRadius: 20,
-              border: "1px solid #E2E8F0", padding: "clamp(20px, 3vw, 26px)",
+              border: "1.5px solid #E2E8F0", padding: "clamp(20px, 3vw, 26px)",
               display: "flex", flexDirection: "column", gap: 10
             }}>
               <span style={{
@@ -1201,9 +1217,9 @@ function ApplicationsSection() {
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
-            fontWeight: 700, color: "#674FF5", textTransform: "uppercase",
+            fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
             letterSpacing: "0.12em", marginBottom: 12,
-            background: "#F3F0FF", padding: "6px 14px", borderRadius: 9999
+            background: "#EFF6FF", padding: "6px 14px", borderRadius: 9999
           }}>
             <Hammer size={14} /> Domaines d&apos;Application
           </span>
@@ -1223,18 +1239,18 @@ function ApplicationsSection() {
           {apps.map(({ titre, produit, desc, icon: Icon }) => (
             <div key={titre} style={{
               background: "#FFFFFF", borderRadius: 20,
-              border: "1px solid #E2E8F0", padding: "clamp(24px, 3.5vw, 32px)",
+              border: "1.5px solid #E2E8F0", padding: "clamp(24px, 3.5vw, 32px)",
               display: "flex", flexDirection: "column", gap: 14
             }}>
               <div style={{
                 width: 44, height: 44, borderRadius: 12,
-                background: "#F3F0FF", color: "#674FF5", border: "1px solid #E2E8F0",
+                background: "#EFF6FF", color: "#1E3A8A", border: "1px solid #DBEAFE",
                 display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
               }}>
                 <Icon size={22} />
               </div>
               <div>
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#674FF5", fontWeight: 700, textTransform: "uppercase" }}>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#1E3A8A", fontWeight: 700, textTransform: "uppercase" }}>
                   {produit}
                 </span>
                 <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.05rem", fontWeight: 800, color: "#0F172A", margin: "4px 0 8px" }}>
@@ -1255,9 +1271,9 @@ function ApplicationsSection() {
 
 // ─── 7. Témoignages & Avis Clients ───────────────────────────────────────────
 const TEMOIGNAGES = [
-  { initials: "KB", color: "#674FF5", nom: "Kouassi Bernard", role: "Maître Staffeur depuis 14 ans", ville: "Cotonou", note: 5, texte: "Le gypse Marco est sans équivalent au Bénin. La pâte est fluide, prend sans chauffer excessivement et ne fait aucune fissure. Mes chantiers sont validés du premier coup." },
+  { initials: "KB", color: "#1E3A8A", nom: "Kouassi Bernard", role: "Maître Staffeur depuis 14 ans", ville: "Cotonou", note: 5, texte: "Le gypse Marco est sans équivalent au Bénin. La pâte est fluide, prend sans chauffer excessivement et ne fait aucune fissure. Mes chantiers sont validés du premier coup." },
   { initials: "AM", color: "#10B981", nom: "Adéola Moussa", role: "Conducteur de Travaux BTP", ville: "Abomey-Calavi", note: 5, texte: "La réactivité sur WhatsApp est top. En envoyant la surface, on a le devis et la livraison sur chantier à Calavi arrive dans les temps. La filasse du Kenya est très propre." },
-  { initials: "FD", color: "#F59E0B", nom: "Fatou Diallo", role: "Architecte d'Intérieur", ville: "Cotonou", note: 5, texte: "Pour les faux-plafonds à gorges lumineuses de mes clients, j'exige le Gypse Marco et la Chaux Vive de Dubaï. La blancheur est parfaite, prête pour la peinture." },
+  { initials: "FD", color: "#D97706", nom: "Fatou Diallo", role: "Architecte d'Intérieur", ville: "Cotonou", note: 5, texte: "Pour les faux-plafonds à gorges lumineuses de mes clients, j'exige le Gypse Marco et la Chaux Vive de Dubaï. La blancheur est parfaite, prête pour la peinture." },
 ]
 
 function ReassuranceSection() {
@@ -1266,7 +1282,7 @@ function ReassuranceSection() {
       <div className="site-container">
         
         <div style={{ textAlign: "center", marginBottom: "clamp(32px, 5vw, 48px)" }}>
-          <span style={{ display: "inline-block", fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: "#674FF5", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>
+          <span style={{ display: "inline-block", fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>
             Retours d&apos;Expérience
           </span>
           <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: 8 }}>
@@ -1280,7 +1296,7 @@ function ReassuranceSection() {
         <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(20px, 3vw, 28px)" }}>
           {TEMOIGNAGES.map(({ initials, color, nom, role, ville, note, texte }) => (
             <div key={nom} style={{
-              background: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: 20,
+              background: "#F8FAFC", border: "1.5px solid #E2E8F0", borderRadius: 20,
               padding: "clamp(20px, 3vw, 28px)", display: "flex", flexDirection: "column", gap: 16,
               boxShadow: "0 2px 4px rgba(15, 23, 42, 0.04)"
             }}>
@@ -1290,7 +1306,7 @@ function ReassuranceSection() {
                 </div>
                 <div>
                   <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.9rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>{nom}</p>
-                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#94A3B8", margin: "2px 0 4px" }}>{role} · {ville}</p>
+                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#64748B", margin: "2px 0 4px" }}>{role} · {ville}</p>
                   <div style={{ display: "flex", gap: 2 }}>
                     {[...Array(note)].map((_, i) => <Star key={i} size={12} fill="#F59E0B" stroke="#F59E0B" />)}
                   </div>
@@ -1327,9 +1343,9 @@ function FAQSection() {
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
-            fontWeight: 700, color: "#674FF5", textTransform: "uppercase",
+            fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
             letterSpacing: "0.1em", marginBottom: 10,
-            background: "#F3F0FF", padding: "5px 12px", borderRadius: 9999
+            background: "#EFF6FF", padding: "5px 12px", borderRadius: 9999
           }}>
             <HelpCircle size={14} /> Foire Aux Questions
           </span>
@@ -1351,9 +1367,9 @@ function FAQSection() {
           ].map(({ id, label }) => (
             <button key={id} onClick={() => { setFilter(id); setOpenIndex(0) }} style={{
               padding: "7px 16px", borderRadius: 9999,
-              border: `1.5px solid ${filter === id ? "#674FF5" : "#E2E8F0"}`,
-              background: filter === id ? "#F3F0FF" : "white",
-              color: filter === id ? "#674FF5" : "#475569",
+              border: `1.5px solid ${filter === id ? "#1E3A8A" : "#E2E8F0"}`,
+              background: filter === id ? "#EFF6FF" : "white",
+              color: filter === id ? "#1E3A8A" : "#475569",
               fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", fontWeight: 700,
               cursor: "pointer", transition: "all 0.2s ease"
             }}>
@@ -1369,7 +1385,7 @@ function FAQSection() {
             return (
               <div key={faq.q} style={{
                 background: "#FFFFFF", borderRadius: 16,
-                border: `1.5px solid ${isOpen ? "#674FF5" : "#E2E8F0"}`,
+                border: `1.5px solid ${isOpen ? "#1E3A8A" : "#E2E8F0"}`,
                 overflow: "hidden", transition: "all 0.2s ease"
               }}>
                 <button
@@ -1387,9 +1403,9 @@ function FAQSection() {
                   </span>
                   <div style={{
                     width: 28, height: 28, borderRadius: "50%",
-                    background: isOpen ? "#F3F0FF" : "#F8FAFC",
+                    background: isOpen ? "#EFF6FF" : "#F8FAFC",
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-                    color: isOpen ? "#674FF5" : "#94A3B8",
+                    color: isOpen ? "#1E3A8A" : "#64748B",
                   }}>
                     <ChevronDown size={16} style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }} />
                   </div>
@@ -1514,7 +1530,7 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
                   e.currentTarget.style.background = "transparent"
                 }}
               >
-                <Calculator size={16} color="#674FF5" />
+                <Calculator size={16} color="#10B981" />
                 <span>Ouvrir le simulateur de métré ➔</span>
               </button>
             </div>
@@ -1564,12 +1580,12 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
         
         {/* Drawer Header */}
         <div style={{
-          padding: "16px 24px", borderBottom: "1px solid #E2E8F0",
+          padding: "16px 24px", borderBottom: "1.5px solid #E2E8F0",
           display: "flex", alignItems: "center", justifyContent: "space-between",
           position: "sticky", top: 0, background: "#FFFFFF", zIndex: 10
         }}>
           <div>
-            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#674FF5", fontWeight: 700, textTransform: "uppercase" }}>
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#1E3A8A", fontWeight: 700, textTransform: "uppercase" }}>
               {product.categorie}
             </span>
             <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
@@ -1577,7 +1593,7 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
             </h3>
           </div>
           <button onClick={onClose} aria-label="Fermer" style={{
-            width: 36, height: 36, borderRadius: "50%", border: "1px solid #E2E8F0",
+            width: 36, height: 36, borderRadius: "50%", border: "1.5px solid #E2E8F0",
             background: "#F8FAFC", cursor: "pointer", display: "flex", alignItems: "center",
             justifyContent: "center", color: "#475569"
           }}>
@@ -1590,16 +1606,19 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
           
           {/* Image Frame */}
           <div style={{
-            background: "#F8FAFC", borderRadius: 18, border: "1px solid #E2E8F0",
+            background: "#F8FAFC", borderRadius: 18, border: "1.5px solid #E2E8F0",
             height: 200, padding: 16, display: "flex", alignItems: "center", justifyContent: "center"
           }}>
             <img src={imgSrc(product.image)} alt={product.nom} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
           </div>
 
           <div>
-            <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-              <span style={{ background: "#F3F0FF", color: "#674FF5", fontSize: "0.72rem", fontWeight: 700, padding: "3px 8px", borderRadius: 9999 }}>
+            <div style={{ display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }}>
+              <span style={{ background: "#EFF6FF", color: "#1E3A8A", fontSize: "0.72rem", fontWeight: 700, padding: "3px 8px", borderRadius: 9999 }}>
                 {product.badge}
+              </span>
+              <span style={{ background: "#FEF3C7", color: "#D97706", fontSize: "0.72rem", fontWeight: 700, padding: "3px 8px", borderRadius: 9999 }}>
+                {product.remiseBadge}
               </span>
               <span style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A", fontSize: "0.72rem", fontWeight: 600, padding: "3px 8px", borderRadius: 9999 }}>
                 {product.drapeau} {product.origine}
@@ -1614,9 +1633,9 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
           </div>
 
           {/* Guide de dosage & Conseils de pose */}
-          <div style={{ background: "#F8FAFC", borderRadius: 14, border: "1px solid #E2E8F0", padding: "14px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ background: "#F8FAFC", borderRadius: 14, border: "1.5px solid #E2E8F0", padding: "14px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <Info size={16} style={{ color: "#674FF5" }} />
+              <Info size={16} style={{ color: "#1E3A8A" }} />
               <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.82rem", fontWeight: 800, color: "#0F172A" }}>
                 Conseil de Préparation &amp; Dosage :
               </span>
@@ -1634,7 +1653,7 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
             <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.85rem", fontWeight: 800, color: "#0F172A", margin: "0 0 10px" }}>
               Tableau des Spécifications :
             </h4>
-            <div style={{ background: "#F8FAFC", borderRadius: 14, border: "1px solid #E2E8F0", overflow: "hidden" }}>
+            <div style={{ background: "#F8FAFC", borderRadius: 14, border: "1.5px solid #E2E8F0", overflow: "hidden" }}>
               {product.specs.map(({ label, valeur }, i) => (
                 <div key={label} style={{
                   display: "grid", gridTemplateColumns: "1.1fr 1.4fr",
@@ -1642,25 +1661,25 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
                   fontSize: "0.78rem"
                 }}>
                   <span style={{ fontWeight: 700, color: "#64748B" }}>{label}</span>
-                  <span style={{ color: "#0F172A", fontWeight: 500 }}>{valeur}</span>
+                  <span style={{ color: "#0F172A", fontWeight: 600 }}>{valeur}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Sélecteur de Quantité */}
-          <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 16px", background: "#F8FAFC", borderRadius: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 16px", background: "#F8FAFC", borderRadius: 14, border: "1.5px solid #E2E8F0" }}>
             <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Quantité :</span>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "white", borderRadius: 9999, padding: "4px 8px", border: "1px solid #E2E8F0" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "white", borderRadius: 9999, padding: "4px 8px", border: "1.5px solid #E2E8F0" }}>
               <button onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Diminuer" style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Minus size={14} />
               </button>
-              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#674FF5", minWidth: 28, textAlign: "center" }}>{qty}</span>
+              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#1E3A8A", minWidth: 28, textAlign: "center" }}>{qty}</span>
               <button onClick={() => setQty(q => q + 1)} aria-label="Augmenter" style={{ width: 32, height: 32, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Plus size={14} />
               </button>
             </div>
-            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#94A3B8" }}>{product.conditionnement}</span>
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#64748B" }}>{product.conditionnement}</span>
           </div>
 
           {/* CTA WhatsApp Drawer */}
@@ -1697,7 +1716,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <div style={{
                 width: 36, height: 36, borderRadius: 8,
-                background: "#674FF5", display: "flex", alignItems: "center",
+                background: "#1E3A8A", display: "flex", alignItems: "center",
                 justifyContent: "center", flexShrink: 0,
               }}>
                 <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1rem", fontWeight: 800, color: "white" }}>M</span>
@@ -1706,7 +1725,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
                 <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "white", lineHeight: 1.1 }}>
                   {COMPANY_NAME}
                 </div>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.6rem", fontWeight: 500, color: "#94A3B8", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.6rem", fontWeight: 600, color: "#94A3B8", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                   {COMPANY_SUBTITLE}
                 </div>
               </div>
@@ -1975,7 +1994,7 @@ export default function App() {
               borderRadius: "50%",
               background: "white",
               color: "#0F172A",
-              border: "1px solid #E2E8F0",
+              border: "1.5px solid #E2E8F0",
               boxShadow: "0 8px 24px -4px rgba(15, 23, 42, 0.12)",
               cursor: "pointer",
               display: "flex",
@@ -1985,9 +2004,9 @@ export default function App() {
             }}
             onMouseEnter={e => {
               e.currentTarget.style.transform = "translateY(-2px)"
-              e.currentTarget.style.boxShadow = "0 12px 32px -4px rgba(103, 79, 245, 0.2)"
-              e.currentTarget.style.borderColor = "#674FF5"
-              e.currentTarget.style.color = "#674FF5"
+              e.currentTarget.style.boxShadow = "0 12px 32px -4px rgba(30, 58, 138, 0.2)"
+              e.currentTarget.style.borderColor = "#1E3A8A"
+              e.currentTarget.style.color = "#1E3A8A"
             }}
             onMouseLeave={e => {
               e.currentTarget.style.transform = "translateY(0)"
