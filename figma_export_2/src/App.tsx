@@ -2035,19 +2035,84 @@ const CSS = `
 
   /* ── Smartwatches & Micro-Screens (<= 280px) ── */
   @media (max-width: 280px) {
+    header {
+      height: 48px !important;
+    }
     .site-container {
       padding-left: 4px !important;
       padding-right: 4px !important;
     }
+    h1 {
+      font-size: 1.12rem !important;
+      line-height: 1.2 !important;
+    }
+    h2 {
+      font-size: 1.05rem !important;
+      line-height: 1.2 !important;
+    }
+    h3 {
+      font-size: 0.85rem !important;
+    }
+    p {
+      font-size: 0.7rem !important;
+    }
     .hero-stats-grid {
       grid-template-columns: 1fr !important;
+      gap: 6px !important;
+    }
+    .hero-visual > div {
+      max-width: 100% !important;
+      padding: 8px !important;
+    }
+    .presets-grid {
+      grid-template-columns: 1fr !important;
+      gap: 4px !important;
+    }
+    .simu-type-grid {
+      grid-template-columns: 1fr !important;
+      gap: 4px !important;
+    }
+    .simu-tech-grid {
+      grid-template-columns: 1fr !important;
+      gap: 4px !important;
+    }
+    .product-grid {
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+    }
+    .why-grid {
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+    }
+    .supply-grid {
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+    }
+    .order-grid {
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+    }
+    .apps-grid {
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+    }
+    .cta-architectural-grid {
+      grid-template-columns: 1fr !important;
+      padding: 12px 8px !important;
+    }
+    .footer-grid {
+      grid-template-columns: 1fr !important;
+      gap: 16px !important;
     }
     .mobile-dock {
       bottom: 4px !important;
       left: 4px !important;
       right: 4px !important;
-      padding: 6px 10px !important;
-      border-radius: 16px !important;
+      padding: 5px 8px !important;
+      border-radius: 12px !important;
+    }
+    .mobile-dock span {
+      font-size: 0.65rem !important;
     }
   }
 `
