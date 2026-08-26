@@ -4,7 +4,8 @@ import {
   ArrowLeft, CheckCircle2, Star, Package,
   Clock, Calculator, ShieldCheck, Truck, Award, ChevronDown,
   Plus, Minus, ArrowRight, HelpCircle, Layers, Sparkles,
-  ArrowUp, Building2, Warehouse, Hammer, Check, Info, FileText
+  ArrowUp, Building2, Warehouse, Hammer, Check, Info, FileText,
+  Sliders, ArrowDownRight, Scale
 } from "lucide-react"
 import imgGypse from "@/imports/photo2.jpeg"
 import imgChaux from "@/imports/photo1.jpeg"
@@ -33,11 +34,14 @@ interface Product {
   conditionnement: string
   image: string | { src: string }
   description: string
+  highlights: string[]
   arguments: string[]
   specs: { label: string; valeur: string }[]
+  dosage: string
+  application: string
 }
 
-// ─── Catalogue Produits Réels (Copywriting Épuré & Calibré) ───────────────────
+// ─── Catalogue Produits (Données Riches pour Tiroir & Cartes Épurées) ─────────
 const PRODUCTS: Product[] = [
   {
     id: "gypse-40kg",
@@ -50,12 +54,18 @@ const PRODUCTS: Product[] = [
     conditionnement: "Sac scellé de 40 KG",
     image: imgGypse,
     description: "Poudre de gypse de moulage extra blanche importée directement d'Égypte. Granulométrie micronique ultra-fine pour un gâchage fluide sans grumeaux, une prise régulière et une finition miroir sans aucune craquelure.",
-    arguments: [
+    highlights: [
       "Blancheur éclatante 100% sans aucun jaunissement",
-      "Finesse micronique supérieure : gâchage fluide sans grumeaux",
+      "Prise régulière (20 – 30 min) : idéal plafonds & corniches"
+    ],
+    arguments: [
+      "Blancheur éclatante 100% sans aucun jaunissement dans le temps",
+      "Finesse micronique supérieure : gâchage fluide et sans grumeaux",
       "Prise régulière (20 – 30 min) : idéal pour faux-plafonds et moulures",
       "Zéro retrait et zéro fissuration après séchage complet"
     ],
+    dosage: "0,60 L d'eau par kg de poudre (Gâchage souple et crémeux)",
+    application: "Faux-plafonds suspendus, plaques lissées, corniches moulées et rosaces.",
     specs: [
       { label: "Origine", valeur: "Import direct Égypte (Usine certifiée)" },
       { label: "Conditionnement", valeur: "Sac scellé de 40 KG (80 lbs)" },
@@ -63,7 +73,7 @@ const PRODUCTS: Product[] = [
       { label: "Dosage d'eau indicatif", valeur: "0,60 L par kg de poudre" },
       { label: "Finesse / Tamisage", valeur: "< 80 microns (finesse supérieure)" },
       { label: "Indice de blancheur", valeur: "Extra White 100%" },
-      { label: "Usage recommandé", valeur: "Plafonds suspendus staff, corniches, plaques lisses" }
+      { label: "Rendement indicatif", valeur: "~10 à 12 m² par sac selon épaisseur" }
     ],
   },
   {
@@ -77,19 +87,25 @@ const PRODUCTS: Product[] = [
     conditionnement: "Sac étanche de 40 KG",
     image: imgChaux,
     description: "White Lime pure de première qualité importée de Dubaï (Oki General Trading). Pureté calcique exceptionnelle et haute réactivité pour des enduits respirants, étanches et naturellement anti-salpêtre.",
-    arguments: [
-      "Pureté calcique CaO > 95% pour une réactivité maximale",
-      "Pouvoir assainissant, bactéricide et anti-moisissure naturel",
-      "Excellente perméabilité à la vapeur : protège de l'humidité",
-      "Forte adhérence sur tous supports maçonnés et staff"
+    highlights: [
+      "Pureté calcique CaO > 95% pour réactivité thermique maximale",
+      "Action antifongique et anti-salpêtre naturelle pour climat côtier"
     ],
+    arguments: [
+      "Pureté calcique CaO > 95% pour une réactivité thermique maximale",
+      "Pouvoir assainissant, bactéricide et anti-moisissure naturel",
+      "Excellente perméabilité à la vapeur : protège contre l'humidité",
+      "Forte adhérence sur tous supports maçonnés et ouvrages staff"
+    ],
+    dosage: "Extinction progressive avec 2 à 3 volumes d'eau par volume de chaux",
+    application: "Enduits traditionnels, chaulage assainissant, protection anti-salpêtre.",
     specs: [
       { label: "Origine", valeur: "Import direct Dubaï, UAE (Oki General Trading)" },
       { label: "Conditionnement", valeur: "Sac étanche protecteur de 40 KG" },
       { label: "Teneur en CaO (Pureté)", valeur: "> 95% pureté garantie" },
       { label: "Réactivité (T60)", valeur: "< 2 minutes (haute réactivité)" },
       { label: "Propriétés", valeur: "Fongicide, assainissant et respirant" },
-      { label: "Usage recommandé", valeur: "Enduits de finition, chaulage, assainissement de murs" }
+      { label: "Rendement indicatif", valeur: "~8 à 10 m² par sac en enduit de finition" }
     ],
   },
   {
@@ -103,12 +119,18 @@ const PRODUCTS: Product[] = [
     conditionnement: "Balle pressée 25 / 50 KG",
     image: imgFilasse,
     description: "Fibres végétales de sisal pur sélectionnées et peignées au Kenya. Fibres longues d'une résistance mécanique extrême à la traction, garantissant l'armature indestructible de tous vos éléments en staff.",
+    highlights: [
+      "Fibres végétales 100% naturelles sélectionnées (Agave Sisalana)",
+      "Résistance extrême à la traction (> 300 MPa) contre les secousses"
+    ],
     arguments: [
       "Fibres végétales 100% naturelles sélectionnées (Agave Sisalana)",
-      "Fibres longues peignées (60 à 120 cm) sans déchets",
-      "Imprégnation plâtre instantanée pour un bloc indéformable",
-      "Résistance extrême à la traction (> 300 MPa)"
+      "Fibres longues peignées (60 à 120 cm) sans déchets ni poussière",
+      "Imprégnation plâtre instantanée pour un bloc structurel indéformable",
+      "Résistance extrême à la traction (> 300 MPa) contre les secousses"
     ],
+    dosage: "Trempage direct dans la barbotine de gypse avant incorporation",
+    application: "Armature de corniches lourdes, retombées de plafonds, rosaces et plaques.",
     specs: [
       { label: "Origine", valeur: "Produce of Kenya (Import direct)" },
       { label: "Type de fibre", valeur: "Sisal naturel pur 100% végétal" },
@@ -246,23 +268,23 @@ function Button({ children, variant = "primary", size = "medium", iconEnd, onCli
   )
 }
 
-// ─── Header & Smart Sticky Navbar ─────────────────────────────────────────────
+// ─── Header & Smart Sticky Navbar (Compacité Mobile & Desktop) ────────────────
 function AnnouncementBar() {
   return (
-    <div style={{ background: "#0A0F1D", padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+    <div style={{ background: "#0A0F1D", padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
       <div className="site-container" style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        gap: 12, flexWrap: "wrap",
+        gap: 8, flexWrap: "wrap",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#10B981", display: "block", animation: "pulse 2s infinite" }} />
-          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#94A3B8", fontWeight: 500 }}>
-            Dépôts Cotonou &amp; Calavi Ouverts · Lun–Sam 7h30–18h00 · Stock Permanent
+        <div style={{ display: "flex", alignItems: "center", gap: 8, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "inline-block", flexShrink: 0, animation: "pulse 2s infinite" }} />
+          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8", fontWeight: 500 }}>
+            Dépôts Cotonou &amp; Calavi · Stock Disponible · Lun–Sam 7h30–18h00
           </span>
         </div>
-        <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", alignItems: "center", gap: 6, textDecoration: "none" }}>
-          <Phone size={12} style={{ color: "#10B981" }} />
-          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "white", fontWeight: 600 }}>
+        <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", alignItems: "center", gap: 5, textDecoration: "none", flexShrink: 0 }}>
+          <Phone size={11} style={{ color: "#10B981" }} />
+          <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "white", fontWeight: 600 }}>
             {PHONE_DISPLAY}
           </span>
         </a>
@@ -280,9 +302,9 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      setIsScrolled(currentScrollY > 60)
+      setIsScrolled(currentScrollY > 50)
 
-      if (currentScrollY > lastScrollY.current && currentScrollY > 90) {
+      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
         setIsVisible(false)
       } else {
         setIsVisible(true)
@@ -309,13 +331,13 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
       position: "sticky", top: 0, zIndex: 100,
       transform: isVisible ? "translateY(0)" : "translateY(-100%)",
       transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, box-shadow 0.2s ease",
-      background: isScrolled ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.94)",
+      background: isScrolled ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.95)",
       backdropFilter: "blur(16px)",
       borderBottom: "1px solid #E2E8F0",
       boxShadow: isScrolled ? "0 4px 20px rgba(0,0,0,0.06)" : "none",
     }}>
       <div className="site-container" style={{
-        height: isScrolled ? 62 : 72, display: "flex", alignItems: "center", justifyContent: "space-between",
+        height: isScrolled ? 60 : 70, display: "flex", alignItems: "center", justifyContent: "space-between",
         transition: "height 0.25s ease"
       }}>
         {/* Brand Logo */}
@@ -412,13 +434,13 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   )
 }
 
-// ─── 1. Hero Section (Harmonisé & Cadrage Studio) ────────────────────────────
+// ─── 1. Hero Section (Composition Studio 3 Matériaux Équilibrée) ─────────────
 function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => void; onSimulateur: () => void }) {
   return (
     <section id="accueil" style={{ background: "#FFFFFF", position: "relative", overflow: "hidden" }}>
       <div className="site-container" style={{
-        paddingTop: "clamp(36px, 5vw, 64px)",
-        paddingBottom: "clamp(48px, 6vw, 80px)",
+        paddingTop: "clamp(28px, 4.5vw, 56px)",
+        paddingBottom: "clamp(40px, 5.5vw, 72px)",
       }}>
         <div className="hero-grid" style={{
           display: "grid", gridTemplateColumns: "1.15fr 0.85fr",
@@ -429,7 +451,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
           <div style={{ position: "relative", zIndex: 1 }}>
             
             {/* Origin pills */}
-            <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
               {[
                 { flag: "🇪🇬", label: "Gypse d'Égypte" },
                 { flag: "🇦🇪", label: "Chaux de Dubaï" },
@@ -438,7 +460,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
                 <span key={label} style={{
                   display: "inline-flex", alignItems: "center", gap: 6,
                   background: "#F8FAFC", border: "1px solid #E2E8F0",
-                  borderRadius: "9999px", padding: "5px 12px",
+                  borderRadius: "9999px", padding: "4px 12px",
                   fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
                   fontWeight: 600, color: "#0F172A",
                 }}>{flag} {label}</span>
@@ -448,24 +470,24 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
             {/* Main Headline */}
             <h1 style={{
               fontFamily: "var(--ds-font-heading)",
-              fontSize: "clamp(2rem, 4.4vw, 3.25rem)",
+              fontSize: "clamp(1.9rem, 4.2vw, 3.2rem)",
               fontWeight: 800, color: "#0F172A", lineHeight: 1.15,
-              letterSpacing: "-0.035em", marginBottom: 18,
+              letterSpacing: "-0.035em", marginBottom: 16,
             }}>
               L&apos;Excellence des <span style={{ color: "#674FF5" }}>Matériaux de Staff</span> &amp; Finition au Bénin.
             </h1>
 
             {/* Sub-headline */}
             <p style={{
-              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
+              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.88rem, 1.35vw, 1rem)",
               color: "#475569", lineHeight: 1.7, maxWidth: 520,
-              marginBottom: 32,
+              marginBottom: 28,
             }}>
               Approvisionnez vos chantiers directement à la source. <strong>Poudre de Gypse Marco 40 KG</strong> (Égypte), <strong>Chaux Vive pure</strong> (Dubaï) et <strong>Filasse Sisal haute ténacité</strong> (Kenya). Qualité certifiée, zéro fissure, stock permanent et livraison rapide sur chantier.
             </p>
 
             {/* Action CTAs */}
-            <div className="hero-cta-group" style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", marginBottom: 36 }}>
+            <div className="hero-cta-group" style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", marginBottom: 32 }}>
               <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} />
               <Button variant="neutral" iconEnd={<Calculator size={15} color="#674FF5" />} onClick={onSimulateur}>
                 Calculer mes besoins
@@ -474,8 +496,8 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
 
             {/* Trust stats row */}
             <div className="hero-stats-grid" style={{
-              display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16,
-              paddingTop: 24, borderTop: "1px solid #E2E8F0",
+              display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14,
+              paddingTop: 20, borderTop: "1px solid #E2E8F0",
             }}>
               {[
                 { val: "100%", label: "Pureté & Zéro Fissure" },
@@ -484,47 +506,59 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
                 { val: "Stock", label: "Permanent en Dépôt" },
               ].map(({ val, label }) => (
                 <div key={label}>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.2rem, 2.2vw, 1.5rem)", fontWeight: 800, color: "#674FF5", lineHeight: 1 }}>{val}</div>
-                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8", marginTop: 4 }}>{label}</div>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.15rem, 2vw, 1.45rem)", fontWeight: 800, color: "#674FF5", lineHeight: 1 }}>{val}</div>
+                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#94A3B8", marginTop: 4 }}>{label}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right Col – Visual Hero Studio Harmonisé */}
+          {/* Right Col – Studio Showcase Multi-Matières */}
           <div className="hero-visual" style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{
-              position: "relative", zIndex: 2, width: "100%", maxWidth: 330,
-              background: "white", borderRadius: 24,
+              position: "relative", zIndex: 2, width: "100%", maxWidth: 360,
+              background: "#FFFFFF", borderRadius: 24,
               boxShadow: "0 20px 50px -10px rgba(15, 23, 42, 0.12)",
-              overflow: "hidden", border: "1px solid #E2E8F0",
+              border: "1px solid #E2E8F0", overflow: "hidden", padding: "20px"
             }}>
-              <div style={{ height: 260, background: "#F8FAFC", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-                <img src={imgSrc(imgGypse)} alt="Poudre de Gypse Marco 40 KG" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+              {/* Main Product Showcase */}
+              <div style={{ background: "#F8FAFC", borderRadius: 16, border: "1px solid #E2E8F0", padding: 16, height: 210, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <img src={imgSrc(imgGypse)} alt="Gypse Marco 40 KG" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
               </div>
-              <div style={{ padding: "16px 20px" }}>
+
+              <div style={{ marginTop: 14 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.9rem", fontWeight: 800, color: "#0F172A" }}>Gypse Marco 40 KG</span>
-                  <span style={{ background: "#F3F0FF", color: "#674FF5", fontSize: "0.68rem", fontWeight: 700, padding: "3px 8px", borderRadius: 9999 }}>N°1 Staff</span>
+                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.92rem", fontWeight: 800, color: "#0F172A" }}>Poudre de Gypse Marco</span>
+                  <span style={{ background: "#F3F0FF", color: "#674FF5", fontSize: "0.68rem", fontWeight: 700, padding: "2px 8px", borderRadius: 9999 }}>Sac 40 KG</span>
                 </div>
                 <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#64748B", margin: 0 }}>
-                  🇪🇬 Import Égypte · Extra White · Prise 20-30 min
+                  Extra White · Prise 20-30 min · Formule anti-fissure
                 </p>
               </div>
-            </div>
 
-            {/* Floating Trust Badge */}
-            <div className="hero-float-1" style={{
-              position: "absolute", bottom: 16, left: -10, zIndex: 3,
-              background: "white", borderRadius: 16,
-              padding: "10px 14px", boxShadow: "0 8px 24px -4px rgba(15, 23, 42, 0.12)",
-              border: "1px solid #E2E8F0", display: "flex", alignItems: "center", gap: 10
-            }}>
-              <ShieldCheck size={18} style={{ color: "#10B981" }} />
-              <div>
-                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.78rem", fontWeight: 700, color: "#0F172A" }}>Zéro Craquelure</div>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", color: "#94A3B8" }}>Garantie séchage net</div>
+              {/* Mini thumbnails row for 2 other products */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 14, paddingTop: 12, borderTop: "1px solid #E2E8F0" }}>
+                <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "8px", borderRadius: 10, cursor: "pointer", border: "1px solid #E2E8F0" }}>
+                  <div style={{ width: 32, height: 32, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <img src={imgSrc(imgChaux)} alt="Chaux Vive" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1 }}>Chaux Vive</div>
+                    <div style={{ fontSize: "0.62rem", color: "#94A3B8" }}>🇦🇪 Dubaï 40kg</div>
+                  </div>
+                </div>
+
+                <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "8px", borderRadius: 10, cursor: "pointer", border: "1px solid #E2E8F0" }}>
+                  <div style={{ width: 32, height: 32, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <img src={imgSrc(imgFilasse)} alt="Filasse Sisal" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1 }}>Filasse Sisal</div>
+                    <div style={{ fontSize: "0.62rem", color: "#94A3B8" }}>🇰🇪 Kenya Pure</div>
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
 
@@ -534,7 +568,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
   )
 }
 
-// ─── 2. Catalogue Produits (3 Colonnes Harmonisé) ────────────────────────────
+// ─── 2. Catalogue Produits (Cards Épurées avec Fiche Technique Enrichie) ───────
 function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void }) {
   return (
     <section id="produits" style={{ background: "#F8FAFC", padding: "clamp(48px, 6vw, 80px) 0" }}>
@@ -579,7 +613,7 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
               }}
             >
               {/* Image Frame */}
-              <div style={{ position: "relative", height: 230, background: "#F8FAFC", padding: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ position: "relative", height: 220, background: "#F8FAFC", padding: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <img src={imgSrc(p.image)} alt={p.nom} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                 <span style={{
                   position: "absolute", top: 12, left: 12,
@@ -600,46 +634,47 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
                 </span>
               </div>
 
-              {/* Info Frame */}
-              <div style={{ padding: "clamp(18px, 3vw, 24px)", flex: 1, display: "flex", flexDirection: "column", gap: 14 }}>
+              {/* Info Frame Épurée */}
+              <div style={{ padding: "clamp(18px, 3vw, 22px)", flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
                 <div>
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#674FF5", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#674FF5", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>
                     {p.categorie}
                   </span>
-                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1rem", fontWeight: 800, color: "#0F172A", margin: "4px 0 0", lineHeight: 1.3 }}>
+                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.98rem", fontWeight: 800, color: "#0F172A", margin: "4px 0 0", lineHeight: 1.3 }}>
                     {p.nom}
                   </h3>
                 </div>
 
+                {/* 2 Points Clés Percutants */}
                 <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-                  {p.arguments.map(arg => (
-                    <li key={arg} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                  {p.highlights.map(h => (
+                    <li key={h} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
                       <CheckCircle2 size={15} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
                       <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "#475569", lineHeight: 1.45 }}>
-                        {arg}
+                        {h}
                       </span>
                     </li>
                   ))}
                 </ul>
 
-                <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", background: "#F8FAFC", borderRadius: 8, width: "fit-content" }}>
-                  <Package size={14} style={{ color: "#94A3B8" }} />
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#475569", fontWeight: 600 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "5px 10px", background: "#F8FAFC", borderRadius: 8, width: "fit-content" }}>
+                  <Package size={13} style={{ color: "#94A3B8" }} />
+                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#475569", fontWeight: 600 }}>
                     {p.conditionnement}
                   </span>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: "auto", paddingTop: 8 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: "auto", paddingTop: 6 }}>
                   <WaBtn label="Commander / Prix WhatsApp" url={waProduitMsg(p.nom, p.conditionnement)} full />
                   <button onClick={() => onOpenDetail(p)} style={{
                     display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                     fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", fontWeight: 700,
                     color: "#674FF5", background: "#F3F0FF", border: "none",
-                    borderRadius: 9999, padding: "10px 20px", cursor: "pointer",
+                    borderRadius: 9999, padding: "10px 18px", cursor: "pointer",
                     transition: "all 0.2s ease",
                   }}>
                     <FileText size={14} />
-                    <span>Fiche Technique &amp; Spécifications</span>
+                    <span>Fiche &amp; Conseils Techniques</span>
                   </button>
                 </div>
               </div>
@@ -652,8 +687,10 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
   )
 }
 
-// ─── 3. Grand Chapitre d'Autorité BTP : Engagements & Chaîne Logistique ─────────
+// ─── 3. Section d'Autorité BTP : Engagements & Timeline Interactive ───────────
 function AutoriteBTPSection() {
+  const [activeTab, setActiveTab] = useState<"engagements" | "logistique">("engagements")
+
   const engagements = [
     {
       icon: Award,
@@ -708,8 +745,7 @@ function AutoriteBTPSection() {
     <section id="autorite" style={{ background: "#FFFFFF", padding: "clamp(56px, 7vw, 90px) 0" }}>
       <div className="site-container">
         
-        {/* Partie 1 : Engagements */}
-        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(32px, 5vw, 44px)" }}>
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(28px, 4vw, 40px)" }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
@@ -717,89 +753,94 @@ function AutoriteBTPSection() {
             letterSpacing: "0.12em", marginBottom: 12,
             background: "#F3F0FF", padding: "6px 14px", borderRadius: 9999
           }}>
-            <ShieldCheck size={14} /> Rigueur &amp; Autorité BTP
+            <ShieldCheck size={14} /> Rigueur &amp; Organisation BTP
           </span>
           <h2 style={{
             fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
             lineHeight: 1.2, marginBottom: 12
           }}>
-            Nos 4 Engagements pour les Professionnels
+            Pourquoi les Professionnels Choisissent Marco Staff ?
           </h2>
           <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
-            Une sélection exigeante de matériaux conçue pour valoriser le savoir-faire des maîtres staffeurs et sécuriser les investissements des promoteurs.
+            Une exigence de qualité sans concession et une logistique rodée pour sécuriser vos chantiers du début à la fin.
           </p>
         </div>
 
-        <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(16px, 2.5vw, 24px)", marginBottom: "clamp(48px, 6vw, 72px)" }}>
-          {engagements.map(({ icon: Icon, titre, desc }) => (
-            <div key={titre} style={{
-              background: "#F8FAFC", borderRadius: 20,
-              border: "1px solid #E2E8F0", padding: "clamp(20px, 3vw, 26px)",
-              display: "flex", flexDirection: "column", gap: 12,
-              transition: "all 0.25s ease"
-            }}
-              onMouseEnter={e => {
-                e.currentTarget.style.boxShadow = "0 10px 24px -4px rgba(15, 23, 42, 0.08)"
-                e.currentTarget.style.transform = "translateY(-3px)"
-                e.currentTarget.style.borderColor = "#674FF5"
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.boxShadow = "none"
-                e.currentTarget.style.transform = "translateY(0)"
-                e.currentTarget.style.borderColor = "#E2E8F0"
-              }}
-            >
-              <div style={{
-                width: 42, height: 42, borderRadius: 12,
-                background: "#F3F0FF", color: "#674FF5",
-                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
-              }}>
-                <Icon size={20} />
-              </div>
-              <div>
-                <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#0F172A", margin: "0 0 6px" }}>
-                  {titre}
-                </h3>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "#475569", lineHeight: 1.55, margin: 0 }}>
-                  {desc}
-                </p>
-              </div>
-            </div>
-          ))}
+        {/* Tab switcher pour fluidité mobile & desktop */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 32 }}>
+          <button onClick={() => setActiveTab("engagements")} style={{
+            padding: "9px 20px", borderRadius: 9999,
+            border: `1.5px solid ${activeTab === "engagements" ? "#674FF5" : "#E2E8F0"}`,
+            background: activeTab === "engagements" ? "#F3F0FF" : "white",
+            color: activeTab === "engagements" ? "#674FF5" : "#475569",
+            fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", fontWeight: 700,
+            cursor: "pointer", transition: "all 0.2s ease", display: "flex", alignItems: "center", gap: 6
+          }}>
+            <Award size={15} />
+            <span>Nos 4 Engagements Qualité</span>
+          </button>
+          <button onClick={() => setActiveTab("logistique")} style={{
+            padding: "9px 20px", borderRadius: 9999,
+            border: `1.5px solid ${activeTab === "logistique" ? "#674FF5" : "#E2E8F0"}`,
+            background: activeTab === "logistique" ? "#F3F0FF" : "white",
+            color: activeTab === "logistique" ? "#674FF5" : "#475569",
+            fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", fontWeight: 700,
+            cursor: "pointer", transition: "all 0.2s ease", display: "flex", alignItems: "center", gap: 6
+          }}>
+            <Truck size={15} />
+            <span>Chaîne Logistique &amp; Livraison</span>
+          </button>
         </div>
 
-        {/* Partie 2 : Chaîne Logistique Continue (Fond Clair Architectural) */}
-        <div style={{
-          background: "#F8FAFC", borderRadius: 28, border: "1px solid #E2E8F0",
-          padding: "clamp(32px, 4.5vw, 56px) clamp(20px, 3vw, 40px)"
-        }}>
-          <div style={{ textAlign: "center", maxWidth: 640, margin: "0 auto clamp(28px, 4vw, 40px)" }}>
-            <span style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
-              fontFamily: "var(--ds-font-body)", fontSize: "0.72rem",
-              fontWeight: 700, color: "#10B981", textTransform: "uppercase",
-              letterSpacing: "0.1em", marginBottom: 8,
-              background: "#ECFDF5", padding: "4px 12px", borderRadius: 9999
-            }}>
-              <Truck size={13} /> Maîtrise Logistique
-            </span>
-            <h3 style={{
-              fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 2.5vw, 1.8rem)",
-              fontWeight: 800, color: "#0F172A", letterSpacing: "-0.02em", margin: "0 0 8px"
-            }}>
-              De l&apos;Usine d&apos;Origine à Votre Chantier
-            </h3>
-            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", color: "#64748B", margin: 0 }}>
-              Un flux d&apos;approvisionnement ininterrompu garantissant l&apos;intégrité physique de la matière.
-            </p>
+        {/* Tab 1 : Engagements */}
+        {activeTab === "engagements" && (
+          <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(16px, 2.5vw, 24px)" }}>
+            {engagements.map(({ icon: Icon, titre, desc }) => (
+              <div key={titre} style={{
+                background: "#F8FAFC", borderRadius: 20,
+                border: "1px solid #E2E8F0", padding: "clamp(20px, 3vw, 26px)",
+                display: "flex", flexDirection: "column", gap: 12,
+                transition: "all 0.25s ease"
+              }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.boxShadow = "0 10px 24px -4px rgba(15, 23, 42, 0.08)"
+                  e.currentTarget.style.transform = "translateY(-3px)"
+                  e.currentTarget.style.borderColor = "#674FF5"
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.boxShadow = "none"
+                  e.currentTarget.style.transform = "translateY(0)"
+                  e.currentTarget.style.borderColor = "#E2E8F0"
+                }}
+              >
+                <div style={{
+                  width: 42, height: 42, borderRadius: 12,
+                  background: "#F3F0FF", color: "#674FF5",
+                  display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+                }}>
+                  <Icon size={20} />
+                </div>
+                <div>
+                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#0F172A", margin: "0 0 6px" }}>
+                    {titre}
+                  </h3>
+                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "#475569", lineHeight: 1.55, margin: 0 }}>
+                    {desc}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
+        )}
 
-          <div className="supply-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(14px, 2vw, 20px)" }}>
+        {/* Tab 2 : Chaîne Logistique */}
+        {activeTab === "logistique" && (
+          <div className="supply-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(16px, 2vw, 24px)" }}>
             {timelineSteps.map(({ num, phase, titre, desc }) => (
               <div key={num} style={{
-                background: "#FFFFFF", borderRadius: 18,
-                border: "1px solid #E2E8F0", padding: "clamp(18px, 2.5vw, 22px)",
+                background: "#F8FAFC", borderRadius: 20,
+                border: "1px solid #E2E8F0", padding: "clamp(20px, 3vw, 26px)",
                 display: "flex", flexDirection: "column", gap: 10,
                 boxShadow: "0 2px 6px rgba(0,0,0,0.02)"
               }}>
@@ -811,23 +852,23 @@ function AutoriteBTPSection() {
                     {phase}
                   </span>
                 </div>
-                <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.9rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
+                <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.92rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
                   {titre}
                 </h4>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#64748B", lineHeight: 1.55, margin: 0 }}>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", color: "#64748B", lineHeight: 1.55, margin: 0 }}>
                   {desc}
                 </p>
               </div>
             ))}
           </div>
-        </div>
+        )}
 
       </div>
     </section>
   )
 }
 
-// ─── 4. Cockpit Simulateur Directement Intégré sur la Homepage ─────────────────
+// ─── 4. Cockpit Simulateur 2 Colonnes (Paramètres & Résultats en Direct) ──────
 function InteractiveSimulateurSection() {
   const [surface, setSurface] = useState(60)
   const [typeOuvrage, setTypeOuvrage] = useState<"plafond" | "corniche">("plafond")
@@ -840,6 +881,10 @@ function InteractiveSimulateurSection() {
   const kgFilasse = Math.max(1, Math.round(surface * coefFilasse))
   const nbSacsChaux = Math.max(1, Math.ceil(surface * coefChaux))
 
+  // Poids total estimé en tonnes / kg
+  const poidsTotalKg = (nbSacsGypse * 40) + kgFilasse + (nbSacsChaux * 40)
+  const poidsTotalTonnes = (poidsTotalKg / 1000).toFixed(2)
+
   const msgSimu = waUrl(`Bonjour ${COMPANY_NAME}, j'ai calculé mes besoins sur votre simulateur de chantier :
 
 ` +
@@ -848,6 +893,8 @@ function InteractiveSimulateurSection() {
     `• Type d'ouvrage : ${typeOuvrage === "plafond" ? "Plafond Staff / Faux-Plafond Lissé" : "Corniches, Moulures & Gorges Lumineuses"}
 ` +
     `• Surface estimée : ${surface} m²
+` +
+    `• Poids total estimé : ~${poidsTotalKg} kg (${poidsTotalTonnes} Tonnes)
 
 ` +
     `📦 *Quantités Estimées :*
@@ -866,7 +913,7 @@ function InteractiveSimulateurSection() {
     <section id="simulateur" style={{ background: "#F8FAFC", padding: "clamp(48px, 6vw, 80px) 0" }}>
       <div className="site-container">
         
-        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(32px, 5vw, 48px)" }}>
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(32px, 5vw, 44px)" }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--ds-font-body)", fontSize: "0.75rem",
@@ -874,7 +921,7 @@ function InteractiveSimulateurSection() {
             letterSpacing: "0.12em", marginBottom: 12,
             background: "#F3F0FF", padding: "6px 14px", borderRadius: 9999
           }}>
-            <Calculator size={14} /> Métré Interactif en Direct
+            <Calculator size={14} /> Métré Interactif de Chantier
           </span>
           <h2 style={{
             fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)",
@@ -888,22 +935,23 @@ function InteractiveSimulateurSection() {
           </p>
         </div>
 
-        {/* Interactive Cockpit Card */}
-        <div style={{
+        {/* Cockpit 2 Colonnes Pro (Paramètres à gauche, Résultats en direct à droite) */}
+        <div className="simu-cockpit-grid" style={{
           background: "#FFFFFF", borderRadius: 28, border: "1px solid #E2E8F0",
-          padding: "clamp(24px, 4vw, 44px)", boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.06)",
-          maxWidth: 960, margin: "0 auto"
+          padding: "clamp(24px, 4vw, 40px)", boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.06)",
+          display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "clamp(24px, 4vw, 40px)",
+          alignItems: "stretch"
         }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            
-            {/* Step 1 : Choix de l'ouvrage */}
+          
+          {/* Colonne Gauche : Paramétrage */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 24, justifyContent: "space-between" }}>
             <div>
               <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 12 }}>
-                1. Sélectionnez le type d&apos;ouvrage :
+                1. Choisissez le type d&apos;ouvrage :
               </label>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 <button type="button" onClick={() => setTypeOuvrage("plafond")} style={{
-                  padding: "14px 18px", borderRadius: 14,
+                  padding: "14px 16px", borderRadius: 14,
                   fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", fontWeight: 700,
                   border: `2px solid ${typeOuvrage === "plafond" ? "#674FF5" : "#E2E8F0"}`,
                   background: typeOuvrage === "plafond" ? "#F3F0FF" : "#FFFFFF",
@@ -911,11 +959,11 @@ function InteractiveSimulateurSection() {
                   cursor: "pointer", transition: "all 0.2s ease",
                   display: "flex", alignItems: "center", justifyContent: "space-between"
                 }}>
-                  <span>🏢 Plafonds Staff &amp; Faux-Plafonds</span>
+                  <span>🏢 Plafonds Staff</span>
                   {typeOuvrage === "plafond" && <Check size={16} color="#674FF5" />}
                 </button>
                 <button type="button" onClick={() => setTypeOuvrage("corniche")} style={{
-                  padding: "14px 18px", borderRadius: 14,
+                  padding: "14px 16px", borderRadius: 14,
                   fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", fontWeight: 700,
                   border: `2px solid ${typeOuvrage === "corniche" ? "#674FF5" : "#E2E8F0"}`,
                   background: typeOuvrage === "corniche" ? "#F3F0FF" : "#FFFFFF",
@@ -929,14 +977,13 @@ function InteractiveSimulateurSection() {
               </div>
             </div>
 
-            {/* Step 2 : Surface Curseur */}
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
                 <label style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                   2. Superficie du chantier :
                 </label>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
-                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.7rem", fontWeight: 800, color: "#674FF5" }}>
+                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.8rem", fontWeight: 800, color: "#674FF5" }}>
                     {surface}
                   </span>
                   <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", color: "#475569", fontWeight: 700 }}>
@@ -947,57 +994,85 @@ function InteractiveSimulateurSection() {
 
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <button onClick={() => setSurface(s => Math.max(10, s - 10))} aria-label="Moins 10m²"
-                  style={{ width: 42, height: 42, borderRadius: "50%", border: "1px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
-                  <Minus size={15} />
+                  style={{ width: 44, height: 44, borderRadius: "50%", border: "1px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
+                  <Minus size={16} />
                 </button>
                 <input type="range" min={10} max={500} step={5} value={surface}
                   onChange={e => setSurface(Number(e.target.value))}
                   style={{ flex: 1, accentColor: "#674FF5", height: 8, cursor: "pointer" }}
                 />
                 <button onClick={() => setSurface(s => Math.min(500, s + 10))} aria-label="Plus 10m²"
-                  style={{ width: 42, height: 42, borderRadius: "50%", border: "1px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
-                  <Plus size={15} />
+                  style={{ width: 44, height: 44, borderRadius: "50%", border: "1px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
+                  <Plus size={16} />
                 </button>
               </div>
             </div>
 
-            {/* Step 3 : Résultats des Quantités */}
-            <div style={{
-              background: "#F8FAFC", borderRadius: 20,
-              border: "1px solid #E2E8F0", padding: "20px"
-            }}>
-              <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", marginBottom: 14 }}>
-                Quantités Calculées pour {surface} m² :
+            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "10px 14px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
+              <Scale size={16} style={{ color: "#674FF5", flexShrink: 0 }} />
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#64748B" }}>
+                Poids matériel estimé : <strong>~{poidsTotalKg} kg</strong> ({poidsTotalTonnes} Tonnes)
+              </span>
+            </div>
+          </div>
+
+          {/* Colonne Droite : Panneau de Devis & Quantités */}
+          <div style={{
+            background: "#F8FAFC", borderRadius: 20, border: "1px solid #E2E8F0",
+            padding: "24px", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 16
+          }}>
+            <div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase" }}>
+                  Estimation pour {surface} m² :
+                </span>
+                <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 8px", borderRadius: 6 }}>
+                  Stock Vérifié
+                </span>
               </div>
 
-              <div className="simu-results-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, textAlign: "center" }}>
-                <div style={{ background: "white", borderRadius: 14, padding: "14px 10px", border: "1px solid #E2E8F0" }}>
-                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#674FF5", fontWeight: 700 }}>Gypse Marco 40kg</div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.6rem", fontWeight: 800, color: "#674FF5", margin: "4px 0" }}>{nbSacsGypse}</div>
-                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#475569" }}>sacs scellés (Égypte)</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 14px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
+                  <div>
+                    <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Gypse Marco (40kg)</div>
+                    <div style={{ fontSize: "0.68rem", color: "#94A3B8" }}>🇪🇬 Import Égypte</div>
+                  </div>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.2rem", fontWeight: 800, color: "#674FF5" }}>
+                    {nbSacsGypse} <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
+                  </div>
                 </div>
-                <div style={{ background: "white", borderRadius: 14, padding: "14px 10px", border: "1px solid #E2E8F0" }}>
-                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#10B981", fontWeight: 700 }}>Filasse Sisal Kenya</div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.6rem", fontWeight: 800, color: "#10B981", margin: "4px 0" }}>{kgFilasse}</div>
-                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#475569" }}>kg peignés (Kenya)</div>
+
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 14px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
+                  <div>
+                    <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Filasse Sisal Pure</div>
+                    <div style={{ fontSize: "0.68rem", color: "#94A3B8" }}>🇰🇪 Produce of Kenya</div>
+                  </div>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.2rem", fontWeight: 800, color: "#10B981" }}>
+                    {kgFilasse} <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#64748B" }}>kg</span>
+                  </div>
                 </div>
-                <div style={{ background: "white", borderRadius: 14, padding: "14px 10px", border: "1px solid #E2E8F0" }}>
-                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#0F172A", fontWeight: 700 }}>Chaux Vive Pure</div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.6rem", fontWeight: 800, color: "#0F172A", margin: "4px 0" }}>{nbSacsChaux}</div>
-                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#475569" }}>sacs 40kg (Dubaï)</div>
+
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 14px", borderRadius: 12, border: "1px solid #E2E8F0" }}>
+                  <div>
+                    <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Chaux Vive (40kg)</div>
+                    <div style={{ fontSize: "0.68rem", color: "#94A3B8" }}>🇦🇪 Dubaï Pure</div>
+                  </div>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.2rem", fontWeight: 800, color: "#0F172A" }}>
+                    {nbSacsChaux} <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Action WhatsApp */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <WaBtn label="Recevoir mon devis officiel avec ce métré sur WhatsApp" url={msgSimu} full />
-              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#94A3B8", textAlign: "center", margin: 0 }}>
-                ⚡ Confirmation immédiate de la disponibilité et des modalités de déchargement sur chantier.
-              </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <WaBtn label="Recevoir mon devis officiel sur WhatsApp" url={msgSimu} full />
+              <span style={{ fontSize: "0.7rem", color: "#94A3B8", textAlign: "center" }}>
+                ⚡ Devis proforma avec tarif dégressif par retour de message
+              </span>
             </div>
 
           </div>
+
         </div>
 
       </div>
@@ -1371,12 +1446,11 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
   )
 }
 
-// ─── 9. Modale / Tiroir Slide-Over Fiche Produit (Zéro saut d'écran) ──────────
+// ─── 9. Modale / Tiroir Slide-Over Fiche Produit (Expérience Technique Enrichie)
 function SlideOverProductModal({ product, onClose }: { product: Product; onClose: () => void }) {
   const [qty, setQty] = useState(5)
   const msgCmd = waUrl(`Bonjour ${COMPANY_NAME}, je souhaite commander ${qty} sac(s) de *${product.nom}* (${product.conditionnement}). Pouvez-vous me confirmer le tarif et les modalités de livraison ? Merci !`)
 
-  // Escape key close
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose()
@@ -1393,14 +1467,14 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
       animation: "fadeIn 0.2s ease-out"
     }} onClick={onClose}>
       <div style={{
-        width: "100%", maxWidth: 560, background: "#FFFFFF", height: "100%",
+        width: "100%", maxWidth: 580, background: "#FFFFFF", height: "100%",
         boxShadow: "-10px 0 40px rgba(0,0,0,0.25)", display: "flex", flexDirection: "column",
         overflowY: "auto", position: "relative"
       }} onClick={e => e.stopPropagation()}>
         
         {/* Drawer Header */}
         <div style={{
-          padding: "18px 24px", borderBottom: "1px solid #E2E8F0",
+          padding: "16px 24px", borderBottom: "1px solid #E2E8F0",
           display: "flex", alignItems: "center", justifyContent: "space-between",
           position: "sticky", top: 0, background: "#FFFFFF", zIndex: 10
         }}>
@@ -1409,7 +1483,7 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
               {product.categorie}
             </span>
             <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
-              Fiche Technique Produit
+              Dossier Technique Produit
             </h3>
           </div>
           <button onClick={onClose} aria-label="Fermer" style={{
@@ -1424,10 +1498,10 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
         {/* Drawer Body */}
         <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: 20 }}>
           
-          {/* Image studio frame */}
+          {/* Image Frame */}
           <div style={{
             background: "#F8FAFC", borderRadius: 18, border: "1px solid #E2E8F0",
-            height: 220, padding: 16, display: "flex", alignItems: "center", justifyContent: "center"
+            height: 200, padding: 16, display: "flex", alignItems: "center", justifyContent: "center"
           }}>
             <img src={imgSrc(product.image)} alt={product.nom} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
           </div>
@@ -1441,7 +1515,7 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
                 {product.drapeau} {product.origine}
               </span>
             </div>
-            <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.3rem", fontWeight: 800, color: "#0F172A", margin: "0 0 10px" }}>
+            <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.25rem", fontWeight: 800, color: "#0F172A", margin: "0 0 10px" }}>
               {product.nom}
             </h2>
             <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.85rem", color: "#475569", lineHeight: 1.65, margin: 0 }}>
@@ -1449,25 +1523,26 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
             </p>
           </div>
 
-          {/* Points forts */}
-          <div>
-            <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.85rem", fontWeight: 800, color: "#0F172A", margin: "0 0 10px" }}>
-              Points forts &amp; garanties :
-            </h4>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-              {product.arguments.map(arg => (
-                <li key={arg} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                  <CheckCircle2 size={16} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.82rem", color: "#475569", lineHeight: 1.45 }}>{arg}</span>
-                </li>
-              ))}
-            </ul>
+          {/* Guide de dosage & Conseils de pose */}
+          <div style={{ background: "#F8FAFC", borderRadius: 14, border: "1px solid #E2E8F0", padding: "14px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <Info size={16} style={{ color: "#674FF5" }} />
+              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.82rem", fontWeight: 800, color: "#0F172A" }}>
+                Conseil de Préparation &amp; Dosage :
+              </span>
+            </div>
+            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#475569", margin: 0, lineHeight: 1.5 }}>
+              💧 <strong>Dosage :</strong> {product.dosage}
+            </p>
+            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#475569", margin: 0, lineHeight: 1.5 }}>
+              🏛️ <strong>Usages types :</strong> {product.application}
+            </p>
           </div>
 
-          {/* Table des spécifications */}
+          {/* Tableau des Spécifications Techniques */}
           <div>
             <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.85rem", fontWeight: 800, color: "#0F172A", margin: "0 0 10px" }}>
-              Spécifications techniques :
+              Tableau des Spécifications :
             </h4>
             <div style={{ background: "#F8FAFC", borderRadius: 14, border: "1px solid #E2E8F0", overflow: "hidden" }}>
               {product.specs.map(({ label, valeur }, i) => (
@@ -1674,6 +1749,7 @@ const CSS = `
   .why-grid { grid-template-columns: repeat(4, 1fr); }
   .supply-grid { grid-template-columns: repeat(4, 1fr); }
   .apps-grid { grid-template-columns: repeat(3, 1fr); }
+  .simu-cockpit-grid { grid-template-columns: 1.15fr 0.85fr; }
   .cta-architectural-grid { grid-template-columns: 1.2fr 0.8fr; }
   .footer-grid { grid-template-columns: 2fr 1fr 1fr 1.2fr; }
 
@@ -1688,6 +1764,7 @@ const CSS = `
     .supply-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .apps-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .footer-grid { grid-template-columns: 1fr 1fr !important; }
+    .simu-cockpit-grid { grid-template-columns: 1fr !important; }
     .cta-architectural-grid { grid-template-columns: 1fr !important; }
   }
 
@@ -1704,20 +1781,15 @@ const CSS = `
     .hero-visual {
       display: flex !important;
       justify-content: center !important;
-      margin-top: 12px !important;
+      margin-top: 8px !important;
     }
     .hero-visual > div {
       width: 100% !important;
-      max-width: 290px !important;
-    }
-    .hero-float-1 {
-      bottom: 8px !important;
-      left: -4px !important;
-      transform: scale(0.88);
+      max-width: 320px !important;
     }
     .hero-stats-grid {
       grid-template-columns: repeat(2, 1fr) !important;
-      gap: 16px !important;
+      gap: 14px !important;
     }
     .hero-cta-group {
       flex-direction: column !important;
@@ -1733,17 +1805,6 @@ const CSS = `
     .supply-grid { grid-template-columns: 1fr !important; }
     .apps-grid { grid-template-columns: 1fr !important; }
     .footer-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
-  }
-
-  @media (max-width: 480px) {
-    .simu-results-grid { grid-template-columns: 1fr !important; }
-    .simu-results-grid > div {
-      border: none !important;
-      border-bottom: 1px solid #E2E8F0 !important;
-      padding-bottom: 10px !important;
-    }
-    .simu-results-grid > div:last-child { border-bottom: none !important; }
-    .hero-float-1 { display: none !important; }
   }
 
   @keyframes pulse {
@@ -1797,7 +1858,7 @@ export default function App() {
 
         <Footer onNavigate={handleNavigate} />
 
-        {/* Modal Tiroir Slide-Over Fiche Produit (Zero saut de page) */}
+        {/* Modal Tiroir Slide-Over Fiche Produit (Expérience Technique) */}
         {selectedProduct && (
           <SlideOverProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
         )}
