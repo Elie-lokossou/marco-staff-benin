@@ -4,7 +4,7 @@ import {
   CheckCircle2, Star, Package, Clock, Calculator, ShieldCheck,
   Truck, Award, ChevronDown, Plus, Minus, HelpCircle,
   Layers, Sparkles, ArrowUp, Building2, Warehouse, Hammer, Check,
-  Info, FileText, Scale, Droplets, ArrowRight
+  Info, FileText, Scale, Droplets
 } from "lucide-react"
 import imgGypse from "@/imports/photo2.jpeg"
 import imgChaux from "@/imports/photo1.jpeg"
@@ -173,12 +173,12 @@ function WaBtn({ label = "WhatsApp", url, small = false, full = false, variant =
   return (
     <a href={url} target="_blank" rel="noopener noreferrer" style={{
       display: "inline-flex", alignItems: "center", justifyContent: "center",
-      gap: small ? 6 : 8,
+      gap: small ? 5 : 8,
       background: isWhite ? "#FFFFFF" : isOutline ? "transparent" : "#10B981",
       color: isWhite ? "#0F172A" : isOutline ? "#FFFFFF" : "#FFFFFF",
       border: isOutline ? "1.5px solid rgba(255,255,255,0.4)" : "none",
-      fontFamily: "var(--ds-font-body)", fontSize: small ? "0.82rem" : "0.9rem",
-      fontWeight: 700, padding: small ? "8px 16px" : "12px 22px",
+      fontFamily: "var(--ds-font-body)", fontSize: small ? "clamp(0.72rem, 2.5vw, 0.82rem)" : "clamp(0.78rem, 2.8vw, 0.9rem)",
+      fontWeight: 700, padding: small ? "7px 14px" : "11px 20px",
       borderRadius: "9999px", textDecoration: "none",
       transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
       boxShadow: isWhite ? "0 4px 20px rgba(0,0,0,0.15)" : isOutline ? "none" : "0 4px 14px rgba(16, 185, 129, 0.35)",
@@ -211,7 +211,7 @@ function WaBtn({ label = "WhatsApp", url, small = false, full = false, variant =
         e.currentTarget.style.transform = "translateY(0)"
       }}
     >
-      <MessageCircle size={small ? 15 : 18} style={{ flexShrink: 0 }} />
+      <MessageCircle size={small ? 14 : 17} style={{ flexShrink: 0 }} />
       <span>{label}</span>
     </a>
   )
@@ -228,13 +228,13 @@ function Button({ children, variant = "primary", size = "medium", iconEnd, onCli
 
   return (
     <button onClick={onClick} style={{
-      display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
+      display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
       background: isPrimary ? "#1E3A8A" : isDark ? "#0A0F1D" : "#F8FAFC",
       color: isPrimary || isDark ? "white" : "#0F172A",
       border: isPrimary || isDark ? "none" : "1.5px solid #E2E8F0",
       borderRadius: "9999px",
-      padding: isSmall ? "8px 14px" : isLarge ? "13px 24px" : "11px 18px",
-      fontFamily: "var(--ds-font-body)", fontSize: isSmall ? "0.78rem" : "clamp(0.8rem, 2.5vw, 0.9rem)",
+      padding: isSmall ? "7px 12px" : isLarge ? "12px 22px" : "10px 16px",
+      fontFamily: "var(--ds-font-body)", fontSize: isSmall ? "0.75rem" : "clamp(0.76rem, 2.5vw, 0.88rem)",
       fontWeight: 700, cursor: "pointer", width: full ? "100%" : undefined,
       maxWidth: "100%", boxSizing: "border-box",
       boxShadow: isPrimary ? "0 4px 16px rgba(30,58,138,0.25)" : "none",
@@ -256,7 +256,7 @@ function Button({ children, variant = "primary", size = "medium", iconEnd, onCli
   )
 }
 
-// ─── STRICTEMENT 1 SEULE LIGNE : NAVBAR PRESTIGE UNIFIÉE ─────────────────────
+// ─── STRICTEMENT 1 SEULE LIGNE OMNI-DEVICE (WATCH ➔ 4K) ─────────────────────
 function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   const [open, setOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
@@ -266,9 +266,9 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      setIsScrolled(currentScrollY > 40)
+      setIsScrolled(currentScrollY > 30)
 
-      if (currentScrollY > lastScrollY.current && currentScrollY > 90) {
+      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
         setIsVisible(false)
       } else {
         setIsVisible(true)
@@ -297,27 +297,30 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
       backdropFilter: "blur(20px)",
       borderBottom: "1px solid #E2E8F0",
       boxShadow: isScrolled ? "0 4px 20px rgba(0,0,0,0.06)" : "none",
-      height: 64,
+      height: "clamp(54px, 7vw, 64px)",
       display: "flex",
       alignItems: "center"
     }}>
       <div className="site-container" style={{
-        width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16
+        width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10
       }}>
         {/* 1. Logo & Identité (Strictement 1 ligne) */}
-        <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", flexShrink: 0 }}>
+        <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: "clamp(6px, 1.5vw, 10px)", cursor: "pointer", flexShrink: 0, minWidth: 0 }}>
           <div style={{
-            width: 36, height: 36, borderRadius: 10,
+            width: "clamp(30px, 5vw, 36px)", height: "clamp(30px, 5vw, 36px)", borderRadius: 8,
             background: "linear-gradient(135deg, #1E3A8A 0%, #0F2444 100%)",
             border: "1.5px solid rgba(255,255,255,0.2)",
             display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
             boxShadow: "0 3px 10px rgba(30,58,138,0.25)",
           }}>
-            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1rem", fontWeight: 800, color: "white" }}>M</span>
+            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.5vw, 1rem)", fontWeight: 800, color: "white" }}>M</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
+            <span className="brand-full-name" style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.8rem, 2.5vw, 0.95rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>
               {COMPANY_NAME}
+            </span>
+            <span className="brand-short-name" style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.85rem", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.02em", whiteSpace: "nowrap", display: "none" }}>
+              MARCO STAFF
             </span>
             <span className="brand-tag-desktop" style={{ fontSize: "0.62rem", fontWeight: 700, color: "#D97706", background: "#FEF3C7", padding: "2px 7px", borderRadius: 9999, textTransform: "uppercase", letterSpacing: "0.04em" }}>
               Bénin Import
@@ -326,7 +329,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
         </div>
 
         {/* 2. Menu Navigation Desktop (Aligné horizontalement sans wrap) */}
-        <nav style={{ display: "flex", gap: 18, alignItems: "center", whiteSpace: "nowrap" }} className="nav-desktop">
+        <nav style={{ display: "flex", gap: "clamp(10px, 1.8vw, 18px)", alignItems: "center", whiteSpace: "nowrap" }} className="nav-desktop">
           {links.map(({ label, id, isSpecial }) => (
             <a key={id} href={`#${id}`}
               onClick={e => { e.preventDefault(); onNavigate(id) }}
@@ -356,7 +359,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
         </nav>
 
         {/* 3. Statut & CTA Direct */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
           <div className="nav-status-desktop" style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 10px", background: "#F8FAFC", borderRadius: 9999, border: "1px solid #E2E8F0" }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "inline-block", animation: "pulse 2s infinite" }} />
             <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>
@@ -368,14 +371,16 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
             <WaBtn label="Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mon chantier.`)} small />
           </div>
 
-          {/* Mobile Actions (Sur 1 seule ligne) */}
-          <div className="nav-mobile-actions" style={{ display: "none", alignItems: "center", gap: 8 }}>
-            <WaBtn label="WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis.`)} small />
+          {/* Mobile Actions (Sur 1 seule ligne ultra-propre) */}
+          <div className="nav-mobile-actions" style={{ display: "none", alignItems: "center", gap: 6 }}>
+            <div className="nav-mobile-wa-btn">
+              <WaBtn label="WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis.`)} small />
+            </div>
             <button onClick={() => setOpen(!open)} aria-label={open ? "Fermer le menu" : "Ouvrir le menu"} style={{
-              background: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: 8, cursor: "pointer",
-              padding: "7px 9px", color: "#0F172A", display: "flex", alignItems: "center", justifyContent: "center"
+              background: "#F8FAFC", border: "1.5px solid #E2E8F0", borderRadius: 8, cursor: "pointer",
+              padding: "clamp(5px, 1.5vw, 7px) clamp(7px, 2vw, 9px)", color: "#0F172A", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
             }}>
-              {open ? <X size={20} /> : <Menu size={20} />}
+              {open ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>
@@ -384,38 +389,38 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
       {/* Mobile Menu Dropdown */}
       {open && (
         <div style={{
-          position: "absolute", top: 64, left: 0, right: 0,
+          position: "absolute", top: "100%", left: 0, right: 0,
           borderBottom: "1px solid #E2E8F0",
           boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-          padding: "16px 20px 24px",
-          display: "flex", flexDirection: "column", gap: 10,
-          background: "#FFFFFF", maxHeight: "80vh", overflowY: "auto"
+          padding: "16px 16px 24px",
+          display: "flex", flexDirection: "column", gap: 8,
+          background: "#FFFFFF", maxHeight: "85vh", overflowY: "auto", boxSizing: "border-box"
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", background: "#F8FAFC", borderRadius: 10, marginBottom: 6 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 10px", background: "#F8FAFC", borderRadius: 8, marginBottom: 4 }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "block" }} />
-            <span style={{ fontSize: "0.75rem", color: "#475569", fontWeight: 600 }}>Dépôts Cotonou &amp; Calavi · Stock Garanti</span>
+            <span style={{ fontSize: "0.72rem", color: "#475569", fontWeight: 600 }}>Dépôts Cotonou &amp; Calavi · Stock Garanti</span>
           </div>
 
           {links.map(({ label, id, isSpecial }) => (
             <a key={id} href={`#${id}`}
               onClick={e => { e.preventDefault(); onNavigate(id); setOpen(false) }}
               style={{
-                fontFamily: "var(--ds-font-body)", fontSize: "0.92rem",
+                fontFamily: "var(--ds-font-body)", fontSize: "0.88rem",
                 fontWeight: 600, color: isSpecial ? "#1E3A8A" : "#0F172A",
-                textDecoration: "none", padding: "10px 0",
+                textDecoration: "none", padding: "8px 0",
                 display: "flex", alignItems: "center", justifyContent: "space-between",
                 borderBottom: "1px solid #F1F5F9"
               }}
             >
               <span>{label}</span>
-              {isSpecial ? <span style={{ fontSize: "0.68rem", background: "#EFF6FF", color: "#1E3A8A", padding: "2px 8px", borderRadius: 9999, fontWeight: 700 }}>Simulateur</span> : <ChevronRight size={14} color="#94A3B8" />}
+              {isSpecial ? <span style={{ fontSize: "0.65rem", background: "#EFF6FF", color: "#1E3A8A", padding: "2px 6px", borderRadius: 9999, fontWeight: 700 }}>Simulateur</span> : <ChevronRight size={14} color="#94A3B8" />}
             </a>
           ))}
 
-          <div style={{ paddingTop: 8 }}>
-            <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "12px", borderRadius: 9999, background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A", textDecoration: "none", fontWeight: 700, fontSize: "0.85rem", marginBottom: 8 }}>
-              <Phone size={15} color="#10B981" />
-              <span>Appel Direct : {PHONE_DISPLAY}</span>
+          <div style={{ paddingTop: 6, display: "flex", flexDirection: "column", gap: 6 }}>
+            <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "10px", borderRadius: 9999, background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A", textDecoration: "none", fontWeight: 700, fontSize: "0.8rem" }}>
+              <Phone size={14} color="#10B981" />
+              <span>{PHONE_DISPLAY}</span>
             </a>
             <WaBtn label="WhatsApp Express Direct" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis.`)} full />
           </div>
@@ -436,29 +441,29 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
       backgroundSize: "32px 32px"
     }}>
       <div className="site-container" style={{
-        paddingTop: "clamp(24px, 4.5vw, 56px)",
-        paddingBottom: "clamp(36px, 5.5vw, 72px)",
+        paddingTop: "clamp(20px, 4vw, 56px)",
+        paddingBottom: "clamp(32px, 5vw, 72px)",
       }}>
         <div className="hero-grid" style={{
           display: "grid", gridTemplateColumns: "1.15fr 0.85fr",
-          gap: "clamp(24px, 4vw, 48px)", alignItems: "center", position: "relative",
+          gap: "clamp(20px, 3.5vw, 48px)", alignItems: "center", position: "relative",
         }}>
 
           {/* Left Col */}
           <div style={{ position: "relative", zIndex: 1 }}>
             
             {/* Origin pills */}
-            <div style={{ display: "flex", gap: "clamp(4px, 1.5vw, 8px)", marginBottom: "clamp(12px, 2.5vw, 18px)", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: "clamp(4px, 1vw, 8px)", marginBottom: "clamp(10px, 2vw, 18px)", flexWrap: "wrap" }}>
               {[
                 { flag: "🇪🇬", label: "Gypse d'Égypte" },
                 { flag: "🇦🇪", label: "Chaux de Dubaï" },
                 { flag: "🇰🇪", label: "Filasse du Kenya" }
               ].map(({ flag, label }) => (
                 <span key={label} style={{
-                  display: "inline-flex", alignItems: "center", gap: 5,
+                  display: "inline-flex", alignItems: "center", gap: 4,
                   background: "#FFFFFF", border: "1.5px solid #E2E8F0",
-                  borderRadius: "9999px", padding: "4px 12px",
-                  fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2vw, 0.75rem)",
+                  borderRadius: "9999px", padding: "3px 10px",
+                  fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.65rem, 1.8vw, 0.75rem)",
                   fontWeight: 700, color: "#0F172A",
                   boxShadow: "0 2px 4px rgba(0,0,0,0.02)"
                 }}>{flag} {label}</span>
@@ -468,9 +473,9 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
             {/* Main Headline */}
             <h1 style={{
               fontFamily: "var(--ds-font-heading)",
-              fontSize: "clamp(1.75rem, 4.2vw, 3.2rem)",
+              fontSize: "clamp(1.5rem, 4vw, 3.2rem)",
               fontWeight: 800, color: "#0F172A", lineHeight: 1.15,
-              letterSpacing: "-0.035em", marginBottom: 14,
+              letterSpacing: "-0.035em", marginBottom: 12,
               wordBreak: "break-word"
             }}>
               L&apos;Excellence des <span style={{ color: "#1E3A8A" }}>Matériaux de Staff</span> &amp; Finition au Bénin.
@@ -478,16 +483,16 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
 
             {/* Sub-headline */}
             <p style={{
-              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.85rem, 2.2vw, 1rem)",
-              color: "#475569", lineHeight: 1.7, maxWidth: 520,
-              marginBottom: "clamp(20px, 3.5vw, 28px)",
+              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 1rem)",
+              color: "#475569", lineHeight: 1.65, maxWidth: 520,
+              marginBottom: "clamp(18px, 3vw, 28px)",
               wordBreak: "break-word"
             }}>
               Approvisionnez vos chantiers directement à la source. <strong>Poudre de Gypse Marco 40 KG</strong> (Égypte), <strong>Chaux Vive pure</strong> (Dubaï) et <strong>Filasse Sisal haute ténacité</strong> (Kenya). Qualité certifiée, zéro fissure, stock permanent et livraison rapide sur chantier.
             </p>
 
             {/* Action CTAs */}
-            <div className="hero-cta-group" style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", marginBottom: "clamp(24px, 4vw, 32px)" }}>
+            <div className="hero-cta-group" style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", marginBottom: "clamp(20px, 3.5vw, 32px)" }}>
               <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} />
               <Button variant="neutral" iconEnd={<Calculator size={15} color="#1E3A8A" />} onClick={onSimulateur}>
                 Calculer mes besoins
@@ -496,8 +501,8 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
 
             {/* Trust stats row */}
             <div className="hero-stats-grid" style={{
-              display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(8px, 2vw, 14px)",
-              paddingTop: 18, borderTop: "1.5px solid #E2E8F0",
+              display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(8px, 1.8vw, 14px)",
+              paddingTop: 16, borderTop: "1.5px solid #E2E8F0",
             }}>
               {[
                 { val: "100%", label: "Pureté & Zéro Fissure" },
@@ -506,8 +511,8 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
                 { val: "Stock", label: "Permanent en Dépôt" },
               ].map(({ val, label }) => (
                 <div key={label}>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.1rem, 2.8vw, 1.45rem)", fontWeight: 800, color: "#1E3A8A", lineHeight: 1 }}>{val}</div>
-                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.62rem, 1.8vw, 0.7rem)", color: "#64748B", marginTop: 4, fontWeight: 600 }}>{label}</div>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1rem, 2.5vw, 1.45rem)", fontWeight: 800, color: "#1E3A8A", lineHeight: 1 }}>{val}</div>
+                  <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.6rem, 1.6vw, 0.7rem)", color: "#64748B", marginTop: 4, fontWeight: 600 }}>{label}</div>
                 </div>
               ))}
             </div>
@@ -517,50 +522,51 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
           <div className="hero-visual" style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{
               position: "relative", zIndex: 2, width: "100%", maxWidth: 380,
-              background: "#FFFFFF", borderRadius: "clamp(18px, 3vw, 24px)",
+              background: "#FFFFFF", borderRadius: "clamp(16px, 3vw, 24px)",
               boxShadow: "0 24px 60px -12px rgba(15, 23, 42, 0.14)",
-              border: "1.5px solid #E2E8F0", overflow: "hidden", padding: "clamp(16px, 3vw, 22px)"
+              border: "1.5px solid #E2E8F0", overflow: "hidden", padding: "clamp(14px, 3vw, 22px)",
+              boxSizing: "border-box"
             }}>
               {/* Main Product Showcase */}
-              <div style={{ background: "#F8FAFC", borderRadius: 16, border: "1px solid #E2E8F0", padding: 14, height: "clamp(170px, 30vw, 220px)", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+              <div style={{ background: "#F8FAFC", borderRadius: 14, border: "1px solid #E2E8F0", padding: 12, height: "clamp(160px, 28vw, 220px)", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
                 <img src={imgSrc(imgGypse)} alt="Gypse Marco 40 KG" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                 <span style={{
-                  position: "absolute", top: 10, right: 10,
-                  background: "#10B981", color: "white", fontSize: "0.65rem", fontWeight: 700, padding: "2px 7px", borderRadius: 9999
+                  position: "absolute", top: 8, right: 8,
+                  background: "#10B981", color: "white", fontSize: "0.62rem", fontWeight: 700, padding: "2px 6px", borderRadius: 9999
                 }}>
                   En Stock Dépôt
                 </span>
               </div>
 
-              <div style={{ marginTop: 12 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.4vw, 0.95rem)", fontWeight: 800, color: "#0F172A" }}>Poudre de Gypse Marco</span>
-                  <span style={{ background: "#EFF6FF", color: "#1E3A8A", fontSize: "0.68rem", fontWeight: 700, padding: "2px 8px", borderRadius: 9999 }}>Sac 40 KG</span>
+              <div style={{ marginTop: 10 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4, flexWrap: "wrap", gap: 4 }}>
+                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.82rem, 2.2vw, 0.95rem)", fontWeight: 800, color: "#0F172A" }}>Poudre de Gypse Marco</span>
+                  <span style={{ background: "#EFF6FF", color: "#1E3A8A", fontSize: "0.65rem", fontWeight: 700, padding: "2px 7px", borderRadius: 9999 }}>Sac 40 KG</span>
                 </div>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.72rem, 2vw, 0.76rem)", color: "#64748B", margin: 0 }}>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.7rem, 1.8vw, 0.76rem)", color: "#64748B", margin: 0 }}>
                   Extra White · Prise 20-30 min · Formule anti-fissure
                 </p>
               </div>
 
               {/* Mini thumbnails row for 2 other products */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 12, paddingTop: 10, borderTop: "1px solid #E2E8F0" }}>
-                <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "8px 10px", borderRadius: 10, cursor: "pointer", border: "1px solid #E2E8F0" }}>
-                  <div style={{ width: 30, height: 30, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginTop: 10, paddingTop: 8, borderTop: "1px solid #E2E8F0" }}>
+                <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, cursor: "pointer", border: "1px solid #E2E8F0" }}>
+                  <div style={{ width: 26, height: 26, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <img src={imgSrc(imgChaux)} alt="Chaux Vive" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Chaux Vive</div>
-                    <div style={{ fontSize: "0.6rem", color: "#64748B" }}>🇦🇪 Dubaï 40kg</div>
+                    <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Chaux Vive</div>
+                    <div style={{ fontSize: "0.58rem", color: "#64748B" }}>🇦🇪 40kg</div>
                   </div>
                 </div>
 
-                <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "8px 10px", borderRadius: 10, cursor: "pointer", border: "1px solid #E2E8F0" }}>
-                  <div style={{ width: 30, height: 30, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div onClick={onVoirProduits} style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, cursor: "pointer", border: "1px solid #E2E8F0" }}>
+                  <div style={{ width: 26, height: 26, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <img src={imgSrc(imgFilasse)} alt="Filasse Sisal" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Filasse Sisal</div>
-                    <div style={{ fontSize: "0.6rem", color: "#64748B" }}>🇰🇪 Kenya Pure</div>
+                    <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0F172A", lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Filasse Sisal</div>
+                    <div style={{ fontSize: "0.58rem", color: "#64748B" }}>🇰🇪 Kenya</div>
                   </div>
                 </div>
               </div>
@@ -577,36 +583,36 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
 // ─── 2. Catalogue Produits (Cards Épurées & Fiche Technique Complète) ─────────
 function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void }) {
   return (
-    <section id="produits" style={{ background: "#F8FAFC", padding: "clamp(40px, 6vw, 84px) 0" }}>
+    <section id="produits" style={{ background: "#F8FAFC", padding: "clamp(36px, 5.5vw, 84px) 0" }}>
       <div className="site-container">
         
-        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(28px, 4.5vw, 48px)" }}>
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(24px, 4vw, 48px)" }}>
           <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6,
-            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2vw, 0.75rem)",
+            display: "inline-flex", alignItems: "center", gap: 5,
+            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.65rem, 1.8vw, 0.75rem)",
             fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
-            letterSpacing: "0.12em", marginBottom: 10,
-            background: "#EFF6FF", padding: "5px 12px", borderRadius: 9999
+            letterSpacing: "0.12em", marginBottom: 8,
+            background: "#EFF6FF", padding: "4px 10px", borderRadius: 9999
           }}>
             <Package size={13} /> Catalogue Officiel Direct Usine
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.4rem)",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.5vw, 2.4rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
-            lineHeight: 1.2, marginBottom: 10, wordBreak: "break-word"
+            lineHeight: 1.2, marginBottom: 8, wordBreak: "break-word"
           }}>
             Nos 3 Matériaux Phares en Stock Permanent
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 1.8vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
             Chaque sac et balle provient directement des usines partenaires. Zéro intermédiaire, qualité certifiée pour les staffeurs et promoteurs du Bénin.
           </p>
         </div>
 
-        <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(18px, 3vw, 28px)" }}>
+        <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(16px, 2.8vw, 28px)" }}>
           {PRODUCTS.map((p) => (
             <div key={p.id} style={{
               background: "white", border: "1.5px solid #E2E8F0",
-              borderRadius: "clamp(16px, 2.5vw, 24px)", overflow: "hidden", display: "flex", flexDirection: "column",
+              borderRadius: "clamp(14px, 2.5vw, 24px)", overflow: "hidden", display: "flex", flexDirection: "column",
               boxShadow: "0 2px 4px rgba(15, 23, 42, 0.04)", transition: "all 0.25s ease"
             }}
               onMouseEnter={e => {
@@ -619,21 +625,21 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
               }}
             >
               {/* Image Frame */}
-              <div style={{ position: "relative", height: "clamp(180px, 30vw, 220px)", background: "#F8FAFC", padding: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ position: "relative", height: "clamp(160px, 28vw, 220px)", background: "#F8FAFC", padding: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <img src={imgSrc(p.image)} alt={p.nom} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
                 <span style={{
-                  position: "absolute", top: 10, left: 10,
+                  position: "absolute", top: 8, left: 8,
                   background: "#1E3A8A", color: "white",
-                  fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 700,
-                  padding: "3px 8px", borderRadius: 9999
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", fontWeight: 700,
+                  padding: "2px 7px", borderRadius: 9999
                 }}>
                   {p.badge}
                 </span>
                 <span style={{
-                  position: "absolute", bottom: 10, right: 10,
+                  position: "absolute", bottom: 8, right: 8,
                   background: "rgba(255,255,255,0.95)",
-                  fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 700,
-                  color: "#0F172A", padding: "2px 8px", borderRadius: 9999,
+                  fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", fontWeight: 700,
+                  color: "#0F172A", padding: "2px 7px", borderRadius: 9999,
                   boxShadow: "0 2px 6px rgba(0,0,0,0.06)", border: "1px solid #E2E8F0"
                 }}>
                   {p.drapeau} {p.origine}
@@ -641,47 +647,47 @@ function ProductsSection({ onOpenDetail }: { onOpenDetail: (p: Product) => void 
               </div>
 
               {/* Info Frame Épurée */}
-              <div style={{ padding: "clamp(16px, 3vw, 22px)", flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={{ padding: "clamp(14px, 2.5vw, 20px)", flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4, flexWrap: "wrap", gap: 4 }}>
-                    <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#1E3A8A", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                    <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", color: "#1E3A8A", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>
                       {p.categorie}
                     </span>
-                    <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#D97706", background: "#FEF3C7", padding: "2px 6px", borderRadius: 6 }}>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 700, color: "#D97706", background: "#FEF3C7", padding: "2px 5px", borderRadius: 6 }}>
                       {p.remiseBadge}
                     </span>
                   </div>
-                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.9rem, 2.4vw, 1rem)", fontWeight: 800, color: "#0F172A", margin: "2px 0 0", lineHeight: 1.3 }}>
+                  <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.2vw, 1rem)", fontWeight: 800, color: "#0F172A", margin: "2px 0 0", lineHeight: 1.3 }}>
                     {p.nom}
                   </h3>
                 </div>
 
                 {/* 2 Points Clés Percutants */}
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 6 }}>
+                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 5 }}>
                   {p.highlights.map(h => (
-                    <li key={h} style={{ display: "flex", gap: 6, alignItems: "flex-start" }}>
-                      <CheckCircle2 size={14} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
-                      <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.76rem, 2vw, 0.82rem)", color: "#475569", lineHeight: 1.45 }}>
+                    <li key={h} style={{ display: "flex", gap: 5, alignItems: "flex-start" }}>
+                      <CheckCircle2 size={13} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
+                      <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.72rem, 1.8vw, 0.8rem)", color: "#475569", lineHeight: 1.45 }}>
                         {h}
                       </span>
                     </li>
                   ))}
                 </ul>
 
-                <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 8px", background: "#F8FAFC", borderRadius: 6, width: "fit-content" }}>
-                  <Package size={12} style={{ color: "#64748B" }} />
-                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#475569", fontWeight: 600 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "3px 7px", background: "#F8FAFC", borderRadius: 6, width: "fit-content" }}>
+                  <Package size={11} style={{ color: "#64748B" }} />
+                  <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", color: "#475569", fontWeight: 600 }}>
                     {p.conditionnement}
                   </span>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: "auto", paddingTop: 6 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: "auto", paddingTop: 4 }}>
                   <WaBtn label="Commander / Prix WhatsApp" url={waProduitMsg(p.nom, p.conditionnement)} full />
                   <button onClick={() => onOpenDetail(p)} style={{
-                    display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                    fontFamily: "var(--ds-font-body)", fontSize: "0.8rem", fontWeight: 700,
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
+                    fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.74rem, 2vw, 0.8rem)", fontWeight: 700,
                     color: "#1E3A8A", background: "#EFF6FF", border: "1px solid #DBEAFE",
-                    borderRadius: 9999, padding: "10px 16px", cursor: "pointer",
+                    borderRadius: 9999, padding: "9px 14px", cursor: "pointer",
                     transition: "all 0.2s ease",
                   }}>
                     <FileText size={13} />
@@ -751,39 +757,39 @@ function AutoriteBTPSection() {
   ]
 
   return (
-    <section id="autorite" style={{ background: "#FFFFFF", padding: "clamp(48px, 6vw, 90px) 0" }}>
+    <section id="autorite" style={{ background: "#FFFFFF", padding: "clamp(40px, 5.5vw, 84px) 0" }}>
       <div className="site-container">
         
         {/* Header Section */}
-        <div style={{ textAlign: "center", maxWidth: 760, margin: "0 auto clamp(28px, 4vw, 54px)" }}>
+        <div style={{ textAlign: "center", maxWidth: 760, margin: "0 auto clamp(24px, 3.5vw, 48px)" }}>
           <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6,
-            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2vw, 0.75rem)",
+            display: "inline-flex", alignItems: "center", gap: 5,
+            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.65rem, 1.8vw, 0.75rem)",
             fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
-            letterSpacing: "0.12em", marginBottom: 10,
-            background: "#EFF6FF", padding: "5px 12px", borderRadius: 9999
+            letterSpacing: "0.12em", marginBottom: 8,
+            background: "#EFF6FF", padding: "4px 10px", borderRadius: 9999
           }}>
             <ShieldCheck size={13} /> Autorité Industrielle &amp; Logistique
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.5rem)",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.5vw, 2.4rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
-            lineHeight: 1.2, marginBottom: 10, wordBreak: "break-word"
+            lineHeight: 1.2, marginBottom: 8, wordBreak: "break-word"
           }}>
             La Garantie d&apos;un Grand Importateur BTP
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 1rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 1.8vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
             Une sélection rigoureuse à la source et une chaîne logistique maîtrisée pour sécuriser les cadences de vos chantiers au Bénin.
           </p>
         </div>
 
         {/* 1. Nos 4 Piliers d'Engagements */}
-        <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(12px, 2vw, 24px)", marginBottom: "clamp(32px, 4vw, 64px)" }}>
+        <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(10px, 1.8vw, 20px)", marginBottom: "clamp(28px, 3.5vw, 56px)" }}>
           {engagements.map(({ icon: Icon, titre, desc }) => (
             <div key={titre} style={{
-              background: "#F8FAFC", borderRadius: "clamp(14px, 2vw, 20px)",
-              border: "1.5px solid #E2E8F0", padding: "clamp(16px, 2.5vw, 26px)",
-              display: "flex", flexDirection: "column", gap: 10,
+              background: "#F8FAFC", borderRadius: "clamp(12px, 2vw, 18px)",
+              border: "1.5px solid #E2E8F0", padding: "clamp(14px, 2vw, 22px)",
+              display: "flex", flexDirection: "column", gap: 8,
               transition: "all 0.25s ease"
             }}
               onMouseEnter={e => {
@@ -798,17 +804,17 @@ function AutoriteBTPSection() {
               }}
             >
               <div style={{
-                width: 38, height: 38, borderRadius: 10,
+                width: 36, height: 36, borderRadius: 8,
                 background: "#EFF6FF", color: "#1E3A8A",
                 display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
               }}>
-                <Icon size={18} />
+                <Icon size={17} />
               </div>
               <div>
-                <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.4vw, 0.95rem)", fontWeight: 800, color: "#0F172A", margin: "0 0 4px" }}>
+                <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.82rem, 2vw, 0.92rem)", fontWeight: 800, color: "#0F172A", margin: "0 0 4px" }}>
                   {titre}
                 </h3>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.74rem, 1.8vw, 0.8rem)", color: "#475569", lineHeight: 1.5, margin: 0 }}>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.7rem, 1.6vw, 0.78rem)", color: "#475569", lineHeight: 1.5, margin: 0 }}>
                   {desc}
                 </p>
               </div>
@@ -818,43 +824,43 @@ function AutoriteBTPSection() {
 
         {/* 2. Le Pipeline Logistique Continu */}
         <div style={{
-          background: "#F8FAFC", borderRadius: "clamp(18px, 3vw, 28px)", border: "1.5px solid #E2E8F0",
-          padding: "clamp(20px, 3.5vw, 48px) clamp(14px, 2.5vw, 36px)"
+          background: "#F8FAFC", borderRadius: "clamp(16px, 2.5vw, 24px)", border: "1.5px solid #E2E8F0",
+          padding: "clamp(18px, 3vw, 40px) clamp(12px, 2vw, 30px)"
         }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 20, flexWrap: "wrap", gap: 8 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 16, flexWrap: "wrap", gap: 6 }}>
             <div>
-              <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "3px 8px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 7px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>
                 Traçabilité Totale
               </span>
-              <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.15rem, 2.8vw, 1.7rem)", fontWeight: 800, color: "#0F172A", margin: "6px 0 0" }}>
+              <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.1rem, 2.5vw, 1.6rem)", fontWeight: 800, color: "#0F172A", margin: "4px 0 0" }}>
                 Notre Chaîne d&apos;Approvisionnement Usine ➔ Chantier
               </h3>
             </div>
-            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.74rem", color: "#64748B" }}>
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>
               4 étapes certifiées sans rupture de qualité
             </span>
           </div>
 
-          <div className="supply-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(10px, 1.8vw, 20px)" }}>
+          <div className="supply-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(8px, 1.5vw, 18px)" }}>
             {pipeline.map(({ num, phase, titre, desc }) => (
               <div key={num} style={{
-                background: "#FFFFFF", borderRadius: "clamp(12px, 2vw, 18px)",
-                border: "1.5px solid #E2E8F0", padding: "clamp(14px, 2vw, 22px)",
-                display: "flex", flexDirection: "column", gap: 8,
+                background: "#FFFFFF", borderRadius: "clamp(10px, 1.8vw, 16px)",
+                border: "1.5px solid #E2E8F0", padding: "clamp(12px, 1.8vw, 18px)",
+                display: "flex", flexDirection: "column", gap: 6,
                 boxShadow: "0 2px 6px rgba(0,0,0,0.02)"
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)", fontWeight: 800, color: "#1E3A8A" }}>
+                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1rem, 2.2vw, 1.3rem)", fontWeight: 800, color: "#1E3A8A" }}>
                     {num}
                   </span>
-                  <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#1E3A8A", background: "#EFF6FF", padding: "2px 6px", borderRadius: 6, textTransform: "uppercase" }}>
+                  <span style={{ fontSize: "0.62rem", fontWeight: 700, color: "#1E3A8A", background: "#EFF6FF", padding: "2px 5px", borderRadius: 6, textTransform: "uppercase" }}>
                     {phase}
                   </span>
                 </div>
-                <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.82rem, 2.2vw, 0.92rem)", fontWeight: 800, color: "#0F172A", margin: 0 }}>
+                <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.78rem, 2vw, 0.88rem)", fontWeight: 800, color: "#0F172A", margin: 0 }}>
                   {titre}
                 </h4>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.72rem, 1.8vw, 0.78rem)", color: "#64748B", lineHeight: 1.5, margin: 0 }}>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 1.6vw, 0.75rem)", color: "#64748B", lineHeight: 1.45, margin: 0 }}>
                   {desc}
                 </p>
               </div>
@@ -876,7 +882,7 @@ function InteractiveSimulateurSection() {
     { label: "Chambre / Salon", val: 30 },
     { label: "Appartement F3/F4", val: 80 },
     { label: "Villa Standing", val: 150 },
-    { label: "Immeuble / Grand Chantier", val: 300 },
+    { label: "Immeuble / Chantier", val: 300 },
   ]
 
   const coefGypse = typeOuvrage === "plafond" ? 0.35 : 0.25
@@ -924,51 +930,51 @@ function InteractiveSimulateurSection() {
   )
 
   return (
-    <section id="simulateur" style={{ background: "#F8FAFC", padding: "clamp(40px, 6vw, 84px) 0" }}>
+    <section id="simulateur" style={{ background: "#F8FAFC", padding: "clamp(36px, 5.5vw, 84px) 0" }}>
       <div className="site-container">
         
-        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(24px, 4vw, 44px)" }}>
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(20px, 3.5vw, 40px)" }}>
           <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6,
-            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2vw, 0.75rem)",
+            display: "inline-flex", alignItems: "center", gap: 5,
+            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.65rem, 1.8vw, 0.75rem)",
             fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
-            letterSpacing: "0.12em", marginBottom: 10,
-            background: "#EFF6FF", padding: "5px 12px", borderRadius: 9999
+            letterSpacing: "0.12em", marginBottom: 8,
+            background: "#EFF6FF", padding: "4px 10px", borderRadius: 9999
           }}>
             <Calculator size={13} /> Métré Interactif de Chantier
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.4rem)",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.5vw, 2.4rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
-            lineHeight: 1.2, marginBottom: 10, wordBreak: "break-word"
+            lineHeight: 1.2, marginBottom: 8, wordBreak: "break-word"
           }}>
             Simulateur de Besoins en Matériaux
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 1.8vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
             Sélectionnez votre type de chantier ou ajustez le curseur pour obtenir instantanément le quantitatif de sacs de Gypse Marco, Chaux Vive et Filasse Sisal.
           </p>
         </div>
 
         {/* Cockpit 2 Colonnes Pro */}
         <div className="simu-cockpit-grid" style={{
-          background: "#FFFFFF", borderRadius: "clamp(18px, 3vw, 28px)", border: "1.5px solid #E2E8F0",
-          padding: "clamp(18px, 3.5vw, 40px)", boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.06)",
-          display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "clamp(20px, 3vw, 40px)",
+          background: "#FFFFFF", borderRadius: "clamp(16px, 2.5vw, 24px)", border: "1.5px solid #E2E8F0",
+          padding: "clamp(16px, 3vw, 36px)", boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.06)",
+          display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "clamp(18px, 2.8vw, 36px)",
           alignItems: "stretch"
         }}>
           
           {/* Colonne Gauche : Contrôles & Presets */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             
             {/* Step 1 : Choix Ouvrage */}
             <div>
-              <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>
+              <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
                 1. Choisissez le type d&apos;ouvrage :
               </label>
-              <div className="simu-type-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <div className="simu-type-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
                 <button type="button" onClick={() => setTypeOuvrage("plafond")} style={{
-                  padding: "12px 14px", borderRadius: 12,
-                  fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.75rem, 2vw, 0.82rem)", fontWeight: 700,
+                  padding: "10px 12px", borderRadius: 10,
+                  fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.72rem, 1.8vw, 0.8rem)", fontWeight: 700,
                   border: `2px solid ${typeOuvrage === "plafond" ? "#1E3A8A" : "#E2E8F0"}`,
                   background: typeOuvrage === "plafond" ? "#EFF6FF" : "#FFFFFF",
                   color: typeOuvrage === "plafond" ? "#1E3A8A" : "#475569",
@@ -976,80 +982,80 @@ function InteractiveSimulateurSection() {
                   display: "flex", alignItems: "center", justifyContent: "space-between"
                 }}>
                   <span>🏢 Plafonds Staff</span>
-                  {typeOuvrage === "plafond" && <Check size={15} color="#1E3A8A" />}
+                  {typeOuvrage === "plafond" && <Check size={14} color="#1E3A8A" />}
                 </button>
                 <button type="button" onClick={() => setTypeOuvrage("corniche")} style={{
-                  padding: "12px 14px", borderRadius: 12,
-                  fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.75rem, 2vw, 0.82rem)", fontWeight: 700,
+                  padding: "10px 12px", borderRadius: 10,
+                  fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.72rem, 1.8vw, 0.8rem)", fontWeight: 700,
                   border: `2px solid ${typeOuvrage === "corniche" ? "#1E3A8A" : "#E2E8F0"}`,
                   background: typeOuvrage === "corniche" ? "#EFF6FF" : "#FFFFFF",
                   color: typeOuvrage === "corniche" ? "#1E3A8A" : "#475569",
                   cursor: "pointer", transition: "all 0.2s ease",
                   display: "flex", alignItems: "center", justifyContent: "space-between"
                 }}>
-                  <span>✨ Corniches &amp; Moulures</span>
-                  {typeOuvrage === "corniche" && <Check size={15} color="#1E3A8A" />}
+                  <span>✨ Corniches</span>
+                  {typeOuvrage === "corniche" && <Check size={14} color="#1E3A8A" />}
                 </button>
               </div>
             </div>
 
             {/* Presets rapides de surface */}
             <div>
-              <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
+              <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
                 2. Presets rapides ou ajustement :
               </label>
-              <div className="presets-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 10 }}>
+              <div className="presets-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 8 }}>
                 {presets.map(p => (
                   <button key={p.val} onClick={() => setSurface(p.val)} style={{
-                    padding: "8px 6px", borderRadius: 8,
+                    padding: "6px 4px", borderRadius: 8,
                     border: `1.5px solid ${surface === p.val ? "#1E3A8A" : "#E2E8F0"}`,
                     background: surface === p.val ? "#EFF6FF" : "white",
                     color: surface === p.val ? "#1E3A8A" : "#475569",
-                    cursor: "pointer", fontSize: "0.72rem", fontWeight: 700,
+                    cursor: "pointer", fontSize: "0.7rem", fontWeight: 700,
                     transition: "all 0.2s ease", textAlign: "center"
                   }}>
                     <div>{p.val} m²</div>
-                    <div style={{ fontSize: "0.58rem", color: "#64748B", fontWeight: 500 }}>{p.label}</div>
+                    <div style={{ fontSize: "0.55rem", color: "#64748B", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.label}</div>
                   </button>
                 ))}
               </div>
 
               {/* Slider interactif */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
-                <span style={{ fontSize: "0.72rem", color: "#64748B" }}>Surface précise :</span>
-                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.2rem, 3vw, 1.5rem)", fontWeight: 800, color: "#1E3A8A" }}>
-                  {surface} <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#475569" }}>m²</span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
+                <span style={{ fontSize: "0.7rem", color: "#64748B" }}>Surface précise :</span>
+                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)", fontWeight: 800, color: "#1E3A8A" }}>
+                  {surface} <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#475569" }}>m²</span>
                 </span>
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <button onClick={() => setSurface(s => Math.max(10, s - 10))} aria-label="Moins 10 mètres carrés"
-                  style={{ width: 38, height: 38, borderRadius: "50%", border: "1.5px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
-                  <Minus size={15} />
+                  style={{ width: 34, height: 34, borderRadius: "50%", border: "1.5px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
+                  <Minus size={14} />
                 </button>
                 <input type="range" min={10} max={500} step={5} value={surface}
                   onChange={e => setSurface(Number(e.target.value))}
-                  style={{ flex: 1, accentColor: "#1E3A8A", height: 7, cursor: "pointer" }}
+                  style={{ flex: 1, accentColor: "#1E3A8A", height: 6, cursor: "pointer" }}
                 />
                 <button onClick={() => setSurface(s => Math.min(500, s + 10))} aria-label="Plus 10 mètres carrés"
-                  style={{ width: 38, height: 38, borderRadius: "50%", border: "1.5px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
-                  <Plus size={15} />
+                  style={{ width: 34, height: 34, borderRadius: "50%", border: "1.5px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569" }}>
+                  <Plus size={14} />
                 </button>
               </div>
             </div>
 
             {/* Infos techniques gâchage & poids */}
             <div className="simu-tech-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "8px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
-                <Scale size={14} style={{ color: "#1E3A8A", flexShrink: 0 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
+                <Scale size={13} style={{ color: "#1E3A8A", flexShrink: 0 }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#64748B" }}>
                   Poids : <strong>~{poidsTotalKg} kg</strong> ({poidsTotalTonnes} T)
                 </span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "8px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
-                <Droplets size={14} style={{ color: "#2563EB", flexShrink: 0 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>
-                  Eau requise : <strong>~{eauEstimeeLitres} L</strong>
+              <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#F8FAFC", padding: "6px 8px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
+                <Droplets size={13} style={{ color: "#2563EB", flexShrink: 0 }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#64748B" }}>
+                  Eau : <strong>~{eauEstimeeLitres} L</strong>
                 </span>
               </div>
             </div>
@@ -1058,64 +1064,64 @@ function InteractiveSimulateurSection() {
 
           {/* Colonne Droite : Panneau de Devis & Quantités */}
           <div style={{
-            background: "#F8FAFC", borderRadius: "clamp(14px, 2.5vw, 20px)", border: "1.5px solid #E2E8F0",
-            padding: "clamp(16px, 2.5vw, 22px)", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 14
+            background: "#F8FAFC", borderRadius: "clamp(12px, 2vw, 18px)", border: "1.5px solid #E2E8F0",
+            padding: "clamp(14px, 2vw, 20px)", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 12
           }}>
             <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, flexWrap: "wrap", gap: 4 }}>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase" }}>
                   Quantités calculées ({surface} m²) :
                 </span>
-                <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 6px", borderRadius: 6 }}>
+                <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 5px", borderRadius: 6 }}>
                   Stock Disponible
                 </span>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 12px", borderRadius: 10, border: "1px solid #E2E8F0" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "7px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
                   <div>
-                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Gypse Marco (40kg)</div>
-                    <div style={{ fontSize: "0.64rem", color: "#64748B" }}>🇪🇬 Import Égypte</div>
+                    <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#0F172A" }}>Gypse Marco (40kg)</div>
+                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇪🇬 Import Égypte</div>
                   </div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.15rem", fontWeight: 800, color: "#1E3A8A" }}>
-                    {nbSacsGypse} <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.05rem", fontWeight: 800, color: "#1E3A8A" }}>
+                    {nbSacsGypse} <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
                   </div>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 12px", borderRadius: 10, border: "1px solid #E2E8F0" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "7px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
                   <div>
-                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Filasse Sisal Pure</div>
-                    <div style={{ fontSize: "0.64rem", color: "#64748B" }}>🇰🇪 Produce of Kenya</div>
+                    <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#0F172A" }}>Filasse Sisal Pure</div>
+                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇰🇪 Produce of Kenya</div>
                   </div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.15rem", fontWeight: 800, color: "#10B981" }}>
-                    {kgFilasse} <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>kg</span>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.05rem", fontWeight: 800, color: "#10B981" }}>
+                    {kgFilasse} <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "#64748B" }}>kg</span>
                   </div>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 12px", borderRadius: 10, border: "1px solid #E2E8F0" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "7px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
                   <div>
-                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Chaux Vive (40kg)</div>
-                    <div style={{ fontSize: "0.64rem", color: "#64748B" }}>🇦🇪 Dubaï Pure</div>
+                    <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#0F172A" }}>Chaux Vive (40kg)</div>
+                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇦🇪 Dubaï Pure</div>
                   </div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.15rem", fontWeight: 800, color: "#0F172A" }}>
-                    {nbSacsChaux} <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.05rem", fontWeight: 800, color: "#0F172A" }}>
+                    {nbSacsChaux} <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
                   </div>
                 </div>
               </div>
 
               {/* Véhicule recommandé */}
-              <div style={{ marginTop: 8, padding: "8px 10px", background: "#EFF6FF", borderRadius: 8, border: "1px solid #DBEAFE", display: "flex", alignItems: "center", gap: 6 }}>
-                <Truck size={14} style={{ color: "#1E3A8A", flexShrink: 0 }} />
-                <span style={{ fontSize: "0.7rem", color: "#1E3A8A", fontWeight: 600 }}>
+              <div style={{ marginTop: 6, padding: "6px 8px", background: "#EFF6FF", borderRadius: 8, border: "1px solid #DBEAFE", display: "flex", alignItems: "center", gap: 5 }}>
+                <Truck size={13} style={{ color: "#1E3A8A", flexShrink: 0 }} />
+                <span style={{ fontSize: "0.68rem", color: "#1E3A8A", fontWeight: 600 }}>
                   {vehiculeRecommande}
                 </span>
               </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              <WaBtn label="Recevoir mon devis officiel sur WhatsApp" url={msgSimu} full />
-              <span style={{ fontSize: "0.68rem", color: "#64748B", textAlign: "center" }}>
-                ⚡ Devis proforma avec tarif dégressif par retour de message
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              <WaBtn label="Recevoir mon devis sur WhatsApp" url={msgSimu} full />
+              <span style={{ fontSize: "0.65rem", color: "#64748B", textAlign: "center" }}>
+                ⚡ Devis proforma immédiat
               </span>
             </div>
 
@@ -1154,48 +1160,48 @@ function HowToOrderSection() {
   ]
 
   return (
-    <section id="commande" style={{ background: "#FFFFFF", padding: "clamp(40px, 6vw, 84px) 0" }}>
+    <section id="commande" style={{ background: "#FFFFFF", padding: "clamp(36px, 5.5vw, 84px) 0" }}>
       <div className="site-container">
         
-        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(24px, 4vw, 48px)" }}>
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(20px, 3.5vw, 44px)" }}>
           <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6,
-            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2vw, 0.75rem)",
+            display: "inline-flex", alignItems: "center", gap: 5,
+            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.65rem, 1.8vw, 0.75rem)",
             fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
-            letterSpacing: "0.12em", marginBottom: 10,
-            background: "#EFF6FF", padding: "5px 12px", borderRadius: 9999
+            letterSpacing: "0.12em", marginBottom: 8,
+            background: "#EFF6FF", padding: "4px 10px", borderRadius: 9999
           }}>
             <Clock size={13} /> Parcours Simple &amp; Sécurisé
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.4rem)",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.5vw, 2.4rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
-            lineHeight: 1.2, marginBottom: 10, wordBreak: "break-word"
+            lineHeight: 1.2, marginBottom: 8, wordBreak: "break-word"
           }}>
             Comment Commander Vos Matériaux ?
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 1.8vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
             Un processus d&apos;achat fluide et réactif conçu pour respecter le rythme intensif des chantiers.
           </p>
         </div>
 
-        <div className="order-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(12px, 2vw, 24px)" }}>
+        <div className="order-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "clamp(10px, 1.8vw, 20px)" }}>
           {steps.map(({ num, titre, desc }) => (
             <div key={num} style={{
-              background: "#F8FAFC", borderRadius: "clamp(14px, 2vw, 20px)",
-              border: "1.5px solid #E2E8F0", padding: "clamp(16px, 2.5vw, 26px)",
-              display: "flex", flexDirection: "column", gap: 8
+              background: "#F8FAFC", borderRadius: "clamp(12px, 2vw, 18px)",
+              border: "1.5px solid #E2E8F0", padding: "clamp(14px, 2vw, 22px)",
+              display: "flex", flexDirection: "column", gap: 6
             }}>
               <span style={{
-                fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.2rem, 2.5vw, 1.4rem)",
+                fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.1rem, 2.2vw, 1.35rem)",
                 fontWeight: 800, color: "#10B981", lineHeight: 1
               }}>
                 {num}
               </span>
-              <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.2vw, 0.95rem)", fontWeight: 800, color: "#0F172A", margin: 0 }}>
+              <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.8rem, 2vw, 0.92rem)", fontWeight: 800, color: "#0F172A", margin: 0 }}>
                 {titre}
               </h3>
-              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.74rem, 1.8vw, 0.8rem)", color: "#475569", lineHeight: 1.5, margin: 0 }}>
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.7rem, 1.6vw, 0.78rem)", color: "#475569", lineHeight: 1.5, margin: 0 }}>
                 {desc}
               </p>
             </div>
@@ -1217,13 +1223,13 @@ function ApplicationsSection() {
       icon: Building2
     },
     {
-      titre: "Corniches, Moulures & Gorges Lumineuses",
+      titre: "Corniches, Moulures & Gorges",
       produit: "Gypse Marco + Filasse Sisal Kenya",
       desc: "Armature végétale longue assurant une haute résistance mécanique et la finesse des arêtes architecturales.",
       icon: Layers
     },
     {
-      titre: "Enduits Protecteurs & Chaulage Assainissant",
+      titre: "Enduits & Chaulage Assainissant",
       produit: "Chaux Vive Dubaï (White Lime)",
       desc: "Assainissement naturel anti-salpêtre et perméabilité à la vapeur, idéal contre le climat humide côtier.",
       icon: Sparkles
@@ -1231,53 +1237,53 @@ function ApplicationsSection() {
   ]
 
   return (
-    <section id="applications" style={{ background: "#F8FAFC", padding: "clamp(40px, 6vw, 84px) 0" }}>
+    <section id="applications" style={{ background: "#F8FAFC", padding: "clamp(36px, 5.5vw, 84px) 0" }}>
       <div className="site-container">
         
-        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(24px, 4vw, 48px)" }}>
+        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto clamp(20px, 3.5vw, 44px)" }}>
           <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6,
-            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2vw, 0.75rem)",
+            display: "inline-flex", alignItems: "center", gap: 5,
+            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.65rem, 1.8vw, 0.75rem)",
             fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
-            letterSpacing: "0.12em", marginBottom: 10,
-            background: "#EFF6FF", padding: "5px 12px", borderRadius: 9999
+            letterSpacing: "0.12em", marginBottom: 8,
+            background: "#EFF6FF", padding: "4px 10px", borderRadius: 9999
           }}>
             <Hammer size={13} /> Domaines d&apos;Application
           </span>
           <h2 style={{
-            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.4rem)",
+            fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.5vw, 2.4rem)",
             fontWeight: 800, color: "#0F172A", letterSpacing: "-0.03em",
-            lineHeight: 1.2, marginBottom: 10, wordBreak: "break-word"
+            lineHeight: 1.2, marginBottom: 8, wordBreak: "break-word"
           }}>
             Des Matériaux Pensés pour Vos Réalisations
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 1.8vw, 0.95rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
             Du faux-plafond suspendu aux corniches complexes, des solutions adaptées à chaque étape de votre finition.
           </p>
         </div>
 
-        <div className="apps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(18px, 3vw, 28px)" }}>
+        <div className="apps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(14px, 2.5vw, 24px)" }}>
           {apps.map(({ titre, produit, desc, icon: Icon }) => (
             <div key={titre} style={{
-              background: "#FFFFFF", borderRadius: "clamp(16px, 2.5vw, 20px)",
-              border: "1.5px solid #E2E8F0", padding: "clamp(20px, 3vw, 32px)",
-              display: "flex", flexDirection: "column", gap: 12
+              background: "#FFFFFF", borderRadius: "clamp(14px, 2vw, 18px)",
+              border: "1.5px solid #E2E8F0", padding: "clamp(16px, 2.5vw, 26px)",
+              display: "flex", flexDirection: "column", gap: 10
             }}>
               <div style={{
-                width: 40, height: 40, borderRadius: 10,
+                width: 36, height: 36, borderRadius: 8,
                 background: "#EFF6FF", color: "#1E3A8A", border: "1px solid #DBEAFE",
                 display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
               }}>
-                <Icon size={20} />
+                <Icon size={18} />
               </div>
               <div>
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#1E3A8A", fontWeight: 700, textTransform: "uppercase" }}>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", color: "#1E3A8A", fontWeight: 700, textTransform: "uppercase" }}>
                   {produit}
                 </span>
-                <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.92rem, 2.4vw, 1.05rem)", fontWeight: 800, color: "#0F172A", margin: "4px 0 6px" }}>
+                <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.2vw, 1rem)", fontWeight: 800, color: "#0F172A", margin: "3px 0 5px" }}>
                   {titre}
                 </h3>
-                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.76rem, 2vw, 0.82rem)", color: "#475569", lineHeight: 1.55, margin: 0 }}>
+                <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.72rem, 1.8vw, 0.8rem)", color: "#475569", lineHeight: 1.55, margin: 0 }}>
                   {desc}
                 </p>
               </div>
@@ -1299,41 +1305,41 @@ const TEMOIGNAGES = [
 
 function ReassuranceSection() {
   return (
-    <section id="avis" style={{ background: "#FFFFFF", padding: "clamp(40px, 6vw, 84px) 0" }}>
+    <section id="avis" style={{ background: "#FFFFFF", padding: "clamp(36px, 5.5vw, 84px) 0" }}>
       <div className="site-container">
         
-        <div style={{ textAlign: "center", marginBottom: "clamp(24px, 4vw, 48px)" }}>
-          <span style={{ display: "inline-block", fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
+        <div style={{ textAlign: "center", marginBottom: "clamp(20px, 3.5vw, 44px)" }}>
+          <span style={{ display: "inline-block", fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
             Retours d&apos;Expérience
           </span>
-          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.4rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: 6, wordBreak: "break-word" }}>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.5vw, 2.4rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: 6, wordBreak: "break-word" }}>
             Approuvé par les Maîtres Staffeurs &amp; Artisans
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569" }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 1.8vw, 0.95rem)", color: "#475569" }}>
             Découvrez pourquoi les professionnels du bâtiment choisissent Marco Staff
           </p>
         </div>
 
-        <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(18px, 3vw, 28px)" }}>
+        <div className="product-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(14px, 2.5vw, 24px)" }}>
           {TEMOIGNAGES.map(({ initials, color, nom, role, ville, note, texte }) => (
             <div key={nom} style={{
-              background: "#F8FAFC", border: "1.5px solid #E2E8F0", borderRadius: "clamp(14px, 2vw, 20px)",
-              padding: "clamp(18px, 2.5vw, 28px)", display: "flex", flexDirection: "column", gap: 12,
+              background: "#F8FAFC", border: "1.5px solid #E2E8F0", borderRadius: "clamp(12px, 2vw, 18px)",
+              padding: "clamp(16px, 2vw, 24px)", display: "flex", flexDirection: "column", gap: 10,
               boxShadow: "0 2px 4px rgba(15, 23, 42, 0.04)"
             }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                <div style={{ width: 40, height: 40, borderRadius: "50%", background: color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "white", fontWeight: 800, fontSize: "0.85rem" }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                <div style={{ width: 36, height: 36, borderRadius: "50%", background: color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "white", fontWeight: 800, fontSize: "0.8rem" }}>
                   {initials}
                 </div>
                 <div>
-                  <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.88rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>{nom}</p>
-                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B", margin: "2px 0 4px" }}>{role} · {ville}</p>
+                  <p style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.84rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>{nom}</p>
+                  <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#64748B", margin: "2px 0 3px" }}>{role} · {ville}</p>
                   <div style={{ display: "flex", gap: 2 }}>
-                    {[...Array(note)].map((_, i) => <Star key={i} size={11} fill="#F59E0B" stroke="#F59E0B" />)}
+                    {[...Array(note)].map((_, i) => <Star key={i} size={10} fill="#F59E0B" stroke="#F59E0B" />)}
                   </div>
                 </div>
               </div>
-              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 2vw, 0.85rem)", color: "#475569", lineHeight: 1.6, margin: 0, fontStyle: "italic", borderLeft: `3px solid ${color}`, paddingLeft: 10 }}>
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.74rem, 1.8vw, 0.82rem)", color: "#475569", lineHeight: 1.55, margin: 0, fontStyle: "italic", borderLeft: `3px solid ${color}`, paddingLeft: 8 }}>
                 &ldquo;{texte}&rdquo;
               </p>
             </div>
@@ -1357,29 +1363,29 @@ function FAQSection() {
   }
 
   return (
-    <section id="faq" style={{ background: "#F8FAFC", padding: "clamp(40px, 6vw, 84px) 0" }}>
+    <section id="faq" style={{ background: "#F8FAFC", padding: "clamp(36px, 5.5vw, 84px) 0" }}>
       <div className="site-container" style={{ maxWidth: 880 }}>
         
-        <div style={{ textAlign: "center", marginBottom: "clamp(20px, 3.5vw, 36px)" }}>
+        <div style={{ textAlign: "center", marginBottom: "clamp(18px, 3vw, 32px)" }}>
           <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6,
-            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2vw, 0.75rem)",
+            display: "inline-flex", alignItems: "center", gap: 5,
+            fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.65rem, 1.8vw, 0.75rem)",
             fontWeight: 700, color: "#1E3A8A", textTransform: "uppercase",
-            letterSpacing: "0.1em", marginBottom: 8,
+            letterSpacing: "0.1em", marginBottom: 6,
             background: "#EFF6FF", padding: "4px 10px", borderRadius: 9999
           }}>
             <HelpCircle size={13} /> Foire Aux Questions
           </span>
-          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.5rem, 3.8vw, 2.3rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", margin: "4px 0 8px", wordBreak: "break-word" }}>
+          <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.4rem, 3.5vw, 2.3rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", margin: "4px 0 6px", wordBreak: "break-word" }}>
             Questions Fréquentes sur nos Matériaux
           </h2>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.82rem, 2vw, 0.95rem)", color: "#475569" }}>
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.78rem, 1.8vw, 0.95rem)", color: "#475569" }}>
             Réponses claires sur nos spécifications techniques, nos délais de livraison et nos conditions tarifaires.
           </p>
         </div>
 
         {/* Category Filters */}
-        <div style={{ display: "flex", justifyContent: "center", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: 5, marginBottom: 16, flexWrap: "wrap" }}>
           {[
             { id: "all", label: "Toutes" },
             { id: "qualite", label: "Qualité & Technique" },
@@ -1387,11 +1393,11 @@ function FAQSection() {
             { id: "tarifs", label: "Commandes & Devis" },
           ].map(({ id, label }) => (
             <button key={id} onClick={() => { setFilter(id); setOpenIndex(0) }} style={{
-              padding: "6px 14px", borderRadius: 9999,
+              padding: "5px 12px", borderRadius: 9999,
               border: `1.5px solid ${filter === id ? "#1E3A8A" : "#E2E8F0"}`,
               background: filter === id ? "#EFF6FF" : "white",
               color: filter === id ? "#1E3A8A" : "#475569",
-              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.74rem, 2vw, 0.8rem)", fontWeight: 700,
+              fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.72rem, 1.8vw, 0.78rem)", fontWeight: 700,
               cursor: "pointer", transition: "all 0.2s ease"
             }}>
               {label}
@@ -1400,12 +1406,12 @@ function FAQSection() {
         </div>
 
         {/* Accordions */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {filteredFaqs.map((faq, i) => {
             const isOpen = openIndex === i
             return (
               <div key={faq.q} style={{
-                background: "#FFFFFF", borderRadius: "clamp(12px, 2vw, 16px)",
+                background: "#FFFFFF", borderRadius: "clamp(10px, 1.8vw, 14px)",
                 border: `1.5px solid ${isOpen ? "#1E3A8A" : "#E2E8F0"}`,
                 overflow: "hidden", transition: "all 0.2s ease"
               }}>
@@ -1414,27 +1420,27 @@ function FAQSection() {
                   onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(i) } }}
                   aria-expanded={isOpen}
                   style={{
-                    width: "100%", padding: "clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 20px)", display: "flex",
-                    alignItems: "center", justifyContent: "space-between", gap: 12,
+                    width: "100%", padding: "clamp(12px, 2vw, 16px) clamp(14px, 2.5vw, 18px)", display: "flex",
+                    alignItems: "center", justifyContent: "space-between", gap: 10,
                     background: "none", border: "none", cursor: "pointer", textAlign: "left"
                   }}
                 >
-                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.2vw, 0.92rem)", fontWeight: 700, color: "#0F172A", lineHeight: 1.35 }}>
+                  <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.82rem, 2vw, 0.9rem)", fontWeight: 700, color: "#0F172A", lineHeight: 1.35 }}>
                     {faq.q}
                   </span>
                   <div style={{
-                    width: 26, height: 26, borderRadius: "50%",
+                    width: 24, height: 24, borderRadius: "50%",
                     background: isOpen ? "#EFF6FF" : "#F8FAFC",
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
                     color: isOpen ? "#1E3A8A" : "#64748B",
                   }}>
-                    <ChevronDown size={15} style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }} />
+                    <ChevronDown size={14} style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }} />
                   </div>
                 </button>
 
                 {isOpen && (
-                  <div style={{ padding: "0 clamp(16px, 3vw, 20px) 16px", borderTop: "1px solid #E2E8F0", paddingTop: 12 }}>
-                    <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.76rem, 2vw, 0.82rem)", color: "#475569", lineHeight: 1.65, margin: 0 }}>
+                  <div style={{ padding: "0 clamp(14px, 2.5vw, 18px) 14px", borderTop: "1px solid #E2E8F0", paddingTop: 10 }}>
+                    <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.74rem, 1.8vw, 0.8rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
                       {faq.a}
                     </p>
                   </div>
@@ -1454,7 +1460,7 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
   return (
     <section style={{
       background: "#0A0F1D",
-      padding: "clamp(56px, 7vw, 96px) 0",
+      padding: "clamp(48px, 6vw, 90px) 0",
       position: "relative",
       overflow: "hidden"
     }}>
@@ -1471,33 +1477,33 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
         {/* Monolith Architectural Card */}
         <div style={{
           background: "#131B2E",
-          borderRadius: "clamp(18px, 3vw, 28px)",
+          borderRadius: "clamp(16px, 2.5vw, 24px)",
           border: "1px solid rgba(255, 255, 255, 0.12)",
-          padding: "clamp(28px, 4.5vw, 64px) clamp(18px, 3.5vw, 56px)",
+          padding: "clamp(24px, 4vw, 56px) clamp(16px, 3vw, 48px)",
           display: "grid",
           gridTemplateColumns: "1.2fr 0.8fr",
-          gap: "clamp(24px, 4vw, 64px)",
+          gap: "clamp(20px, 3.5vw, 56px)",
           alignItems: "center",
           boxShadow: "0 24px 60px rgba(0,0,0,0.5)"
         }} className="cta-architectural-grid">
           
           {/* Left Column : Clear Authority Message */}
           <div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(16, 185, 129, 0.15)", border: "1px solid rgba(16, 185, 129, 0.35)", borderRadius: 9999, padding: "5px 12px", marginBottom: 16 }}>
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#10B981", display: "inline-block" }} />
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 2vw, 0.75rem)", fontWeight: 700, color: "#10B981", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "rgba(16, 185, 129, 0.15)", border: "1px solid rgba(16, 185, 129, 0.35)", borderRadius: 9999, padding: "4px 10px", marginBottom: 12 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "inline-block" }} />
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.65rem, 1.8vw, 0.72rem)", fontWeight: 700, color: "#10B981", textTransform: "uppercase", letterSpacing: "0.08em" }}>
                 Dépôts Cotonou &amp; Calavi Approvisionnés
               </span>
             </div>
 
             <h2 style={{
               fontFamily: "var(--ds-font-heading)",
-              fontSize: "clamp(1.75rem, 4vw, 3rem)",
+              fontSize: "clamp(1.5rem, 3.8vw, 2.8rem)",
               fontWeight: 800,
               color: "#FFFFFF",
               lineHeight: 1.15,
               letterSpacing: "-0.035em",
-              margin: "0 0 14px",
+              margin: "0 0 12px",
               wordBreak: "break-word"
             }}>
               Votre Prochain Chantier Commence Ici.
@@ -1505,9 +1511,9 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
 
             <p style={{
               fontFamily: "var(--ds-font-body)",
-              fontSize: "clamp(0.85rem, 2vw, 1.05rem)",
+              fontSize: "clamp(0.8rem, 1.8vw, 1rem)",
               color: "#94A3B8",
-              lineHeight: 1.65,
+              lineHeight: 1.6,
               margin: 0,
               maxWidth: 520
             }}>
@@ -1518,29 +1524,29 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
           {/* Right Column : Clean Contrast Actions Box */}
           <div style={{
             background: "#1E293B",
-            borderRadius: "clamp(14px, 2.5vw, 20px)",
+            borderRadius: "clamp(12px, 2vw, 18px)",
             border: "1px solid rgba(255, 255, 255, 0.1)",
-            padding: "clamp(20px, 3vw, 32px)",
+            padding: "clamp(18px, 2.5vw, 28px)",
             display: "flex",
             flexDirection: "column",
-            gap: 14
+            gap: 12
           }}>
-            <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: 12 }}>
-              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.92rem, 2.4vw, 1rem)", fontWeight: 800, color: "white" }}>
+            <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: 10 }}>
+              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.88rem, 2.2vw, 0.95rem)", fontWeight: 800, color: "white" }}>
                 Demande Commerciale Express
               </span>
-              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.72rem, 1.8vw, 0.78rem)", color: "#94A3B8", margin: "4px 0 0" }}>
+              <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.68rem, 1.6vw, 0.75rem)", color: "#94A3B8", margin: "3px 0 0" }}>
                 Réponse directe de notre équipe logistique sous 15 à 30 minutes.
               </p>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               <WaBtn label="Contacter l'équipe commerciale" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} full />
               <button onClick={onSimulateur} style={{
-                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 background: "transparent", border: "1.5px solid rgba(255,255,255,0.25)",
-                borderRadius: 9999, padding: "12px 18px", color: "white",
-                fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 0.85rem)", fontWeight: 700,
+                borderRadius: 9999, padding: "10px 16px", color: "white",
+                fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.76rem, 1.8vw, 0.82rem)", fontWeight: 700,
                 cursor: "pointer", transition: "all 0.2s ease"
               }}
                 onMouseEnter={e => {
@@ -1552,16 +1558,16 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
                   e.currentTarget.style.background = "transparent"
                 }}
               >
-                <Calculator size={15} color="#10B981" />
+                <Calculator size={14} color="#10B981" />
                 <span>Ouvrir le simulateur de métré ➔</span>
               </button>
             </div>
 
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 4, flexWrap: "wrap", gap: 4 }}>
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#64748B" }}>
-                Ligne directe : {PHONE_DISPLAY}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 2, flexWrap: "wrap", gap: 4 }}>
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#64748B" }}>
+                Ligne : {PHONE_DISPLAY}
               </span>
-              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#10B981", fontWeight: 600 }}>
+              <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#10B981", fontWeight: 600 }}>
                 • Dépôt Ouvert
               </span>
             </div>
@@ -1602,85 +1608,85 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
         
         {/* Drawer Header */}
         <div style={{
-          padding: "clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 24px)", borderBottom: "1.5px solid #E2E8F0",
+          padding: "clamp(12px, 2vw, 16px) clamp(14px, 2.5vw, 22px)", borderBottom: "1.5px solid #E2E8F0",
           display: "flex", alignItems: "center", justifyContent: "space-between",
           position: "sticky", top: 0, background: "#FFFFFF", zIndex: 10
         }}>
           <div style={{ minWidth: 0 }}>
-            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#1E3A8A", fontWeight: 700, textTransform: "uppercase" }}>
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", color: "#1E3A8A", fontWeight: 700, textTransform: "uppercase" }}>
               {product.categorie}
             </span>
-            <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1rem, 2.5vw, 1.15rem)", fontWeight: 800, color: "#0F172A", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            <h3 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.95rem, 2.2vw, 1.1rem)", fontWeight: 800, color: "#0F172A", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
               Dossier Technique Produit
             </h3>
           </div>
           <button onClick={onClose} aria-label="Fermer le dossier technique" style={{
-            width: 34, height: 34, borderRadius: "50%", border: "1.5px solid #E2E8F0",
+            width: 32, height: 32, borderRadius: "50%", border: "1.5px solid #E2E8F0",
             background: "#F8FAFC", cursor: "pointer", display: "flex", alignItems: "center",
             justifyContent: "center", color: "#475569", flexShrink: 0
           }}>
-            <X size={17} />
+            <X size={16} />
           </button>
         </div>
 
         {/* Drawer Body */}
-        <div style={{ padding: "clamp(16px, 3vw, 24px)", display: "flex", flexDirection: "column", gap: 16 }}>
+        <div style={{ padding: "clamp(14px, 2.5vw, 22px)", display: "flex", flexDirection: "column", gap: 14 }}>
           
           {/* Image Frame */}
           <div style={{
-            background: "#F8FAFC", borderRadius: 16, border: "1.5px solid #E2E8F0",
-            height: "clamp(160px, 28vw, 200px)", padding: 14, display: "flex", alignItems: "center", justifyContent: "center"
+            background: "#F8FAFC", borderRadius: 14, border: "1.5px solid #E2E8F0",
+            height: "clamp(140px, 25vw, 190px)", padding: 12, display: "flex", alignItems: "center", justifyContent: "center"
           }}>
             <img src={imgSrc(product.image)} alt={product.nom} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
           </div>
 
           <div>
-            <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" }}>
-              <span style={{ background: "#EFF6FF", color: "#1E3A8A", fontSize: "0.68rem", fontWeight: 700, padding: "2px 7px", borderRadius: 9999 }}>
+            <div style={{ display: "flex", gap: 5, marginBottom: 6, flexWrap: "wrap" }}>
+              <span style={{ background: "#EFF6FF", color: "#1E3A8A", fontSize: "0.65rem", fontWeight: 700, padding: "2px 6px", borderRadius: 9999 }}>
                 {product.badge}
               </span>
-              <span style={{ background: "#FEF3C7", color: "#D97706", fontSize: "0.68rem", fontWeight: 700, padding: "2px 7px", borderRadius: 9999 }}>
+              <span style={{ background: "#FEF3C7", color: "#D97706", fontSize: "0.65rem", fontWeight: 700, padding: "2px 6px", borderRadius: 9999 }}>
                 {product.remiseBadge}
               </span>
-              <span style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A", fontSize: "0.68rem", fontWeight: 600, padding: "2px 7px", borderRadius: 9999 }}>
+              <span style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A", fontSize: "0.65rem", fontWeight: 600, padding: "2px 6px", borderRadius: 9999 }}>
                 {product.drapeau} {product.origine}
               </span>
             </div>
-            <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.1rem, 2.8vw, 1.25rem)", fontWeight: 800, color: "#0F172A", margin: "0 0 8px" }}>
+            <h2 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1rem, 2.5vw, 1.2rem)", fontWeight: 800, color: "#0F172A", margin: "0 0 6px" }}>
               {product.nom}
             </h2>
-            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.8rem, 2vw, 0.85rem)", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.76rem, 1.8vw, 0.82rem)", color: "#475569", lineHeight: 1.55, margin: 0 }}>
               {product.description}
             </p>
           </div>
 
           {/* Guide de dosage & Conseils de pose */}
-          <div style={{ background: "#F8FAFC", borderRadius: 12, border: "1.5px solid #E2E8F0", padding: "12px 14px", display: "flex", flexDirection: "column", gap: 6 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <Info size={15} style={{ color: "#1E3A8A" }} />
-              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.78rem", fontWeight: 800, color: "#0F172A" }}>
+          <div style={{ background: "#F8FAFC", borderRadius: 10, border: "1.5px solid #E2E8F0", padding: "10px 12px", display: "flex", flexDirection: "column", gap: 5 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+              <Info size={14} style={{ color: "#1E3A8A" }} />
+              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.75rem", fontWeight: 800, color: "#0F172A" }}>
                 Conseil de Préparation &amp; Dosage :
               </span>
             </div>
-            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#475569", margin: 0, lineHeight: 1.45 }}>
+            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#475569", margin: 0, lineHeight: 1.45 }}>
               💧 <strong>Dosage d&apos;eau :</strong> {product.dosage}
             </p>
-            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#475569", margin: 0, lineHeight: 1.45 }}>
+            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#475569", margin: 0, lineHeight: 1.45 }}>
               🏛️ <strong>Usages types :</strong> {product.application}
             </p>
           </div>
 
           {/* Tableau des Spécifications Techniques */}
           <div>
-            <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.82rem", fontWeight: 800, color: "#0F172A", margin: "0 0 8px" }}>
+            <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.78rem", fontWeight: 800, color: "#0F172A", margin: "0 0 6px" }}>
               Tableau des Spécifications :
             </h4>
-            <div style={{ background: "#F8FAFC", borderRadius: 12, border: "1.5px solid #E2E8F0", overflow: "hidden" }}>
+            <div style={{ background: "#F8FAFC", borderRadius: 10, border: "1.5px solid #E2E8F0", overflow: "hidden" }}>
               {product.specs.map(({ label, valeur }, i) => (
-                <div key={label} style={{
+                <div key={label} className="spec-table-row" style={{
                   display: "grid", gridTemplateColumns: "1fr 1.3fr",
-                  padding: "8px 12px", borderBottom: i < product.specs.length - 1 ? "1px solid #E2E8F0" : "none",
-                  fontSize: "0.74rem"
+                  padding: "7px 10px", borderBottom: i < product.specs.length - 1 ? "1px solid #E2E8F0" : "none",
+                  fontSize: "0.72rem"
                 }}>
                   <span style={{ fontWeight: 700, color: "#64748B" }}>{label}</span>
                   <span style={{ color: "#0F172A", fontWeight: 600 }}>{valeur}</span>
@@ -1690,26 +1696,26 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
           </div>
 
           {/* Sélecteur de Quantité */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", background: "#F8FAFC", borderRadius: 12, border: "1.5px solid #E2E8F0", flexWrap: "wrap" }}>
-            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", fontWeight: 700, color: "#0F172A" }}>Quantité :</span>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, background: "white", borderRadius: 9999, padding: "3px 6px", border: "1px solid #E2E8F0" }}>
-              <button onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Diminuer la quantité" style={{ width: 28, height: 28, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Minus size={13} />
+          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", background: "#F8FAFC", borderRadius: 10, border: "1.5px solid #E2E8F0", flexWrap: "wrap" }}>
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, color: "#0F172A" }}>Quantité :</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 5, background: "white", borderRadius: 9999, padding: "2px 5px", border: "1px solid #E2E8F0" }}>
+              <button onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Diminuer la quantité" style={{ width: 26, height: 26, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Minus size={12} />
               </button>
-              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.9rem", fontWeight: 800, color: "#1E3A8A", minWidth: 24, textAlign: "center" }}>{qty}</span>
-              <button onClick={() => setQty(q => q + 1)} aria-label="Augmenter la quantité" style={{ width: 28, height: 28, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Plus size={13} />
+              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.85rem", fontWeight: 800, color: "#1E3A8A", minWidth: 20, textAlign: "center" }}>{qty}</span>
+              <button onClick={() => setQty(q => q + 1)} aria-label="Augmenter la quantité" style={{ width: 26, height: 26, borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Plus size={12} />
               </button>
             </div>
-            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>{product.conditionnement}</span>
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", color: "#64748B" }}>{product.conditionnement}</span>
           </div>
 
           {/* CTA WhatsApp Drawer */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 6, paddingTop: 2 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 5, paddingTop: 2 }}>
             <WaBtn label={`Demander le Devis pour ${qty} sac(s)`} url={msgCmd} full />
             <button onClick={onClose} style={{
               background: "none", border: "none", cursor: "pointer",
-              fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#64748B", padding: "4px 0"
+              fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B", padding: "3px 0"
             }}>
               Fermer et continuer la navigation
             </button>
@@ -1726,58 +1732,58 @@ function SlideOverProductModal({ product, onClose }: { product: Product; onClose
 function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
   return (
     <footer id="contact" style={{ background: "#080C16", color: "white", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-      <div className="site-container" style={{ padding: "clamp(44px, 5.5vw, 64px) 0 24px" }}>
+      <div className="site-container" style={{ padding: "clamp(36px, 5vw, 64px) 0 20px" }}>
         
         <div className="footer-grid" style={{
-          display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.2fr", gap: "clamp(20px, 3.5vw, 48px)",
-          marginBottom: "clamp(28px, 4vw, 48px)"
+          display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.2fr", gap: "clamp(18px, 3vw, 44px)",
+          marginBottom: "clamp(24px, 3.5vw, 44px)"
         }}>
           
           {/* Col 1 Brand */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{
-                width: 34, height: 34, borderRadius: 8,
+                width: 32, height: 32, borderRadius: 8,
                 background: "#1E3A8A", display: "flex", alignItems: "center",
                 justifyContent: "center", flexShrink: 0,
               }}>
-                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.95rem", fontWeight: 800, color: "white" }}>M</span>
+                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.9rem", fontWeight: 800, color: "white" }}>M</span>
               </div>
               <div>
-                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.92rem", fontWeight: 800, color: "white", lineHeight: 1.1 }}>
+                <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.88rem", fontWeight: 800, color: "white", lineHeight: 1.1 }}>
                   {COMPANY_NAME}
                 </div>
-                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.58rem", fontWeight: 600, color: "#94A3B8", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                <div style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.55rem", fontWeight: 600, color: "#94A3B8", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                   {COMPANY_SUBTITLE}
                 </div>
               </div>
             </div>
 
-            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#94A3B8", lineHeight: 1.65, maxWidth: 300, margin: 0 }}>
+            <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#94A3B8", lineHeight: 1.6, maxWidth: 300, margin: 0 }}>
               Importateur direct et grossiste en matériaux de finition et staff au Bénin. Qualité d&apos;origine certifiée (Égypte, Dubaï, Kenya) sans intermédiaire.
             </p>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 2 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 5, marginTop: 2 }}>
               <a href={`tel:${WA_NUMBER}`} style={{ display: "flex", gap: 6, alignItems: "center", textDecoration: "none", color: "#94A3B8" }}>
-                <Phone size={13} style={{ color: "#10B981", flexShrink: 0 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem" }}>{PHONE_DISPLAY}</span>
+                <Phone size={12} style={{ color: "#10B981", flexShrink: 0 }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem" }}>{PHONE_DISPLAY}</span>
               </a>
               <a href={waUrl(`Bonjour ${COMPANY_NAME}`)} target="_blank" rel="noopener noreferrer" style={{ display: "flex", gap: 6, alignItems: "center", textDecoration: "none", color: "#94A3B8" }}>
-                <MessageCircle size={13} style={{ color: "#10B981", flexShrink: 0 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem" }}>WhatsApp : +229 01 97 46 32 09</span>
+                <MessageCircle size={12} style={{ color: "#10B981", flexShrink: 0 }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem" }}>WhatsApp : +229 01 97 46 32 09</span>
               </a>
             </div>
           </div>
 
           {/* Col 2 Produits */}
           <div>
-            <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.72rem", fontWeight: 700, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>
+            <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.7rem", fontWeight: 700, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }}>
               Matériaux
             </h4>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 6 }}>
               {PRODUCTS.map(p => (
                 <li key={p.id}>
-                  <a href="#produits" onClick={e => { e.preventDefault(); onNavigate("produits") }} style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#94A3B8", textDecoration: "none" }}>
+                  <a href="#produits" onClick={e => { e.preventDefault(); onNavigate("produits") }} style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#94A3B8", textDecoration: "none" }}>
                     {p.nomCourt}
                   </a>
                 </li>
@@ -1787,10 +1793,10 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
 
           {/* Col 3 Navigation */}
           <div>
-            <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.72rem", fontWeight: 700, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>
+            <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.7rem", fontWeight: 700, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }}>
               Navigation
             </h4>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 6 }}>
               {[
                 { label: "Accueil", id: "accueil" },
                 { label: "Nos Matériaux", id: "produits" },
@@ -1802,7 +1808,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
                 { label: "FAQ", id: "faq" },
               ].map(({ label, id }) => (
                 <li key={id}>
-                  <a href={`#${id}`} onClick={e => { e.preventDefault(); onNavigate(id) }} style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#94A3B8", textDecoration: "none" }}>
+                  <a href={`#${id}`} onClick={e => { e.preventDefault(); onNavigate(id) }} style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#94A3B8", textDecoration: "none" }}>
                     {label}
                   </a>
                 </li>
@@ -1812,26 +1818,26 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
 
           {/* Col 4 Dépôts Bénin */}
           <div>
-            <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.72rem", fontWeight: 700, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>
+            <h4 style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.7rem", fontWeight: 700, color: "white", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }}>
               Dépôts Physiques au Bénin
             </h4>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ display: "flex", gap: 6, alignItems: "flex-start" }}>
-                <MapPin size={13} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#94A3B8", lineHeight: 1.45 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ display: "flex", gap: 5, alignItems: "flex-start" }}>
+                <MapPin size={12} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#94A3B8", lineHeight: 1.45 }}>
                   <strong>Dépôt Cotonou :</strong> Akpakpa, Zone Industrielle<br />
                   <strong>Dépôt Calavi :</strong> Carrefour Kpota / Arconville
                 </span>
               </div>
-              <div style={{ display: "flex", gap: 6, alignItems: "flex-start" }}>
-                <Clock size={13} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem", color: "#94A3B8", lineHeight: 1.45 }}>
+              <div style={{ display: "flex", gap: 5, alignItems: "flex-start" }}>
+                <Clock size={12} style={{ color: "#10B981", flexShrink: 0, marginTop: 2 }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", color: "#94A3B8", lineHeight: 1.45 }}>
                   Lundi – Samedi<br />07h30 – 18h00
                 </span>
               </div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "rgba(16,185,129,0.15)", borderRadius: 9999, padding: "4px 10px", width: "fit-content" }}>
-                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "block" }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 700, color: "#10B981" }}>Stock Garanti en Dépôt</span>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 4, background: "rgba(16,185,129,0.15)", borderRadius: 9999, padding: "3px 8px", width: "fit-content" }}>
+                <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#10B981", display: "block" }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.65rem", fontWeight: 700, color: "#10B981" }}>Stock Garanti en Dépôt</span>
               </div>
             </div>
           </div>
@@ -1840,18 +1846,18 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
 
         {/* Copyright Bar */}
         <div style={{
-          paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.06)",
-          display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10, alignItems: "center"
+          paddingTop: 16, borderTop: "1px solid rgba(255,255,255,0.06)",
+          display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, alignItems: "center"
         }}>
-          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8", margin: 0 }}>
-            © 2026 {COMPANY_NAME} · {COMPANY_SUBTITLE} · Tous droits réservés.
+          <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#94A3B8", margin: 0 }}>
+            © 2026 {COMPANY_NAME} · {COMPANY_SUBTITLE}
           </p>
-          <div style={{ display: "flex", gap: 14 }}>
-            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8" }}>
-              Qualité Certifiée ISO 9001
+          <div style={{ display: "flex", gap: 10 }}>
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#94A3B8" }}>
+              Qualité ISO 9001
             </span>
-            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#94A3B8" }}>
-              Bénin BTP Solutions
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", color: "#94A3B8" }}>
+              Bénin BTP
             </span>
           </div>
         </div>
@@ -1874,6 +1880,8 @@ const CSS = `
     width: 100%;
     max-width: 100vw;
     -webkit-text-size-adjust: 100%;
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   .site-container {
@@ -1881,12 +1889,14 @@ const CSS = `
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: clamp(12px, 3.5vw, 32px);
-    padding-right: clamp(12px, 3.5vw, 32px);
+    padding-left: clamp(8px, 3vw, 32px);
+    padding-right: clamp(8px, 3vw, 32px);
     box-sizing: border-box;
   }
 
   .nav-desktop { display: flex; align-items: center; }
+  .brand-full-name { display: inline-block; }
+  .brand-short-name { display: none; }
   .brand-tag-desktop { display: inline-block; }
   .nav-status-desktop { display: flex; }
   .nav-mobile-actions { display: none !important; }
@@ -1933,7 +1943,7 @@ const CSS = `
     .nav-status-desktop { display: none !important; }
     .nav-mobile-actions { display: flex !important; }
     .mobile-dock { display: flex !important; }
-    main { padding-bottom: 92px !important; }
+    main { padding-bottom: 84px !important; }
 
     .hero-grid {
       grid-template-columns: 1fr !important;
@@ -1950,7 +1960,7 @@ const CSS = `
     }
     .hero-stats-grid {
       grid-template-columns: repeat(2, 1fr) !important;
-      gap: 12px !important;
+      gap: 10px !important;
     }
     .hero-cta-group {
       flex-direction: column !important;
@@ -1967,14 +1977,20 @@ const CSS = `
     .order-grid { grid-template-columns: 1fr !important; }
     .apps-grid { grid-template-columns: 1fr !important; }
     .presets-grid { grid-template-columns: repeat(2, 1fr) !important; }
-    .footer-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+    .footer-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
   }
 
-  /* ── Ultra-Small Phones & Watches (<= 380px) ── */
-  @media (max-width: 380px) {
+  /* ── Small Smartphones (<= 480px) ── */
+  @media (max-width: 480px) {
+    .brand-full-name { display: none !important; }
+    .brand-short-name { display: inline-block !important; }
+  }
+
+  /* ── Ultra-Small Phones & Foldables (<= 360px) ── */
+  @media (max-width: 360px) {
     .site-container {
-      padding-left: 8px !important;
-      padding-right: 8px !important;
+      padding-left: 6px !important;
+      padding-right: 6px !important;
     }
     .simu-type-grid {
       grid-template-columns: 1fr !important;
@@ -1985,18 +2001,30 @@ const CSS = `
     .simu-tech-grid {
       grid-template-columns: 1fr !important;
     }
-    .mobile-dock {
-      bottom: 8px !important;
-      left: 8px !important;
-      right: 8px !important;
-      padding: 8px 12px !important;
+    .nav-mobile-wa-btn {
+      display: none !important;
+    }
+    .spec-table-row {
+      grid-template-columns: 1fr !important;
+      gap: 2px !important;
     }
   }
 
-  /* ── Smartwatches (<= 280px) ── */
+  /* ── Smartwatches & Connected Watches (180px - 280px) ── */
   @media (max-width: 280px) {
+    .site-container {
+      padding-left: 4px !important;
+      padding-right: 4px !important;
+    }
     .hero-stats-grid {
       grid-template-columns: 1fr !important;
+    }
+    .mobile-dock {
+      bottom: 4px !important;
+      left: 4px !important;
+      right: 4px !important;
+      padding: 6px 10px !important;
+      border-radius: 16px !important;
     }
   }
 `
@@ -2058,11 +2086,11 @@ export default function App() {
             aria-label="Retour en haut de la page"
             style={{
               position: "fixed",
-              bottom: "clamp(74px, 12vw, 84px)",
-              right: "clamp(10px, 3vw, 20px)",
+              bottom: "clamp(70px, 11vw, 84px)",
+              right: "clamp(8px, 2.5vw, 20px)",
               zIndex: 990,
-              width: "clamp(36px, 6vw, 42px)",
-              height: "clamp(36px, 6vw, 42px)",
+              width: "clamp(32px, 5.5vw, 42px)",
+              height: "clamp(32px, 5.5vw, 42px)",
               borderRadius: "50%",
               background: "white",
               color: "#0F172A",
@@ -2087,22 +2115,22 @@ export default function App() {
               e.currentTarget.style.color = "#0F172A"
             }}
           >
-            <ArrowUp size={16} />
+            <ArrowUp size={15} />
           </button>
         )}
 
         {/* Mobile Floating Thumb Dock */}
         <div className="mobile-dock" style={{
-          position: "fixed", bottom: "clamp(8px, 2.5vw, 16px)", left: "clamp(8px, 2.5vw, 16px)", right: "clamp(8px, 2.5vw, 16px)", zIndex: 999,
+          position: "fixed", bottom: "clamp(6px, 2vw, 16px)", left: "clamp(6px, 2vw, 16px)", right: "clamp(6px, 2vw, 16px)", zIndex: 999,
           background: "rgba(10, 15, 29, 0.95)", backdropFilter: "blur(14px)",
-          borderRadius: 24, padding: "clamp(8px, 2vw, 10px) clamp(12px, 3vw, 16px)",
-          display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8,
+          borderRadius: 24, padding: "clamp(6px, 1.8vw, 10px) clamp(10px, 2.5vw, 16px)",
+          display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6,
           boxShadow: "0 12px 36px rgba(0,0,0,0.45)", border: "1px solid rgba(255,255,255,0.15)",
           boxSizing: "border-box"
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#10B981", display: "block", flexShrink: 0, animation: "pulse 2s infinite" }} />
-            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.68rem, 2.2vw, 0.75rem)", fontWeight: 700, color: "white", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Dépôts Ouverts</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 5, minWidth: 0 }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "block", flexShrink: 0, animation: "pulse 2s infinite" }} />
+            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.65rem, 2vw, 0.75rem)", fontWeight: 700, color: "white", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Dépôts Ouverts</span>
           </div>
           <WaBtn label="WhatsApp Direct" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} small />
         </div>
