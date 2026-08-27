@@ -2109,8 +2109,8 @@ const CSS = `
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: clamp(10px, 3vw, 32px);
-    padding-right: clamp(10px, 3vw, 32px);
+    padding-left: clamp(14px, 3.5vw, 32px);
+    padding-right: clamp(14px, 3.5vw, 32px);
     box-sizing: border-box;
   }
 
@@ -2122,7 +2122,10 @@ const CSS = `
   .nav-mobile-actions { display: none !important; }
   .mobile-dock { display: none !important; }
 
-  .hero-grid { grid-template-columns: 1.15fr 0.85fr; }\n  .desktop-hero { display: grid !important; }\n  .mobile-hero { display: none !important; }
+  .desktop-hero { display: grid !important; }
+  .mobile-hero { display: none !important; }
+
+  .hero-grid { grid-template-columns: 1.15fr 0.85fr; }
   .hero-stats-grid { grid-template-columns: repeat(4, 1fr); }
   .product-grid { grid-template-columns: repeat(3, 1fr); }
   .why-grid { grid-template-columns: repeat(4, 1fr); }
@@ -2163,7 +2166,10 @@ const CSS = `
   }
 
   /* ── Mobile Phones & Phablets (<= 768px) ── */
-  @media (max-width: 768px) {\n    .desktop-hero { display: none !important; }\n    .mobile-hero { display: flex !important; }
+  @media (max-width: 768px) {
+    .desktop-hero { display: none !important; }
+    .mobile-hero { display: flex !important; }
+
     .nav-desktop { display: none !important; }
     .brand-tag-desktop { display: none !important; }
     .nav-status-desktop { display: none !important; }
@@ -2215,8 +2221,8 @@ const CSS = `
   /* ── Ultra-Small Phones (<= 360px) ── */
   @media (max-width: 360px) {
     .site-container {
-      padding-left: 6px !important;
-      padding-right: 6px !important;
+      padding-left: 14px !important;
+      padding-right: 14px !important;
     }
     .simu-type-grid {
       grid-template-columns: 1fr !important;
@@ -2242,8 +2248,8 @@ const CSS = `
       height: 48px !important;
     }
     .site-container {
-      padding-left: 4px !important;
-      padding-right: 4px !important;
+      padding-left: 8px !important;
+      padding-right: 8px !important;
     }
     h1 {
       font-size: 1.12rem !important;
@@ -2320,7 +2326,6 @@ const CSS = `
   }
 `
 
-// ─── Main App Entry ──────────────────────────────────────────────────────────
 export default function App() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [showBackToTop, setShowBackToTop] = useState(false)
