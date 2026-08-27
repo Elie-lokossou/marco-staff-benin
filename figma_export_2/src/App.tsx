@@ -11,8 +11,8 @@ import imgChaux from "@/imports/photo1.jpeg"
 import imgFilasse from "@/imports/filace.jpeg"
 
 // ─── Constantes Commerciales & Liens Directs ─────────────────────────────────
-const WA_NUMBER = "2290197463209"
-const PHONE_DISPLAY = "+229 01 97 46 32 09"
+const WA_NUMBER = "2290167250853"
+const PHONE_DISPLAY = "+229 01 67 25 08 53"
 const COMPANY_NAME = "L'Incomparable Service & Fils"
 const BRAND_NAME = "MARCO STAFF BTP"
 const COMPANY_SUBTITLE = "MARCO STAFF BTP — Import Direct Bénin"
@@ -2000,7 +2000,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
               </a>
               <a href={waUrl(`Bonjour ${COMPANY_NAME} (${BRAND_NAME})`)} target="_blank" rel="noopener noreferrer" style={{ display: "flex", gap: 6, alignItems: "center", textDecoration: "none", color: "#CBD5E1" }}>
                 <MessageCircle size={13} style={{ color: "#10B981", flexShrink: 0 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem" }}>WhatsApp : +229 01 97 46 32 09</span>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem" }}>WhatsApp : +229 01 67 25 08 53</span>
               </a>
             </div>
           </div>
