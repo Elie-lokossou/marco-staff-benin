@@ -310,26 +310,28 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
       <div className="site-container" style={{
         width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10
       }}>
-        {/* 1. Logo & Identité (Strictement 1 ligne) */}
-        <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: "clamp(6px, 1.5vw, 10px)", cursor: "pointer", flexShrink: 0, minWidth: 0 }}>
+        {/* 1. Logo & Identité (2 niveaux élégants : Marque + Raison Sociale) */}
+        <div onClick={() => onNavigate("accueil")} style={{ display: "flex", alignItems: "center", gap: "clamp(8px, 1.5vw, 10px)", cursor: "pointer", flexShrink: 0, minWidth: 0 }}>
           <div style={{
-            width: "clamp(32px, 5vw, 36px)", height: "clamp(32px, 5vw, 36px)", borderRadius: 8,
+            width: "clamp(34px, 5vw, 38px)", height: "clamp(34px, 5vw, 38px)", borderRadius: 9,
             background: "linear-gradient(135deg, #1E3A8A 0%, #0F2444 100%)",
             border: "1.5px solid rgba(255,255,255,0.2)",
             display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
             boxShadow: "0 3px 10px rgba(30,58,138,0.25)",
           }}>
-            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.5vw, 1rem)", fontWeight: 800, color: "white" }}>M</span>
+            <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.9rem, 2.5vw, 1.05rem)", fontWeight: 800, color: "white" }}>M</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
-            <span className="brand-full-name" style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.82rem, 2.5vw, 0.95rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>
+          <div style={{ display: "flex", flexDirection: "column", minWidth: 0, justifyContent: "center" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.85rem, 2.2vw, 0.96rem)", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.02em", whiteSpace: "nowrap", lineHeight: 1.15 }}>
+                {BRAND_NAME}
+              </span>
+              <span className="brand-tag-desktop" style={{ fontSize: "0.58rem", fontWeight: 700, color: "#D97706", background: "#FEF3C7", padding: "1px 6px", borderRadius: 9999, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                Bénin
+              </span>
+            </div>
+            <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.62rem", fontWeight: 600, color: "#64748B", letterSpacing: "0.01em", whiteSpace: "nowrap", lineHeight: 1.2 }}>
               {COMPANY_NAME}
-            </span>
-            <span className="brand-short-name" style={{ fontFamily: "var(--ds-font-heading)", fontSize: "0.85rem", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.02em", whiteSpace: "nowrap", display: "none" }}>
-              MARCO STAFF
-            </span>
-            <span className="brand-tag-desktop" style={{ fontSize: "0.62rem", fontWeight: 700, color: "#D97706", background: "#FEF3C7", padding: "2px 7px", borderRadius: 9999, textTransform: "uppercase", letterSpacing: "0.04em" }}>
-              Bénin Import
             </span>
           </div>
         </div>
@@ -2160,7 +2162,7 @@ const CSS = `
   }
 
   /* ── Tablets Landscape & Medium Desktops (769px - 1024px) ── */
-  @media (max-width: 1024px) {
+  @media (max-width: 1200px) {
     .nav-status-desktop { display: none !important; }
     .hero-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
     .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
