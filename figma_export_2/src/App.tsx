@@ -173,21 +173,23 @@ function WaBtn({ label = "WhatsApp", url, small = false, full = false, variant =
   return (
     <a href={url} target="_blank" rel="noopener noreferrer" style={{
       display: "inline-flex", alignItems: "center", justifyContent: "center",
-      gap: small ? 5 : 8,
+      gap: small ? 6 : 8,
       background: isWhite ? "#FFFFFF" : isOutline ? "transparent" : "#10B981",
       color: isWhite ? "#0F172A" : isOutline ? "#FFFFFF" : "#FFFFFF",
       border: isOutline ? "1.5px solid rgba(255,255,255,0.4)" : "none",
-      fontFamily: "var(--ds-font-body)", fontSize: small ? "clamp(0.74rem, 2vw, 0.82rem)" : "clamp(0.8rem, 2.5vw, 0.9rem)",
-      fontWeight: 700, padding: small ? "8px 15px" : "12px 22px",
-      minHeight: small ? 38 : 44,
+      fontFamily: "var(--ds-font-body)", fontSize: small ? "clamp(0.74rem, 2vw, 0.82rem)" : "clamp(0.82rem, 2.5vw, 0.92rem)",
+      fontWeight: 700, padding: small ? "8px 15px" : "12px 20px",
+      minHeight: small ? 38 : 48,
       borderRadius: "9999px", textDecoration: "none",
       transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
-      boxShadow: isWhite ? "0 4px 20px rgba(0,0,0,0.15)" : isOutline ? "none" : "0 4px 14px rgba(16, 185, 129, 0.3)",
+      boxShadow: isWhite ? "0 4px 20px rgba(0,0,0,0.15)" : isOutline ? "none" : "0 4px 16px rgba(16, 185, 129, 0.3)",
       width: full ? "100%" : undefined,
       maxWidth: "100%",
       boxSizing: "border-box",
       textAlign: "center",
-      whiteSpace: "nowrap"
+      whiteSpace: full ? "normal" : "nowrap",
+      lineHeight: 1.35,
+      wordBreak: "break-word"
     }}
       onMouseEnter={e => {
         if (isWhite) {
@@ -1092,6 +1094,7 @@ function AutoriteBTPSection() {
 }
 
 // ─── 4. Cockpit Simulateur Pro avec Ratios Précis & Feedback Dynamique ────────
+// ─── 4. Cockpit Simulateur Pro avec Ratios Précis & Responsive Bulletproof ────
 function InteractiveSimulateurSection() {
   const [surface, setSurface] = useState(60)
   const [typeOuvrage, setTypeOuvrage] = useState<"plafond" | "corniche">("plafond")
@@ -1162,46 +1165,48 @@ function InteractiveSimulateurSection() {
           </p>
         </div>
 
-        {/* Cockpit 2 Colonnes Pro */}
+        {/* Cockpit 2 Colonnes Pro (Bascule automatique en 1 colonne sur tablettes & mobiles) */}
         <div className="simu-cockpit-grid" style={{
           background: "#FFFFFF", borderRadius: "clamp(16px, 2.5vw, 24px)", border: "1.5px solid #E2E8F0",
-          padding: "clamp(16px, 3vw, 36px)", boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.06)",
-          display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "clamp(18px, 2.8vw, 36px)",
-          alignItems: "stretch"
+          padding: "clamp(14px, 3vw, 32px)", boxShadow: "0 10px 30px -4px rgba(15, 23, 42, 0.06)",
+          display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "clamp(18px, 3vw, 36px)",
+          alignItems: "stretch", boxSizing: "border-box", width: "100%", maxWidth: "100%"
         }}>
           
           {/* Colonne Gauche : Contrôles & Presets */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16, minWidth: 0 }}>
             
             {/* Step 1 : Choix Ouvrage */}
             <div>
               <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
                 1. Choisissez le type d&apos;ouvrage :
               </label>
-              <div className="simu-type-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+              <div className="simu-type-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                 <button type="button" onClick={() => setTypeOuvrage("plafond")} style={{
-                  padding: "10px 12px", borderRadius: 10, minHeight: 44,
-                  fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.74rem, 1.8vw, 0.82rem)", fontWeight: 700,
+                  padding: "10px 14px", borderRadius: 10, minHeight: 46,
+                  fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.76rem, 2vw, 0.84rem)", fontWeight: 700,
                   border: `2px solid ${typeOuvrage === "plafond" ? "#1E3A8A" : "#E2E8F0"}`,
                   background: typeOuvrage === "plafond" ? "#EFF6FF" : "#FFFFFF",
                   color: typeOuvrage === "plafond" ? "#1E3A8A" : "#475569",
                   cursor: "pointer", transition: "all 0.2s ease",
-                  display: "flex", alignItems: "center", justifyContent: "space-between"
+                  display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6,
+                  boxSizing: "border-box"
                 }}>
                   <span>🏢 Plafonds Staff</span>
-                  {typeOuvrage === "plafond" && <Check size={15} color="#1E3A8A" />}
+                  {typeOuvrage === "plafond" && <Check size={16} color="#1E3A8A" style={{ flexShrink: 0 }} />}
                 </button>
                 <button type="button" onClick={() => setTypeOuvrage("corniche")} style={{
-                  padding: "10px 12px", borderRadius: 10, minHeight: 44,
-                  fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.74rem, 1.8vw, 0.82rem)", fontWeight: 700,
+                  padding: "10px 14px", borderRadius: 10, minHeight: 46,
+                  fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.76rem, 2vw, 0.84rem)", fontWeight: 700,
                   border: `2px solid ${typeOuvrage === "corniche" ? "#1E3A8A" : "#E2E8F0"}`,
                   background: typeOuvrage === "corniche" ? "#EFF6FF" : "#FFFFFF",
                   color: typeOuvrage === "corniche" ? "#1E3A8A" : "#475569",
                   cursor: "pointer", transition: "all 0.2s ease",
-                  display: "flex", alignItems: "center", justifyContent: "space-between"
+                  display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6,
+                  boxSizing: "border-box"
                 }}>
                   <span>✨ Corniches</span>
-                  {typeOuvrage === "corniche" && <Check size={15} color="#1E3A8A" />}
+                  {typeOuvrage === "corniche" && <Check size={16} color="#1E3A8A" style={{ flexShrink: 0 }} />}
                 </button>
               </div>
             </div>
@@ -1211,61 +1216,62 @@ function InteractiveSimulateurSection() {
               <label style={{ display: "block", fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", fontWeight: 700, color: "#0F172A", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
                 2. Presets rapides ou ajustement :
               </label>
-              <div className="presets-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 8 }}>
+              <div className="presets-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 10 }}>
                 {presets.map(p => (
                   <button key={p.val} onClick={() => setSurface(p.val)} style={{
                     padding: "8px 6px", borderRadius: 8, minHeight: 44,
                     border: `1.5px solid ${surface === p.val ? "#1E3A8A" : "#E2E8F0"}`,
                     background: surface === p.val ? "#EFF6FF" : "white",
                     color: surface === p.val ? "#1E3A8A" : "#475569",
-                    cursor: "pointer", fontSize: "0.72rem", fontWeight: 700,
-                    transition: "all 0.2s ease", textAlign: "center"
+                    cursor: "pointer", fontSize: "0.74rem", fontWeight: 700,
+                    transition: "all 0.2s ease", textAlign: "center",
+                    boxSizing: "border-box"
                   }}>
                     <div>{p.val} m²</div>
-                    <div style={{ fontSize: "0.58rem", color: "#64748B", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.label}</div>
+                    <div style={{ fontSize: "0.6rem", color: "#64748B", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.label}</div>
                   </button>
                 ))}
               </div>
 
               {/* Slider interactif avec Touch-Zone Élargie */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
-                <span style={{ fontSize: "0.72rem", color: "#64748B" }}>Surface de pose :</span>
-                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.15rem, 2.5vw, 1.45rem)", fontWeight: 800, color: "#1E3A8A" }}>
-                  {surface} <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "#475569" }}>m²</span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                <span style={{ fontSize: "0.74rem", color: "#64748B", fontWeight: 600 }}>Surface de pose :</span>
+                <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(1.2rem, 3vw, 1.55rem)", fontWeight: 800, color: "#1E3A8A" }}>
+                  {surface} <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#475569" }}>m²</span>
                 </span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <button onClick={() => setSurface(s => Math.max(10, s - 10))} aria-label="Diminuer de 10 mètres carrés"
-                  style={{ width: 40, height: 40, borderRadius: "50%", border: "1.5px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569", minWidth: 40 }}>
-                  <Minus size={15} />
+                  style={{ width: 42, height: 42, borderRadius: "50%", border: "1.5px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569", minWidth: 42, boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}>
+                  <Minus size={16} />
                 </button>
-                <div style={{ flex: 1, padding: "8px 0" }}>
+                <div style={{ flex: 1, padding: "6px 0", minWidth: 0 }}>
                   <input type="range" min={10} max={500} step={5} value={surface}
                     aria-label="Surface du chantier en mètres carrés"
                     onChange={e => setSurface(Number(e.target.value))}
-                    style={{ width: "100%", accentColor: "#1E3A8A", height: 8, cursor: "pointer" }}
+                    style={{ width: "100%", accentColor: "#1E3A8A", height: 8, cursor: "pointer", touchAction: "manipulation" }}
                   />
                 </div>
                 <button onClick={() => setSurface(s => Math.min(500, s + 10))} aria-label="Augmenter de 10 mètres carrés"
-                  style={{ width: 40, height: 40, borderRadius: "50%", border: "1.5px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569", minWidth: 40 }}>
-                  <Plus size={15} />
+                  style={{ width: 42, height: 42, borderRadius: "50%", border: "1.5px solid #E2E8F0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#475569", minWidth: 42, boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}>
+                  <Plus size={16} />
                 </button>
               </div>
             </div>
 
             {/* Infos techniques gâchage & poids */}
-            <div className="simu-tech-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "8px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
-                <Scale size={14} style={{ color: "#1E3A8A", flexShrink: 0 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>
+            <div className="simu-tech-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "9px 12px", borderRadius: 10, border: "1px solid #E2E8F0" }}>
+                <Scale size={15} style={{ color: "#1E3A8A", flexShrink: 0 }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.74rem", color: "#64748B" }}>
                   Poids total : <strong>~{poidsTotalKg} kg</strong> ({poidsTotalTonnes} T)
                 </span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F8FAFC", padding: "8px 10px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
-                <Droplets size={14} style={{ color: "#2563EB", flexShrink: 0 }} />
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#64748B" }}>
-                  Eau de gâchage : <strong>~{eauEstimeeLitres} L</strong>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#F8FAFC", padding: "9px 12px", borderRadius: 10, border: "1px solid #E2E8F0" }}>
+                <Droplets size={15} style={{ color: "#2563EB", flexShrink: 0 }} />
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.74rem", color: "#64748B" }}>
+                  Eau estimée : <strong>~{eauEstimeeLitres} L</strong>
                 </span>
               </div>
             </div>
@@ -1275,62 +1281,63 @@ function InteractiveSimulateurSection() {
           {/* Colonne Droite : Panneau de Devis & Quantités avec Précision Unitaire */}
           <div aria-live="polite" style={{
             background: "#F8FAFC", borderRadius: "clamp(14px, 2vw, 18px)", border: "1.5px solid #E2E8F0",
-            padding: "clamp(14px, 2vw, 20px)", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 12
+            padding: "clamp(14px, 2.5vw, 22px)", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 14,
+            minWidth: 0, boxSizing: "border-box"
           }}>
             <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, flexWrap: "wrap", gap: 4 }}>
-                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.68rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, flexWrap: "wrap", gap: 6 }}>
+                <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.7rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase" }}>
                   Quantités calculées ({surface} m²) :
                 </span>
-                <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 6px", borderRadius: 6 }}>
+                <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#10B981", background: "#ECFDF5", padding: "2px 8px", borderRadius: 6 }}>
                   Stock Garanti en Dépôt
                 </span>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 12px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
-                  <div>
-                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Gypse Marco (Sacs 40kg)</div>
-                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇪🇬 Total : {poidsGypseKg} kg net</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 14px", borderRadius: 10, border: "1px solid #E2E8F0", flexWrap: "wrap", gap: 6 }}>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Gypse Marco (Sacs 40kg)</div>
+                    <div style={{ fontSize: "0.65rem", color: "#64748B" }}>🇪🇬 Total : {poidsGypseKg} kg net</div>
                   </div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "#1E3A8A" }}>
-                    {nbSacsGypse} <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 12px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
-                  <div>
-                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Filasse Sisal Pure</div>
-                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇰🇪 Produce of Kenya</div>
-                  </div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "#10B981" }}>
-                    {kgFilasse} <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>kg</span>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.15rem", fontWeight: 800, color: "#1E3A8A", whiteSpace: "nowrap" }}>
+                    {nbSacsGypse} <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
                   </div>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "8px 12px", borderRadius: 8, border: "1px solid #E2E8F0" }}>
-                  <div>
-                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0F172A" }}>Chaux Vive (Sacs 40kg)</div>
-                    <div style={{ fontSize: "0.62rem", color: "#64748B" }}>🇦🇪 Total : {poidsChauxKg} kg net</div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 14px", borderRadius: 10, border: "1px solid #E2E8F0", flexWrap: "wrap", gap: 6 }}>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Filasse Sisal Pure</div>
+                    <div style={{ fontSize: "0.65rem", color: "#64748B" }}>🇰🇪 Produce of Kenya</div>
                   </div>
-                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.1rem", fontWeight: 800, color: "#0F172A" }}>
-                    {nbSacsChaux} <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.15rem", fontWeight: 800, color: "#10B981", whiteSpace: "nowrap" }}>
+                    {kgFilasse} <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "#64748B" }}>kg</span>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", padding: "10px 14px", borderRadius: 10, border: "1px solid #E2E8F0", flexWrap: "wrap", gap: 6 }}>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0F172A" }}>Chaux Vive (Sacs 40kg)</div>
+                    <div style={{ fontSize: "0.65rem", color: "#64748B" }}>🇦🇪 Total : {poidsChauxKg} kg net</div>
+                  </div>
+                  <div style={{ fontFamily: "var(--ds-font-heading)", fontSize: "1.15rem", fontWeight: 800, color: "#0F172A", whiteSpace: "nowrap" }}>
+                    {nbSacsChaux} <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "#64748B" }}>sacs</span>
                   </div>
                 </div>
               </div>
 
               {/* Véhicule recommandé */}
-              <div style={{ marginTop: 8, padding: "8px 10px", background: "#EFF6FF", borderRadius: 8, border: "1px solid #DBEAFE", display: "flex", alignItems: "center", gap: 6 }}>
-                <Truck size={14} style={{ color: "#1E3A8A", flexShrink: 0 }} />
-                <span style={{ fontSize: "0.7rem", color: "#1E3A8A", fontWeight: 600 }}>
+              <div style={{ marginTop: 10, padding: "8px 12px", background: "#EFF6FF", borderRadius: 8, border: "1px solid #DBEAFE", display: "flex", alignItems: "center", gap: 8 }}>
+                <Truck size={15} style={{ color: "#1E3A8A", flexShrink: 0 }} />
+                <span style={{ fontSize: "0.72rem", color: "#1E3A8A", fontWeight: 600 }}>
                   Logistique : <strong>{vehiculeRecommande}</strong>
                 </span>
               </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               <WaBtn label="Recevoir mon devis officiel sur WhatsApp" url={msgSimu} full />
-              <span style={{ fontSize: "0.65rem", color: "#64748B", textAlign: "center" }}>
+              <span style={{ fontSize: "0.68rem", color: "#64748B", textAlign: "center", lineHeight: 1.3 }}>
                 ⚡ Devis proforma immédiat par retour de message · Sans engagement
               </span>
             </div>
@@ -1344,7 +1351,6 @@ function InteractiveSimulateurSection() {
   )
 }
 
-// ─── 5. Processus de Commande Clair en 4 Étapes (01 ➔ 02 ➔ 03 ➔ 04) ───────────
 function HowToOrderSection() {
   const steps = [
     {
