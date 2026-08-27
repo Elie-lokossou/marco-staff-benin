@@ -15,6 +15,7 @@ const WA_NUMBER = "2290197463209"
 const PHONE_DISPLAY = "+229 01 97 46 32 09"
 const COMPANY_NAME = "L'Incomparable Service & Fils"
 const BRAND_NAME = "MARCO STAFF BTP"
+const COMPANY_SUBTITLE = "MARCO STAFF BTP — Import Direct Bénin"
 const COMPANY_FULL = "L'Incomparable Service & Fils (Marco Staff)"
 
 const waUrl = (msg: string) =>
