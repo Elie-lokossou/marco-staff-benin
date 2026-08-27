@@ -13,14 +13,15 @@ import imgFilasse from "@/imports/filace.jpeg"
 // ─── Constantes Commerciales & Liens Directs ─────────────────────────────────
 const WA_NUMBER = "2290197463209"
 const PHONE_DISPLAY = "+229 01 97 46 32 09"
-const COMPANY_NAME = "MARCO STAFF BTP"
-const COMPANY_SUBTITLE = "L'Incomparable Service & Fils"
+const COMPANY_NAME = "L'Incomparable Service & Fils"
+const BRAND_NAME = "MARCO STAFF BTP"
+const COMPANY_FULL = "L'Incomparable Service & Fils (Marco Staff)"
 
 const waUrl = (msg: string) =>
   `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`
 
 const waProduitMsg = (produit: string, conditionnement: string) =>
-  waUrl(`Bonjour ${COMPANY_NAME}, je souhaite commander ou obtenir un devis pour : *${produit}* (${conditionnement}).\n\nPouvez-vous m'indiquer le tarif dégressif et la disponibilité immédiate ? Merci !`)
+  waUrl(`Bonjour l'équipe ${COMPANY_NAME} (${BRAND_NAME}), je souhaite commander ou obtenir un devis pour : *${produit}* (${conditionnement}).\n\nPouvez-vous m'indiquer le tarif dégressif et la disponibilité immédiate en dépôt ? Merci !`)
 
 interface Product {
   id: string
@@ -372,12 +373,12 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
           </div>
 
           <div className="nav-desktop">
-            <WaBtn label="Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mon chantier.`)} small />
+            <WaBtn label="Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME} (${BRAND_NAME}), je souhaite un devis pour mon chantier.`)} small />
           </div>
 
           {/* Mobile Actions (Toujours sur 1 seule ligne, avec WhatsApp actif) */}
           <div className="nav-mobile-actions" style={{ display: "none", alignItems: "center", gap: 6 }}>
-            <a href={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis.`)} target="_blank" rel="noopener noreferrer" aria-label="Contacter sur WhatsApp" style={{
+            <a href={waUrl(`Bonjour ${COMPANY_NAME} (${BRAND_NAME}), je souhaite un devis express.`)} target="_blank" rel="noopener noreferrer" aria-label="Contacter sur WhatsApp" style={{
               display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 4,
               background: "#10B981", color: "#FFFFFF", borderRadius: 9999, padding: "6px 12px",
               fontFamily: "var(--ds-font-body)", fontSize: "0.75rem", fontWeight: 700, textDecoration: "none", minHeight: 36
@@ -431,7 +432,7 @@ function Navbar({ onNavigate }: { onNavigate: (s: string) => void }) {
               <Phone size={14} color="#10B981" />
               <span>{PHONE_DISPLAY}</span>
             </a>
-            <WaBtn label="WhatsApp Express Direct" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis.`)} full />
+            <WaBtn label="WhatsApp Express Direct" url={waUrl(`Bonjour ${COMPANY_NAME} (${BRAND_NAME}), je souhaite un devis express.`)} full />
           </div>
         </div>
       )}
@@ -506,7 +507,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
             {/* Action CTAs avec Réassurance */}
             <div>
               <div className="hero-cta-group" style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", marginBottom: 8 }}>
-                <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} />
+                <WaBtn label="Demander un Devis WhatsApp" url={waUrl(`Bonjour ${COMPANY_NAME} (${BRAND_NAME}), je souhaite un devis pour mes travaux de staff.`)} />
                 <Button variant="neutral" iconEnd={<Calculator size={15} color="#1E3A8A" />} onClick={onSimulateur}>
                   Calculer mes besoins
                 </Button>
@@ -720,7 +721,7 @@ function HeroSection({ onVoirProduits, onSimulateur }: { onVoirProduits: () => v
           {/* Bloc 5, 6 & 7 : CTAs & Micro-Réassurance */}
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {/* 5. Primary CTA WhatsApp */}
-            <a href={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} target="_blank" rel="noopener noreferrer" style={{
+            <a href={waUrl(`Bonjour ${COMPANY_NAME} (${BRAND_NAME}), je souhaite un devis pour mes travaux de staff.`)} target="_blank" rel="noopener noreferrer" style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
               background: "#10B981", color: "#FFFFFF",
               fontFamily: "var(--ds-font-body)", fontSize: "clamp(0.84rem, 3.2vw, 0.94rem)",
@@ -1757,7 +1758,7 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <WaBtn label="Contacter l'équipe commerciale" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} full />
+              <WaBtn label="Contacter l'équipe commerciale" url={waUrl(`Bonjour ${COMPANY_NAME} (${BRAND_NAME}), je souhaite un devis pour mes travaux de staff.`)} full />
               <button onClick={onSimulateur} style={{
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 background: "transparent", border: "1.5px solid rgba(255,255,255,0.25)",
@@ -1799,7 +1800,7 @@ function ArchitecturalCTASection({ onSimulateur }: { onSimulateur: () => void })
 // ─── 10. Modale / Tiroir Slide-Over Fiche Produit avec Passerelle Simulateur ──
 function SlideOverProductModal({ product, onClose, onOpenSimulateur }: { product: Product; onClose: () => void; onOpenSimulateur: () => void }) {
   const [qty, setQty] = useState(5)
-  const msgCmd = waUrl(`Bonjour ${COMPANY_NAME}, je souhaite commander ${qty} sac(s) de *${product.nom}* (${product.conditionnement}).\n\nPouvez-vous me confirmer le tarif dégressif et les modalités de livraison ? Merci !`)
+  const msgCmd = waUrl(`Bonjour ${COMPANY_NAME} (${BRAND_NAME}), je souhaite commander ${qty} sac(s) de *${product.nom}* (${product.conditionnement}).\n\nPouvez-vous me confirmer le tarif dégressif et les modalités de livraison ? Merci !`)
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -1994,7 +1995,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
                 <Phone size={13} style={{ color: "#10B981", flexShrink: 0 }} />
                 <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem" }}>{PHONE_DISPLAY}</span>
               </a>
-              <a href={waUrl(`Bonjour ${COMPANY_NAME}`)} target="_blank" rel="noopener noreferrer" style={{ display: "flex", gap: 6, alignItems: "center", textDecoration: "none", color: "#CBD5E1" }}>
+              <a href={waUrl(`Bonjour ${COMPANY_NAME} (${BRAND_NAME})`)} target="_blank" rel="noopener noreferrer" style={{ display: "flex", gap: 6, alignItems: "center", textDecoration: "none", color: "#CBD5E1" }}>
                 <MessageCircle size={13} style={{ color: "#10B981", flexShrink: 0 }} />
                 <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.78rem" }}>WhatsApp : +229 01 97 46 32 09</span>
               </a>
@@ -2076,7 +2077,7 @@ function Footer({ onNavigate }: { onNavigate: (s: string) => void }) {
           display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, alignItems: "center"
         }}>
           <p style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#CBD5E1", margin: 0 }}>
-            © 2026 {COMPANY_NAME} · {COMPANY_SUBTITLE}
+            © 2026 {COMPANY_NAME} · {BRAND_NAME}
           </p>
           <div style={{ display: "flex", gap: 10 }}>
             <span style={{ fontFamily: "var(--ds-font-body)", fontSize: "0.72rem", color: "#CBD5E1" }}>
@@ -2438,7 +2439,7 @@ export default function App() {
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#10B981", display: "block", flexShrink: 0, animation: "pulse 2s infinite" }} />
             <span style={{ fontFamily: "var(--ds-font-heading)", fontSize: "clamp(0.68rem, 2vw, 0.75rem)", fontWeight: 700, color: "white", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Dépôts Ouverts</span>
           </div>
-          <WaBtn label="WhatsApp Direct" url={waUrl(`Bonjour ${COMPANY_NAME}, je souhaite un devis pour mes travaux de staff.`)} small />
+          <WaBtn label="WhatsApp Direct" url={waUrl(`Bonjour ${COMPANY_NAME} (${BRAND_NAME}), je souhaite un devis pour mes travaux de staff.`)} small />
         </div>
 
       </div>
